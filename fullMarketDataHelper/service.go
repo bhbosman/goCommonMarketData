@@ -1,0 +1,47 @@
+package fullMarketDataHelper
+
+import (
+	"fmt"
+)
+
+const FullMarketDataServiceInbound = "FullMarketDataService_Inbound"
+const FullMarketDataServicePublishAll = "FM_ALL"
+const FullMarketDataServicePublishInstrumentList = "FMD_InstrumentList"
+
+type FullMarketDataHelper struct {
+}
+
+func (self *FullMarketDataHelper) FullMarketDataServicePublishInstrumentList() string {
+	return FullMarketDataServicePublishInstrumentList
+}
+
+func (self *FullMarketDataHelper) FullMarketDataServiceInbound() string {
+	return FullMarketDataServiceInbound
+}
+
+func (self *FullMarketDataHelper) InstrumentListChannelName() string {
+	return self.instrumentListChannelName()
+}
+
+func (self *FullMarketDataHelper) InstrumentChannelName(instrument string) string {
+	return self.instrumentChannelName(instrument)
+}
+
+func (self *FullMarketDataHelper) AllInstrumentChannelName() string {
+	return self.allInstrumentChannelName()
+}
+func (self *FullMarketDataHelper) instrumentListChannelName() string {
+	return FullMarketDataServicePublishInstrumentList
+}
+
+func (self *FullMarketDataHelper) allInstrumentChannelName() string {
+	return FullMarketDataServicePublishAll
+}
+
+func (self *FullMarketDataHelper) instrumentChannelName(instrument string) string {
+	return fmt.Sprintf("FMD.INSTANCE.%v", instrument)
+}
+
+func NewFullMarketDataHelper() (IFullMarketDataHelper, error) {
+	return &FullMarketDataHelper{}, nil
+}

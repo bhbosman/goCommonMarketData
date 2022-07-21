@@ -1,0 +1,66 @@
+syntax = "proto3";
+import "google/protobuf/descriptor.proto";
+package golang.example.policy;
+option go_package = "/stream";
+
+
+message FullMarketData_Clear
+{
+  string instrument = 1;
+};
+
+
+enum OrderSide {
+  BidOrder = 0;
+  AskOrder = 1;
+}
+
+
+message FullMarketData_AddOrder{
+  OrderSide side = 2;
+  string id = 3;
+  double price = 4;
+  double volume  = 5;
+
+}
+message FullMarketData_AddOrderInstruction
+{
+  string instrument = 1;
+  FullMarketData_AddOrder order=2;
+};
+
+
+message FullMarketData_ReduceVolumeInstruction
+{
+  string instrument = 1;
+  string id = 2;
+  double volume = 3;
+};
+
+message FullMarketData_DeleteOrderInstruction
+{
+  string instrument = 1;
+  string  id = 2;
+};
+
+message FullMarketData_RemoveInstrumentInstruction
+{
+  string instrument = 1;
+};
+
+message FullMarketData_InstrumentListSubscribe
+{
+};
+
+message FullMarketData_InstrumentListUnsubscribe
+{
+};
+
+message FullMarketData_InstrumentListRequest
+{
+};
+
+message FullMarketData_InstrumentListResponse
+{
+  repeated string instruments = 1;
+};
