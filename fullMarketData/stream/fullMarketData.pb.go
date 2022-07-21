@@ -127,10 +127,11 @@ type FullMarketData_AddOrder struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Side   OrderSide `protobuf:"varint,2,opt,name=side,proto3,enum=golang.example.policy.OrderSide" json:"side,omitempty"`
-	Id     string    `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
-	Price  float64   `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
-	Volume float64   `protobuf:"fixed64,5,opt,name=volume,proto3" json:"volume,omitempty"`
+	Side      OrderSide `protobuf:"varint,2,opt,name=side,proto3,enum=golang.example.policy.OrderSide" json:"side,omitempty"`
+	Id        string    `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
+	Price     float64   `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
+	Volume    float64   `protobuf:"fixed64,5,opt,name=volume,proto3" json:"volume,omitempty"`
+	ExtraData string    `protobuf:"bytes,6,opt,name=extraData,proto3" json:"extraData,omitempty"`
 }
 
 func (x *FullMarketData_AddOrder) Reset() {
@@ -191,6 +192,13 @@ func (x *FullMarketData_AddOrder) GetVolume() float64 {
 		return x.Volume
 	}
 	return 0
+}
+
+func (x *FullMarketData_AddOrder) GetExtraData() string {
+	if x != nil {
+		return x.ExtraData
+	}
+	return ""
 }
 
 func (self *FullMarketData_AddOrder) TypeCode() uint32 {
@@ -433,14 +441,14 @@ func (self *FullMarketData_RemoveInstrumentInstruction) TypeCode() uint32 {
 	return FullMarketData_RemoveInstrumentInstructionTypeCode
 }
 
-type FullMarketData_InstrumentListSubscribe struct {
+type FullMarketData_InstrumentList_Subscribe struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *FullMarketData_InstrumentListSubscribe) Reset() {
-	*x = FullMarketData_InstrumentListSubscribe{}
+func (x *FullMarketData_InstrumentList_Subscribe) Reset() {
+	*x = FullMarketData_InstrumentList_Subscribe{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fullMarketData_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -448,13 +456,13 @@ func (x *FullMarketData_InstrumentListSubscribe) Reset() {
 	}
 }
 
-func (x *FullMarketData_InstrumentListSubscribe) String() string {
+func (x *FullMarketData_InstrumentList_Subscribe) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FullMarketData_InstrumentListSubscribe) ProtoMessage() {}
+func (*FullMarketData_InstrumentList_Subscribe) ProtoMessage() {}
 
-func (x *FullMarketData_InstrumentListSubscribe) ProtoReflect() protoreflect.Message {
+func (x *FullMarketData_InstrumentList_Subscribe) ProtoReflect() protoreflect.Message {
 	mi := &file_fullMarketData_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -466,23 +474,23 @@ func (x *FullMarketData_InstrumentListSubscribe) ProtoReflect() protoreflect.Mes
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FullMarketData_InstrumentListSubscribe.ProtoReflect.Descriptor instead.
-func (*FullMarketData_InstrumentListSubscribe) Descriptor() ([]byte, []int) {
+// Deprecated: Use FullMarketData_InstrumentList_Subscribe.ProtoReflect.Descriptor instead.
+func (*FullMarketData_InstrumentList_Subscribe) Descriptor() ([]byte, []int) {
 	return file_fullMarketData_proto_rawDescGZIP(), []int{6}
 }
 
-func (self *FullMarketData_InstrumentListSubscribe) TypeCode() uint32 {
-	return FullMarketData_InstrumentListSubscribeTypeCode
+func (self *FullMarketData_InstrumentList_Subscribe) TypeCode() uint32 {
+	return FullMarketData_InstrumentList_SubscribeTypeCode
 }
 
-type FullMarketData_InstrumentListUnsubscribe struct {
+type FullMarketData_InstrumentList_Unsubscribe struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *FullMarketData_InstrumentListUnsubscribe) Reset() {
-	*x = FullMarketData_InstrumentListUnsubscribe{}
+func (x *FullMarketData_InstrumentList_Unsubscribe) Reset() {
+	*x = FullMarketData_InstrumentList_Unsubscribe{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fullMarketData_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -490,13 +498,13 @@ func (x *FullMarketData_InstrumentListUnsubscribe) Reset() {
 	}
 }
 
-func (x *FullMarketData_InstrumentListUnsubscribe) String() string {
+func (x *FullMarketData_InstrumentList_Unsubscribe) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FullMarketData_InstrumentListUnsubscribe) ProtoMessage() {}
+func (*FullMarketData_InstrumentList_Unsubscribe) ProtoMessage() {}
 
-func (x *FullMarketData_InstrumentListUnsubscribe) ProtoReflect() protoreflect.Message {
+func (x *FullMarketData_InstrumentList_Unsubscribe) ProtoReflect() protoreflect.Message {
 	mi := &file_fullMarketData_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -508,23 +516,23 @@ func (x *FullMarketData_InstrumentListUnsubscribe) ProtoReflect() protoreflect.M
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FullMarketData_InstrumentListUnsubscribe.ProtoReflect.Descriptor instead.
-func (*FullMarketData_InstrumentListUnsubscribe) Descriptor() ([]byte, []int) {
+// Deprecated: Use FullMarketData_InstrumentList_Unsubscribe.ProtoReflect.Descriptor instead.
+func (*FullMarketData_InstrumentList_Unsubscribe) Descriptor() ([]byte, []int) {
 	return file_fullMarketData_proto_rawDescGZIP(), []int{7}
 }
 
-func (self *FullMarketData_InstrumentListUnsubscribe) TypeCode() uint32 {
-	return FullMarketData_InstrumentListUnsubscribeTypeCode
+func (self *FullMarketData_InstrumentList_Unsubscribe) TypeCode() uint32 {
+	return FullMarketData_InstrumentList_UnsubscribeTypeCode
 }
 
-type FullMarketData_InstrumentListRequest struct {
+type FullMarketData_InstrumentList_Request struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *FullMarketData_InstrumentListRequest) Reset() {
-	*x = FullMarketData_InstrumentListRequest{}
+func (x *FullMarketData_InstrumentList_Request) Reset() {
+	*x = FullMarketData_InstrumentList_Request{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fullMarketData_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -532,13 +540,13 @@ func (x *FullMarketData_InstrumentListRequest) Reset() {
 	}
 }
 
-func (x *FullMarketData_InstrumentListRequest) String() string {
+func (x *FullMarketData_InstrumentList_Request) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FullMarketData_InstrumentListRequest) ProtoMessage() {}
+func (*FullMarketData_InstrumentList_Request) ProtoMessage() {}
 
-func (x *FullMarketData_InstrumentListRequest) ProtoReflect() protoreflect.Message {
+func (x *FullMarketData_InstrumentList_Request) ProtoReflect() protoreflect.Message {
 	mi := &file_fullMarketData_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -550,16 +558,16 @@ func (x *FullMarketData_InstrumentListRequest) ProtoReflect() protoreflect.Messa
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FullMarketData_InstrumentListRequest.ProtoReflect.Descriptor instead.
-func (*FullMarketData_InstrumentListRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FullMarketData_InstrumentList_Request.ProtoReflect.Descriptor instead.
+func (*FullMarketData_InstrumentList_Request) Descriptor() ([]byte, []int) {
 	return file_fullMarketData_proto_rawDescGZIP(), []int{8}
 }
 
-func (self *FullMarketData_InstrumentListRequest) TypeCode() uint32 {
-	return FullMarketData_InstrumentListRequestTypeCode
+func (self *FullMarketData_InstrumentList_Request) TypeCode() uint32 {
+	return FullMarketData_InstrumentList_RequestTypeCode
 }
 
-type FullMarketData_InstrumentListResponse struct {
+type FullMarketData_InstrumentList_Response struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -567,8 +575,8 @@ type FullMarketData_InstrumentListResponse struct {
 	Instruments []string `protobuf:"bytes,1,rep,name=instruments,proto3" json:"instruments,omitempty"`
 }
 
-func (x *FullMarketData_InstrumentListResponse) Reset() {
-	*x = FullMarketData_InstrumentListResponse{}
+func (x *FullMarketData_InstrumentList_Response) Reset() {
+	*x = FullMarketData_InstrumentList_Response{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fullMarketData_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -576,13 +584,13 @@ func (x *FullMarketData_InstrumentListResponse) Reset() {
 	}
 }
 
-func (x *FullMarketData_InstrumentListResponse) String() string {
+func (x *FullMarketData_InstrumentList_Response) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FullMarketData_InstrumentListResponse) ProtoMessage() {}
+func (*FullMarketData_InstrumentList_Response) ProtoMessage() {}
 
-func (x *FullMarketData_InstrumentListResponse) ProtoReflect() protoreflect.Message {
+func (x *FullMarketData_InstrumentList_Response) ProtoReflect() protoreflect.Message {
 	mi := &file_fullMarketData_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -594,20 +602,122 @@ func (x *FullMarketData_InstrumentListResponse) ProtoReflect() protoreflect.Mess
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FullMarketData_InstrumentListResponse.ProtoReflect.Descriptor instead.
-func (*FullMarketData_InstrumentListResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use FullMarketData_InstrumentList_Response.ProtoReflect.Descriptor instead.
+func (*FullMarketData_InstrumentList_Response) Descriptor() ([]byte, []int) {
 	return file_fullMarketData_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *FullMarketData_InstrumentListResponse) GetInstruments() []string {
+func (x *FullMarketData_InstrumentList_Response) GetInstruments() []string {
 	if x != nil {
 		return x.Instruments
 	}
 	return nil
 }
 
-func (self *FullMarketData_InstrumentListResponse) TypeCode() uint32 {
-	return FullMarketData_InstrumentListResponseTypeCode
+func (self *FullMarketData_InstrumentList_Response) TypeCode() uint32 {
+	return FullMarketData_InstrumentList_ResponseTypeCode
+}
+
+type FullMarketData_Instrument_Register struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Instrument string `protobuf:"bytes,1,opt,name=instrument,proto3" json:"instrument,omitempty"`
+}
+
+func (x *FullMarketData_Instrument_Register) Reset() {
+	*x = FullMarketData_Instrument_Register{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fullMarketData_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FullMarketData_Instrument_Register) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FullMarketData_Instrument_Register) ProtoMessage() {}
+
+func (x *FullMarketData_Instrument_Register) ProtoReflect() protoreflect.Message {
+	mi := &file_fullMarketData_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FullMarketData_Instrument_Register.ProtoReflect.Descriptor instead.
+func (*FullMarketData_Instrument_Register) Descriptor() ([]byte, []int) {
+	return file_fullMarketData_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *FullMarketData_Instrument_Register) GetInstrument() string {
+	if x != nil {
+		return x.Instrument
+	}
+	return ""
+}
+
+func (self *FullMarketData_Instrument_Register) TypeCode() uint32 {
+	return FullMarketData_Instrument_RegisterTypeCode
+}
+
+type FullMarketData_Instrument_Unregister struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Instrument string `protobuf:"bytes,1,opt,name=instrument,proto3" json:"instrument,omitempty"`
+}
+
+func (x *FullMarketData_Instrument_Unregister) Reset() {
+	*x = FullMarketData_Instrument_Unregister{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fullMarketData_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FullMarketData_Instrument_Unregister) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FullMarketData_Instrument_Unregister) ProtoMessage() {}
+
+func (x *FullMarketData_Instrument_Unregister) ProtoReflect() protoreflect.Message {
+	mi := &file_fullMarketData_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FullMarketData_Instrument_Unregister.ProtoReflect.Descriptor instead.
+func (*FullMarketData_Instrument_Unregister) Descriptor() ([]byte, []int) {
+	return file_fullMarketData_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *FullMarketData_Instrument_Unregister) GetInstrument() string {
+	if x != nil {
+		return x.Instrument
+	}
+	return ""
+}
+
+func (self *FullMarketData_Instrument_Unregister) TypeCode() uint32 {
+	return FullMarketData_Instrument_UnregisterTypeCode
 }
 
 var File_fullMarketData_proto protoreflect.FileDescriptor
@@ -621,7 +731,7 @@ var file_fullMarketData_proto_rawDesc = []byte{
 	0x36, 0x0a, 0x14, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74,
 	0x61, 0x5f, 0x43, 0x6c, 0x65, 0x61, 0x72, 0x12, 0x1e, 0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72,
 	0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73,
-	0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0x8d, 0x01, 0x0a, 0x17, 0x46, 0x75, 0x6c, 0x6c,
+	0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0xab, 0x01, 0x0a, 0x17, 0x46, 0x75, 0x6c, 0x6c,
 	0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x41, 0x64, 0x64, 0x4f, 0x72,
 	0x64, 0x65, 0x72, 0x12, 0x34, 0x0a, 0x04, 0x73, 0x69, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x0e, 0x32, 0x20, 0x2e, 0x67, 0x6f, 0x6c, 0x61, 0x6e, 0x67, 0x2e, 0x65, 0x78, 0x61, 0x6d, 0x70,
@@ -630,46 +740,57 @@ var file_fullMarketData_proto_rawDesc = []byte{
 	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69,
 	0x63, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12,
 	0x16, 0x0a, 0x06, 0x76, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x01, 0x52,
-	0x06, 0x76, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x22, 0x8a, 0x01, 0x0a, 0x22, 0x46, 0x75, 0x6c, 0x6c,
-	0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x41, 0x64, 0x64, 0x4f, 0x72,
-	0x64, 0x65, 0x72, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e,
-	0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x44,
-	0x0a, 0x05, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e,
-	0x67, 0x6f, 0x6c, 0x61, 0x6e, 0x67, 0x2e, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2e, 0x70,
-	0x6f, 0x6c, 0x69, 0x63, 0x79, 0x2e, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74,
-	0x44, 0x61, 0x74, 0x61, 0x5f, 0x41, 0x64, 0x64, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x05, 0x6f,
-	0x72, 0x64, 0x65, 0x72, 0x22, 0x70, 0x0a, 0x26, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b,
-	0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x52, 0x65, 0x64, 0x75, 0x63, 0x65, 0x56, 0x6f, 0x6c,
-	0x75, 0x6d, 0x65, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e,
-	0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x0e,
-	0x0a, 0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x16,
-	0x0a, 0x06, 0x76, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x01, 0x52, 0x06,
-	0x76, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x22, 0x57, 0x0a, 0x25, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61,
-	0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4f,
-	0x72, 0x64, 0x65, 0x72, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12,
-	0x1e, 0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12,
-	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22,
-	0x4c, 0x0a, 0x2a, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74,
-	0x61, 0x5f, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65,
-	0x6e, 0x74, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a,
+	0x06, 0x76, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x65, 0x78, 0x74, 0x72, 0x61,
+	0x44, 0x61, 0x74, 0x61, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x65, 0x78, 0x74, 0x72,
+	0x61, 0x44, 0x61, 0x74, 0x61, 0x22, 0x8a, 0x01, 0x0a, 0x22, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61,
+	0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x41, 0x64, 0x64, 0x4f, 0x72, 0x64, 0x65,
+	0x72, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a, 0x0a,
+	0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x44, 0x0a, 0x05,
+	0x6f, 0x72, 0x64, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x67, 0x6f,
+	0x6c, 0x61, 0x6e, 0x67, 0x2e, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2e, 0x70, 0x6f, 0x6c,
+	0x69, 0x63, 0x79, 0x2e, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61,
+	0x74, 0x61, 0x5f, 0x41, 0x64, 0x64, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x05, 0x6f, 0x72, 0x64,
+	0x65, 0x72, 0x22, 0x70, 0x0a, 0x26, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74,
+	0x44, 0x61, 0x74, 0x61, 0x5f, 0x52, 0x65, 0x64, 0x75, 0x63, 0x65, 0x56, 0x6f, 0x6c, 0x75, 0x6d,
+	0x65, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a, 0x0a,
+	0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x0e, 0x0a, 0x02,
+	0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x16, 0x0a, 0x06,
+	0x76, 0x6f, 0x6c, 0x75, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x01, 0x52, 0x06, 0x76, 0x6f,
+	0x6c, 0x75, 0x6d, 0x65, 0x22, 0x57, 0x0a, 0x25, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b,
+	0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4f, 0x72, 0x64,
+	0x65, 0x72, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a,
 	0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0x28, 0x0a,
-	0x26, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f,
-	0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75,
-	0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x22, 0x2a, 0x0a, 0x28, 0x46, 0x75, 0x6c, 0x6c, 0x4d,
-	0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75,
-	0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x55, 0x6e, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72,
-	0x69, 0x62, 0x65, 0x22, 0x26, 0x0a, 0x24, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65,
-	0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74,
-	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x49, 0x0a, 0x25, 0x46,
+	0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x4c, 0x0a,
+	0x2a, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f,
+	0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74,
+	0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x0a, 0x0a, 0x69,
+	0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0x29, 0x0a, 0x27, 0x46,
 	0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x49, 0x6e,
-	0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65,
-	0x6e, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x69, 0x6e, 0x73, 0x74, 0x72,
-	0x75, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x2a, 0x27, 0x0a, 0x09, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x53,
+	0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x5f, 0x53, 0x75, 0x62,
+	0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x22, 0x2b, 0x0a, 0x29, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61,
+	0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d,
+	0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x5f, 0x55, 0x6e, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72,
+	0x69, 0x62, 0x65, 0x22, 0x27, 0x0a, 0x25, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65,
+	0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74,
+	0x4c, 0x69, 0x73, 0x74, 0x5f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x4a, 0x0a, 0x26,
+	0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x49,
+	0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x5f, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75,
+	0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x69, 0x6e, 0x73,
+	0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x22, 0x44, 0x0a, 0x22, 0x46, 0x75, 0x6c, 0x6c,
+	0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x5f, 0x49, 0x6e, 0x73, 0x74, 0x72,
+	0x75, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x1e,
+	0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0x46,
+	0x0a, 0x24, 0x46, 0x75, 0x6c, 0x6c, 0x4d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61,
+	0x5f, 0x49, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x55, 0x6e, 0x72, 0x65,
+	0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x1e, 0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75,
+	0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74,
+	0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x2a, 0x27, 0x0a, 0x09, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x53,
 	0x69, 0x64, 0x65, 0x12, 0x0c, 0x0a, 0x08, 0x42, 0x69, 0x64, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x10,
 	0x00, 0x12, 0x0c, 0x0a, 0x08, 0x41, 0x73, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x10, 0x01, 0x42,
 	0x09, 0x5a, 0x07, 0x2f, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
@@ -689,7 +810,7 @@ func file_fullMarketData_proto_rawDescGZIP() []byte {
 }
 
 var file_fullMarketData_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_fullMarketData_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_fullMarketData_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_fullMarketData_proto_goTypes = []interface{}{
 	(OrderSide)(0),                                     // 0: golang.example.policy.OrderSide
 	(*FullMarketData_Clear)(nil),                       // 1: golang.example.policy.FullMarketData_Clear
@@ -698,10 +819,12 @@ var file_fullMarketData_proto_goTypes = []interface{}{
 	(*FullMarketData_ReduceVolumeInstruction)(nil),     // 4: golang.example.policy.FullMarketData_ReduceVolumeInstruction
 	(*FullMarketData_DeleteOrderInstruction)(nil),      // 5: golang.example.policy.FullMarketData_DeleteOrderInstruction
 	(*FullMarketData_RemoveInstrumentInstruction)(nil), // 6: golang.example.policy.FullMarketData_RemoveInstrumentInstruction
-	(*FullMarketData_InstrumentListSubscribe)(nil),     // 7: golang.example.policy.FullMarketData_InstrumentListSubscribe
-	(*FullMarketData_InstrumentListUnsubscribe)(nil),   // 8: golang.example.policy.FullMarketData_InstrumentListUnsubscribe
-	(*FullMarketData_InstrumentListRequest)(nil),       // 9: golang.example.policy.FullMarketData_InstrumentListRequest
-	(*FullMarketData_InstrumentListResponse)(nil),      // 10: golang.example.policy.FullMarketData_InstrumentListResponse
+	(*FullMarketData_InstrumentList_Subscribe)(nil),    // 7: golang.example.policy.FullMarketData_InstrumentList_Subscribe
+	(*FullMarketData_InstrumentList_Unsubscribe)(nil),  // 8: golang.example.policy.FullMarketData_InstrumentList_Unsubscribe
+	(*FullMarketData_InstrumentList_Request)(nil),      // 9: golang.example.policy.FullMarketData_InstrumentList_Request
+	(*FullMarketData_InstrumentList_Response)(nil),     // 10: golang.example.policy.FullMarketData_InstrumentList_Response
+	(*FullMarketData_Instrument_Register)(nil),         // 11: golang.example.policy.FullMarketData_Instrument_Register
+	(*FullMarketData_Instrument_Unregister)(nil),       // 12: golang.example.policy.FullMarketData_Instrument_Unregister
 }
 var file_fullMarketData_proto_depIdxs = []int32{
 	0, // 0: golang.example.policy.FullMarketData_AddOrder.side:type_name -> golang.example.policy.OrderSide
@@ -792,7 +915,7 @@ func file_fullMarketData_proto_init() {
 			}
 		}
 		file_fullMarketData_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FullMarketData_InstrumentListSubscribe); i {
+			switch v := v.(*FullMarketData_InstrumentList_Subscribe); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -804,7 +927,7 @@ func file_fullMarketData_proto_init() {
 			}
 		}
 		file_fullMarketData_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FullMarketData_InstrumentListUnsubscribe); i {
+			switch v := v.(*FullMarketData_InstrumentList_Unsubscribe); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -816,7 +939,7 @@ func file_fullMarketData_proto_init() {
 			}
 		}
 		file_fullMarketData_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FullMarketData_InstrumentListRequest); i {
+			switch v := v.(*FullMarketData_InstrumentList_Request); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -828,7 +951,31 @@ func file_fullMarketData_proto_init() {
 			}
 		}
 		file_fullMarketData_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FullMarketData_InstrumentListResponse); i {
+			switch v := v.(*FullMarketData_InstrumentList_Response); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_fullMarketData_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FullMarketData_Instrument_Register); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_fullMarketData_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FullMarketData_Instrument_Unregister); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -846,7 +993,7 @@ func file_fullMarketData_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fullMarketData_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
@@ -879,17 +1026,23 @@ const FullMarketData_DeleteOrderInstructionTypeCode uint32 = 3232336873
 // Typecode generated from: "FullMarketData_RemoveInstrumentInstruction"
 const FullMarketData_RemoveInstrumentInstructionTypeCode uint32 = 2383828232
 
-// Typecode generated from: "FullMarketData_InstrumentListSubscribe"
-const FullMarketData_InstrumentListSubscribeTypeCode uint32 = 3015168660
+// Typecode generated from: "FullMarketData_InstrumentList_Subscribe"
+const FullMarketData_InstrumentList_SubscribeTypeCode uint32 = 3729865515
 
-// Typecode generated from: "FullMarketData_InstrumentListUnsubscribe"
-const FullMarketData_InstrumentListUnsubscribeTypeCode uint32 = 1653424382
+// Typecode generated from: "FullMarketData_InstrumentList_Unsubscribe"
+const FullMarketData_InstrumentList_UnsubscribeTypeCode uint32 = 3624322483
 
-// Typecode generated from: "FullMarketData_InstrumentListRequest"
-const FullMarketData_InstrumentListRequestTypeCode uint32 = 2938410018
+// Typecode generated from: "FullMarketData_InstrumentList_Request"
+const FullMarketData_InstrumentList_RequestTypeCode uint32 = 3427813634
 
-// Typecode generated from: "FullMarketData_InstrumentListResponse"
-const FullMarketData_InstrumentListResponseTypeCode uint32 = 2336192465
+// Typecode generated from: "FullMarketData_InstrumentList_Response"
+const FullMarketData_InstrumentList_ResponseTypeCode uint32 = 2956075972
+
+// Typecode generated from: "FullMarketData_Instrument_Register"
+const FullMarketData_Instrument_RegisterTypeCode uint32 = 4269736598
+
+// Typecode generated from: "FullMarketData_Instrument_Unregister"
+const FullMarketData_Instrument_UnregisterTypeCode uint32 = 3438778386
 
 //true
 //true
@@ -1135,37 +1288,37 @@ var _ = stream.Register(
 //true
 //false
 //false
-type FullMarketData_InstrumentListSubscribeWrapper struct {
+type FullMarketData_InstrumentList_SubscribeWrapper struct {
 	goprotoextra.BaseMessageWrapper
-	Data *FullMarketData_InstrumentListSubscribe
+	Data *FullMarketData_InstrumentList_Subscribe
 }
 
-func (self *FullMarketData_InstrumentListSubscribeWrapper) Message() interface{} {
+func (self *FullMarketData_InstrumentList_SubscribeWrapper) Message() interface{} {
 	return self.Data
 }
 
-func (self *FullMarketData_InstrumentListSubscribeWrapper) messageWrapper() interface{} {
+func (self *FullMarketData_InstrumentList_SubscribeWrapper) messageWrapper() interface{} {
 	return self
 }
 
-func NewFullMarketData_InstrumentListSubscribeWrapper(
-	data *FullMarketData_InstrumentListSubscribe) *FullMarketData_InstrumentListSubscribeWrapper {
-	return &FullMarketData_InstrumentListSubscribeWrapper{
+func NewFullMarketData_InstrumentList_SubscribeWrapper(
+	data *FullMarketData_InstrumentList_Subscribe) *FullMarketData_InstrumentList_SubscribeWrapper {
+	return &FullMarketData_InstrumentList_SubscribeWrapper{
 		BaseMessageWrapper: goprotoextra.NewBaseMessageWrapper(),
 		Data:               data,
 	}
 }
 
 var _ = stream.Register(
-	FullMarketData_InstrumentListSubscribeTypeCode,
+	FullMarketData_InstrumentList_SubscribeTypeCode,
 	stream.TypeCodeData{
 		CreateMessage: func() proto.Message {
-			return &FullMarketData_InstrumentListSubscribe{}
+			return &FullMarketData_InstrumentList_Subscribe{}
 		},
 		CreateWrapper: func(
 			data proto.Message) (goprotoextra.IMessageWrapper, error) {
-			if msg, ok := data.(*FullMarketData_InstrumentListSubscribe); ok {
-				return NewFullMarketData_InstrumentListSubscribeWrapper(
+			if msg, ok := data.(*FullMarketData_InstrumentList_Subscribe); ok {
+				return NewFullMarketData_InstrumentList_SubscribeWrapper(
 					msg), nil
 			}
 			return nil, goerrors.InvalidParam
@@ -1175,37 +1328,37 @@ var _ = stream.Register(
 //true
 //false
 //false
-type FullMarketData_InstrumentListUnsubscribeWrapper struct {
+type FullMarketData_InstrumentList_UnsubscribeWrapper struct {
 	goprotoextra.BaseMessageWrapper
-	Data *FullMarketData_InstrumentListUnsubscribe
+	Data *FullMarketData_InstrumentList_Unsubscribe
 }
 
-func (self *FullMarketData_InstrumentListUnsubscribeWrapper) Message() interface{} {
+func (self *FullMarketData_InstrumentList_UnsubscribeWrapper) Message() interface{} {
 	return self.Data
 }
 
-func (self *FullMarketData_InstrumentListUnsubscribeWrapper) messageWrapper() interface{} {
+func (self *FullMarketData_InstrumentList_UnsubscribeWrapper) messageWrapper() interface{} {
 	return self
 }
 
-func NewFullMarketData_InstrumentListUnsubscribeWrapper(
-	data *FullMarketData_InstrumentListUnsubscribe) *FullMarketData_InstrumentListUnsubscribeWrapper {
-	return &FullMarketData_InstrumentListUnsubscribeWrapper{
+func NewFullMarketData_InstrumentList_UnsubscribeWrapper(
+	data *FullMarketData_InstrumentList_Unsubscribe) *FullMarketData_InstrumentList_UnsubscribeWrapper {
+	return &FullMarketData_InstrumentList_UnsubscribeWrapper{
 		BaseMessageWrapper: goprotoextra.NewBaseMessageWrapper(),
 		Data:               data,
 	}
 }
 
 var _ = stream.Register(
-	FullMarketData_InstrumentListUnsubscribeTypeCode,
+	FullMarketData_InstrumentList_UnsubscribeTypeCode,
 	stream.TypeCodeData{
 		CreateMessage: func() proto.Message {
-			return &FullMarketData_InstrumentListUnsubscribe{}
+			return &FullMarketData_InstrumentList_Unsubscribe{}
 		},
 		CreateWrapper: func(
 			data proto.Message) (goprotoextra.IMessageWrapper, error) {
-			if msg, ok := data.(*FullMarketData_InstrumentListUnsubscribe); ok {
-				return NewFullMarketData_InstrumentListUnsubscribeWrapper(
+			if msg, ok := data.(*FullMarketData_InstrumentList_Unsubscribe); ok {
+				return NewFullMarketData_InstrumentList_UnsubscribeWrapper(
 					msg), nil
 			}
 			return nil, goerrors.InvalidParam
@@ -1215,37 +1368,37 @@ var _ = stream.Register(
 //true
 //false
 //false
-type FullMarketData_InstrumentListRequestWrapper struct {
+type FullMarketData_InstrumentList_RequestWrapper struct {
 	goprotoextra.BaseMessageWrapper
-	Data *FullMarketData_InstrumentListRequest
+	Data *FullMarketData_InstrumentList_Request
 }
 
-func (self *FullMarketData_InstrumentListRequestWrapper) Message() interface{} {
+func (self *FullMarketData_InstrumentList_RequestWrapper) Message() interface{} {
 	return self.Data
 }
 
-func (self *FullMarketData_InstrumentListRequestWrapper) messageWrapper() interface{} {
+func (self *FullMarketData_InstrumentList_RequestWrapper) messageWrapper() interface{} {
 	return self
 }
 
-func NewFullMarketData_InstrumentListRequestWrapper(
-	data *FullMarketData_InstrumentListRequest) *FullMarketData_InstrumentListRequestWrapper {
-	return &FullMarketData_InstrumentListRequestWrapper{
+func NewFullMarketData_InstrumentList_RequestWrapper(
+	data *FullMarketData_InstrumentList_Request) *FullMarketData_InstrumentList_RequestWrapper {
+	return &FullMarketData_InstrumentList_RequestWrapper{
 		BaseMessageWrapper: goprotoextra.NewBaseMessageWrapper(),
 		Data:               data,
 	}
 }
 
 var _ = stream.Register(
-	FullMarketData_InstrumentListRequestTypeCode,
+	FullMarketData_InstrumentList_RequestTypeCode,
 	stream.TypeCodeData{
 		CreateMessage: func() proto.Message {
-			return &FullMarketData_InstrumentListRequest{}
+			return &FullMarketData_InstrumentList_Request{}
 		},
 		CreateWrapper: func(
 			data proto.Message) (goprotoextra.IMessageWrapper, error) {
-			if msg, ok := data.(*FullMarketData_InstrumentListRequest); ok {
-				return NewFullMarketData_InstrumentListRequestWrapper(
+			if msg, ok := data.(*FullMarketData_InstrumentList_Request); ok {
+				return NewFullMarketData_InstrumentList_RequestWrapper(
 					msg), nil
 			}
 			return nil, goerrors.InvalidParam
@@ -1255,37 +1408,117 @@ var _ = stream.Register(
 //true
 //false
 //false
-type FullMarketData_InstrumentListResponseWrapper struct {
+type FullMarketData_InstrumentList_ResponseWrapper struct {
 	goprotoextra.BaseMessageWrapper
-	Data *FullMarketData_InstrumentListResponse
+	Data *FullMarketData_InstrumentList_Response
 }
 
-func (self *FullMarketData_InstrumentListResponseWrapper) Message() interface{} {
+func (self *FullMarketData_InstrumentList_ResponseWrapper) Message() interface{} {
 	return self.Data
 }
 
-func (self *FullMarketData_InstrumentListResponseWrapper) messageWrapper() interface{} {
+func (self *FullMarketData_InstrumentList_ResponseWrapper) messageWrapper() interface{} {
 	return self
 }
 
-func NewFullMarketData_InstrumentListResponseWrapper(
-	data *FullMarketData_InstrumentListResponse) *FullMarketData_InstrumentListResponseWrapper {
-	return &FullMarketData_InstrumentListResponseWrapper{
+func NewFullMarketData_InstrumentList_ResponseWrapper(
+	data *FullMarketData_InstrumentList_Response) *FullMarketData_InstrumentList_ResponseWrapper {
+	return &FullMarketData_InstrumentList_ResponseWrapper{
 		BaseMessageWrapper: goprotoextra.NewBaseMessageWrapper(),
 		Data:               data,
 	}
 }
 
 var _ = stream.Register(
-	FullMarketData_InstrumentListResponseTypeCode,
+	FullMarketData_InstrumentList_ResponseTypeCode,
 	stream.TypeCodeData{
 		CreateMessage: func() proto.Message {
-			return &FullMarketData_InstrumentListResponse{}
+			return &FullMarketData_InstrumentList_Response{}
 		},
 		CreateWrapper: func(
 			data proto.Message) (goprotoextra.IMessageWrapper, error) {
-			if msg, ok := data.(*FullMarketData_InstrumentListResponse); ok {
-				return NewFullMarketData_InstrumentListResponseWrapper(
+			if msg, ok := data.(*FullMarketData_InstrumentList_Response); ok {
+				return NewFullMarketData_InstrumentList_ResponseWrapper(
+					msg), nil
+			}
+			return nil, goerrors.InvalidParam
+		}})
+
+//true
+//true
+//false
+//false
+type FullMarketData_Instrument_RegisterWrapper struct {
+	goprotoextra.BaseMessageWrapper
+	Data *FullMarketData_Instrument_Register
+}
+
+func (self *FullMarketData_Instrument_RegisterWrapper) Message() interface{} {
+	return self.Data
+}
+
+func (self *FullMarketData_Instrument_RegisterWrapper) messageWrapper() interface{} {
+	return self
+}
+
+func NewFullMarketData_Instrument_RegisterWrapper(
+	data *FullMarketData_Instrument_Register) *FullMarketData_Instrument_RegisterWrapper {
+	return &FullMarketData_Instrument_RegisterWrapper{
+		BaseMessageWrapper: goprotoextra.NewBaseMessageWrapper(),
+		Data:               data,
+	}
+}
+
+var _ = stream.Register(
+	FullMarketData_Instrument_RegisterTypeCode,
+	stream.TypeCodeData{
+		CreateMessage: func() proto.Message {
+			return &FullMarketData_Instrument_Register{}
+		},
+		CreateWrapper: func(
+			data proto.Message) (goprotoextra.IMessageWrapper, error) {
+			if msg, ok := data.(*FullMarketData_Instrument_Register); ok {
+				return NewFullMarketData_Instrument_RegisterWrapper(
+					msg), nil
+			}
+			return nil, goerrors.InvalidParam
+		}})
+
+//true
+//true
+//false
+//false
+type FullMarketData_Instrument_UnregisterWrapper struct {
+	goprotoextra.BaseMessageWrapper
+	Data *FullMarketData_Instrument_Unregister
+}
+
+func (self *FullMarketData_Instrument_UnregisterWrapper) Message() interface{} {
+	return self.Data
+}
+
+func (self *FullMarketData_Instrument_UnregisterWrapper) messageWrapper() interface{} {
+	return self
+}
+
+func NewFullMarketData_Instrument_UnregisterWrapper(
+	data *FullMarketData_Instrument_Unregister) *FullMarketData_Instrument_UnregisterWrapper {
+	return &FullMarketData_Instrument_UnregisterWrapper{
+		BaseMessageWrapper: goprotoextra.NewBaseMessageWrapper(),
+		Data:               data,
+	}
+}
+
+var _ = stream.Register(
+	FullMarketData_Instrument_UnregisterTypeCode,
+	stream.TypeCodeData{
+		CreateMessage: func() proto.Message {
+			return &FullMarketData_Instrument_Unregister{}
+		},
+		CreateWrapper: func(
+			data proto.Message) (goprotoextra.IMessageWrapper, error) {
+			if msg, ok := data.(*FullMarketData_Instrument_Unregister); ok {
+				return NewFullMarketData_Instrument_UnregisterWrapper(
 					msg), nil
 			}
 			return nil, goerrors.InvalidParam

@@ -11,6 +11,10 @@ const FullMarketDataServicePublishInstrumentList = "FMD_InstrumentList"
 type FullMarketDataHelper struct {
 }
 
+func (self *FullMarketDataHelper) RegisteredSource(instrument string) string {
+	return fmt.Sprintf("FMD.RegisteredSource.INSTANCE.%v", instrument)
+}
+
 func (self *FullMarketDataHelper) FullMarketDataServicePublishInstrumentList() string {
 	return FullMarketDataServicePublishInstrumentList
 }

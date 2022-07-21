@@ -3,11 +3,14 @@ package fullMarketDataManagerService
 import (
 	"github.com/bhbosman/gocommon/Services/IDataShutDown"
 	"github.com/bhbosman/gocommon/Services/IFxService"
-	"github.com/bhbosman/gocommon/Services/ISendMessage"
+	"github.com/bhbosman/gocommon/services/ISendMessage"
 )
 
 type IFmdManager interface {
+	ISendMessage.ISendMessage
 	GetInstrumentList() ([]string, error)
+	SubscribeFullMarketData(item string)
+	UnsubscribeFullMarketData(item string)
 }
 
 type IFmdManagerService interface {
@@ -17,6 +20,5 @@ type IFmdManagerService interface {
 
 type IFmdManagerData interface {
 	IFmdManager
-	ISendMessage.ISendMessage
 	IDataShutDown.IDataShutDown
 }

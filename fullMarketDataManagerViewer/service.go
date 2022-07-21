@@ -9,8 +9,8 @@ import (
 	"github.com/bhbosman/gocommon/ChannelHandler"
 	"github.com/bhbosman/gocommon/GoFunctionCounter"
 	"github.com/bhbosman/gocommon/Services/IFxService"
-	"github.com/bhbosman/gocommon/Services/ISendMessage"
 	"github.com/bhbosman/gocommon/pubSub"
+	"github.com/bhbosman/gocommon/services/ISendMessage"
 	"github.com/cskr/pubsub"
 	"go.uber.org/zap"
 )
@@ -24,9 +24,9 @@ type service struct {
 	state                         IFxService.State
 	pubSub                        *pubsub.PubSub
 	goFunctionCounter             GoFunctionCounter.IService
-	subscribeChannel              chan interface{}
-	onSetMarketDataListChange     func(list []string)
-	onSetMarketDataInstanceChange func(data *stream.PublishTop5)
+	subscribeChannel              *pubsub.NextFuncSubscription
+	onSetMarketDataListChange     func(list []string) bool
+	onSetMarketDataInstanceChange func(data *stream.PublishTop5) bool
 	FmdManagerService             fullMarketDataManagerService.IFmdManagerService
 	FullMarketDataHelper          fullMarketDataHelper.IFullMarketDataHelper
 }
@@ -34,6 +34,8 @@ type service struct {
 func (self *service) UnsubscribeFullMarketData(item string) {
 	name := self.FullMarketDataHelper.InstrumentChannelName(item)
 	self.pubSub.Unsub(self.subscribeChannel, name)
+	//
+	self.FmdManagerService.UnsubscribeFullMarketData(item)
 
 	_, err := CallIFullMarketDataViewUnsubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
 	if err != nil {
@@ -42,9 +44,12 @@ func (self *service) UnsubscribeFullMarketData(item string) {
 }
 
 func (self *service) SubscribeFullMarketData(item string) {
+	self.FmdManagerService.SubscribeFullMarketData(item)
+	//
 	name := self.FullMarketDataHelper.InstrumentChannelName(item)
 	self.pubSub.AddSub(self.subscribeChannel, name)
-	publishFullMarketData := fullMarketDataManagerService.NewPublishFullMarketData(item, self.ServiceName())
+
+	publishFullMarketData := fullMarketDataManagerService.NewPublishFullMarketData(item, self.subscribeChannel)
 	self.pubSub.Pub(publishFullMarketData, self.FullMarketDataHelper.FullMarketDataServiceInbound())
 
 	_, err := CallIFullMarketDataViewSubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
@@ -61,11 +66,11 @@ func (self *service) Send(message interface{}) error {
 	return send.Args0
 }
 
-func (self *service) SetMarketDataListChange(change func(list []string)) {
+func (self *service) SetMarketDataListChange(change func(list []string) bool) {
 	self.onSetMarketDataListChange = change
 }
 
-func (self *service) SetMarketDataInstanceChange(change func(data *stream.PublishTop5)) {
+func (self *service) SetMarketDataInstanceChange(change func(data *stream.PublishTop5) bool) {
 	self.onSetMarketDataInstanceChange = change
 }
 
@@ -115,7 +120,9 @@ func (self *service) start(_ context.Context) error {
 
 func (self *service) goStart(instanceData IFullMarketDataViewData) {
 	instanceData.Start(self.ServiceName())
-	self.subscribeChannel = self.pubSub.Sub(self.ServiceName(), self.FullMarketDataHelper.FullMarketDataServicePublishInstrumentList())
+	self.subscribeChannel = pubsub.NewNextFuncSubscription(goCommsDefinitions.CreateNextFunc(self.cmdChannel))
+
+	self.pubSub.AddSub(self.subscribeChannel, self.ServiceName(), self.FullMarketDataHelper.FullMarketDataServicePublishInstrumentList())
 	channelHandlerCallback := ChannelHandler.CreateChannelHandlerCallback(
 		self.ctx,
 		instanceData,
@@ -138,7 +145,7 @@ func (self *service) goStart(instanceData IFullMarketDataViewData) {
 			},
 		},
 		func() int {
-			return len(self.cmdChannel) + len(self.subscribeChannel)
+			return len(self.cmdChannel) + self.subscribeChannel.Count()
 		},
 		goCommsDefinitions.CreateTryNextFunc(self.cmdChannel),
 		//func(i interface{}) {
@@ -162,14 +169,6 @@ loop:
 			}
 			break loop
 		case event, ok := <-self.cmdChannel:
-			if !ok {
-				return
-			}
-			breakLoop, err := channelHandlerCallback(event)
-			if err != nil || breakLoop {
-				break loop
-			}
-		case event, ok := <-self.subscribeChannel:
 			if !ok {
 				return
 			}

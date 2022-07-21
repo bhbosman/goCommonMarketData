@@ -12,12 +12,11 @@ require (
 	github.com/cskr/pubsub v1.0.2
 	github.com/emirpasic/gods v1.18.1
 	github.com/gdamore/tcell/v2 v2.5.1
-	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/rivo/tview v0.0.0-20220709181631-73bf2902b59a
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
-	google.golang.org/protobuf v1.25.0
+	google.golang.org/protobuf v1.28.0
 )
 
 require (
@@ -26,10 +25,10 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
-	github.com/icza/gox v0.0.0-20220321141217-e2d488ab2fbc // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/reactivex/rxgo/v2 v2.5.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/stretchr/objx v0.1.0 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect

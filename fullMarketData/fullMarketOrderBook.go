@@ -15,11 +15,25 @@ type FullMarketOrderBook struct {
 		stream.OrderSide
 		*PricePoint
 	}
-	OrderSide          [2]*avltree.Tree
-	SourceTimestamp    int64
-	SourceMessageCount int64
-	messageRouter      *messageRouter.MessageRouter
-	Name               string
+	OrderSide     [2]*avltree.Tree
+	messageRouter *messageRouter.MessageRouter
+	name          string
+}
+
+func (self *FullMarketOrderBook) InstrumentName() string {
+	return self.name
+}
+
+func (self *FullMarketOrderBook) BidOrderSide() *avltree.Tree {
+	return self.OrderSide[stream.OrderSide_BidOrder]
+}
+
+func (self *FullMarketOrderBook) AskOrderSide() *avltree.Tree {
+	return self.OrderSide[stream.OrderSide_AskOrder]
+}
+
+func (self *FullMarketOrderBook) OrderCount() int {
+	return len(self.Orders)
 }
 
 func (self *FullMarketOrderBook) clear() {
@@ -27,33 +41,32 @@ func (self *FullMarketOrderBook) clear() {
 		stream.OrderSide
 		*PricePoint
 	})
-	self.SourceTimestamp = 0
 	self.OrderSide[0].Clear()
 	self.OrderSide[1].Clear()
 }
 
 func (self *FullMarketOrderBook) addOrder(order *FullMarketOrder) {
-	get, found := self.OrderSide[order.side].Get(order.price)
+	get, found := self.OrderSide[order.Side].Get(order.Price)
 	if found {
 		if pricePoint, ok := get.(*PricePoint); ok {
 			pricePoint.AddOrder(order)
-			self.Orders[order.id] = struct {
+			self.Orders[order.Id] = struct {
 				stream.OrderSide
 				*PricePoint
 			}{
-				order.side,
+				order.Side,
 				pricePoint,
 			}
 		}
 	} else {
-		pricePoint := NewPricePoint(order.price)
+		pricePoint := NewPricePoint(order.Price)
 		pricePoint.AddOrder(order)
-		self.OrderSide[order.side].Put(order.price, pricePoint)
-		self.Orders[order.id] = struct {
+		self.OrderSide[order.Side].Put(order.Price, pricePoint)
+		self.Orders[order.Id] = struct {
 			stream.OrderSide
 			*PricePoint
 		}{
-			order.side,
+			order.Side,
 			pricePoint,
 		}
 	}
@@ -82,16 +95,8 @@ func (self *FullMarketOrderBook) deleteOrder(oderId string) {
 	}
 }
 
-func (self *FullMarketOrderBook) SetTimeStamp(timestamp int64) {
-	self.SourceTimestamp = timestamp
-}
-
-func (self *FullMarketOrderBook) UpdateMessageReceivedCount() {
-	self.SourceMessageCount++
-}
-
 func (self *FullMarketOrderBook) handleFullMarketDataAddOrder(msg *stream.FullMarketData_AddOrderInstruction) {
-	order := newFullMarketOrder(msg.Order.Side, msg.Order.Id, msg.Order.Price, msg.Order.Volume)
+	order := newFullMarketOrder(msg.Order.Side, msg.Order.Id, msg.Order.Price, msg.Order.Volume, msg.Order.ExtraData)
 	self.addOrder(order)
 
 }
@@ -112,12 +117,14 @@ func (self *FullMarketOrderBook) handleFullMarketDataDeleteOrder(order *stream.F
 	self.deleteOrder(order.Id)
 }
 
-func (self *FullMarketOrderBook) Send(msg interface{}) {
+func (self *FullMarketOrderBook) Send(msg interface{}) error {
 	self.messageRouter.Route(msg)
+	return nil
 }
-func NewFullMarketOrderBook(name string) *FullMarketOrderBook {
+
+func NewFullMarketOrderBook(name string) IFullMarketOrderBook {
 	result := &FullMarketOrderBook{
-		Name: name,
+		name: name,
 		Orders: make(map[string]struct {
 			stream.OrderSide
 			*PricePoint

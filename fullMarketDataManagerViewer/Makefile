@@ -1,7 +1,7 @@
 all: IConnectionManager
 
 IConnectionManager:
-	mockgen -package viewFullDepth -generateWhat ddd -destination IFullMarketDataViewInterfaceMethods.go . IFullMarketDataView
+	mockgen -package fullMarketDataManagerViewer -generateWhat ddd -destination IFullMarketDataViewInterfaceMethods.go . IFullMarketDataView
 
 
 

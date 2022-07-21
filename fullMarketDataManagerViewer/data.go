@@ -11,8 +11,8 @@ import (
 type data struct {
 	FmdManagerService             fullMarketDataManagerService.IFmdManagerService
 	messageRouter                 *messageRouter.MessageRouter
-	onSetMarketDataListChange     func(list []string)
-	onSetMarketDataInstanceChange func(data *stream.PublishTop5)
+	onSetMarketDataListChange     func(list []string) bool
+	onSetMarketDataInstanceChange func(data *stream.PublishTop5) bool
 	activeItem                    string
 	activeData                    *stream.PublishTop5
 	instrumentList                []string
@@ -36,15 +36,15 @@ func (self *data) Start(serviceName string) {
 	self.instrumentListChanged = true
 }
 
-func (self *data) SetMarketDataListChange(change func(list []string)) {
+func (self *data) SetMarketDataListChange(change func(list []string) bool) {
 	self.onSetMarketDataListChange = change
 }
 
-func (self *data) SetMarketDataInstanceChange(change func(data *stream.PublishTop5)) {
+func (self *data) SetMarketDataInstanceChange(change func(data *stream.PublishTop5) bool) {
 	self.onSetMarketDataInstanceChange = change
 }
 
-func (self *data) handleFullMarketDepthBookInstruments(message *stream2.FullMarketData_InstrumentListResponse) {
+func (self *data) handleFullMarketDepthBookInstruments(message *stream2.FullMarketData_InstrumentList_Response) {
 	self.instrumentList = message.Instruments
 	self.instrumentListChanged = true
 }
@@ -71,16 +71,24 @@ func (self *data) handlePublishTop5(msg *stream.PublishTop5) {
 func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
 	if self.instrumentListChanged {
 		if self.onSetMarketDataListChange != nil {
-			self.onSetMarketDataListChange(self.instrumentList)
+			b := self.onSetMarketDataListChange(self.instrumentList)
+			if !b {
+				msg.ErrorHappen = true
+				return
+			}
 		}
 		self.instrumentList = nil
 		self.instrumentListChanged = false
 	}
 	if self.activeData != nil {
 		if self.onSetMarketDataInstanceChange != nil {
-			self.onSetMarketDataInstanceChange(self.activeData)
+			b := self.onSetMarketDataInstanceChange(self.activeData)
+			if !b {
+				msg.ErrorHappen = true
+			} else {
+				self.activeData = nil
+			}
 		}
-		self.activeData = nil
 	}
 }
 

@@ -6,14 +6,15 @@ import (
 	"github.com/bhbosman/gocommon/ChannelHandler"
 	"github.com/bhbosman/gocommon/GoFunctionCounter"
 	"github.com/bhbosman/gocommon/Services/IFxService"
-	"github.com/bhbosman/gocommon/Services/ISendMessage"
 	"github.com/bhbosman/gocommon/pubSub"
+	"github.com/bhbosman/gocommon/services/ISendMessage"
 	"github.com/cskr/pubsub"
 	"go.uber.org/zap"
 	"golang.org/x/net/context"
 )
 
 type service struct {
+	proxy                bool
 	ctx                  context.Context
 	cancelFunc           context.CancelFunc
 	cmdChannel           chan interface{}
@@ -22,8 +23,30 @@ type service struct {
 	state                IFxService.State
 	pubSub               *pubsub.PubSub
 	goFunctionCounter    GoFunctionCounter.IService
-	subscribeChannel     chan interface{}
+	subscribeChannel     *pubsub.NextFuncSubscription
 	fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper
+}
+
+func (self *service) SubscribeFullMarketData(item string) {
+	_, err := CallIFmdManagerSubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
+	if err != nil {
+		return
+	}
+}
+
+func (self *service) UnsubscribeFullMarketData(item string) {
+	_, err := CallIFmdManagerUnsubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
+	if err != nil {
+		return
+	}
+}
+
+func (self *service) Send(message interface{}) error {
+	send, err := CallIFmdManagerSend(self.ctx, self.cmdChannel, false, message)
+	if err != nil {
+		return err
+	}
+	return send.Args0
 }
 
 func (self *service) GetInstrumentList() ([]string, error) {
@@ -32,30 +55,6 @@ func (self *service) GetInstrumentList() ([]string, error) {
 		return nil, err
 	}
 	return list.Args0, list.Args1
-}
-
-func (self *service) InstrumentListChannelName() (string, error) {
-	name, err := CallIFmdManagerInstrumentListChannelName(self.ctx, self.cmdChannel, true)
-	if err != nil {
-		return "", err
-	}
-	return name.Args0, name.Args1
-}
-
-func (self *service) InstrumentChannelName(instrument string) (string, error) {
-	name, err := CallIFmdManagerInstrumentChannelName(self.ctx, self.cmdChannel, true, instrument)
-	if err != nil {
-		return "", err
-	}
-	return name.Args0, name.Args1
-}
-
-func (self *service) AllInstrumentChannelName() (string, error) {
-	name, err := CallIFmdManagerAllInstrumentChannelName(self.ctx, self.cmdChannel, true)
-	if err != nil {
-		return "", err
-	}
-	return name.Args0, name.Args1
 }
 
 func (self *service) OnStart(ctx context.Context) error {
@@ -94,7 +93,9 @@ func (self *service) start(_ context.Context) error {
 }
 
 func (self *service) goStart(instanceData IFmdManagerData) {
-	self.subscribeChannel = self.pubSub.Sub(self.fullMarketDataHelper.FullMarketDataServiceInbound())
+	self.subscribeChannel = pubsub.NewNextFuncSubscription(goCommsDefinitions.CreateNextFunc(self.cmdChannel))
+	self.pubSub.AddSub(self.subscribeChannel, self.fullMarketDataHelper.FullMarketDataServiceInbound())
+
 	channelHandlerCallback := ChannelHandler.CreateChannelHandlerCallback(
 		self.ctx,
 		instanceData,
@@ -117,7 +118,7 @@ func (self *service) goStart(instanceData IFmdManagerData) {
 			},
 		},
 		func() int {
-			n := len(self.cmdChannel) + len(self.subscribeChannel)
+			n := len(self.cmdChannel) + self.subscribeChannel.Count()
 			return n
 		},
 		goCommsDefinitions.CreateTryNextFunc(self.cmdChannel),
@@ -141,14 +142,14 @@ loop:
 			if err != nil || breakLoop {
 				break loop
 			}
-		case event, ok := <-self.subscribeChannel:
-			if !ok {
-				return
-			}
-			breakLoop, err := channelHandlerCallback(event)
-			if err != nil || breakLoop {
-				break loop
-			}
+			//case event, ok := <-self.subscribeChannel.Data:
+			//	if !ok {
+			//		return
+			//	}
+			//	breakLoop, err := channelHandlerCallback(event)
+			//	if err != nil || breakLoop {
+			//		break loop
+			//	}
 		}
 	}
 	// flush

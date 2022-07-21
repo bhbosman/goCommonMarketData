@@ -10,7 +10,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-func Provide() fx.Option {
+func Provide(proxy bool) fx.Option {
 	return fx.Options(
 		fx.Provide(
 			func(
@@ -24,6 +24,7 @@ func Provide() fx.Option {
 					return newData(
 						params.PubSub,
 						params.FullMarketDataHelper,
+						proxy,
 					)
 				}, nil
 			},

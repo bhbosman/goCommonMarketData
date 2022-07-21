@@ -3,22 +3,30 @@ package fullMarketData
 import "github.com/bhbosman/goCommonMarketData/fullMarketData/stream"
 
 type FullMarketOrder struct {
-	side   stream.OrderSide
-	id     string
-	price  float64
-	volume float64
+	Side      stream.OrderSide
+	Id        string
+	Price     float64
+	Volume    float64
+	ExtraData string
 }
 
-func newFullMarketOrder(side stream.OrderSide, id string, price float64, volume float64) *FullMarketOrder {
+func newFullMarketOrder(
+	side stream.OrderSide,
+	id string,
+	price float64,
+	volume float64,
+	extraData string,
+) *FullMarketOrder {
 	return &FullMarketOrder{
-		side:   side,
-		id:     id,
-		price:  price,
-		volume: volume,
+		Side:      side,
+		Id:        id,
+		Price:     price,
+		Volume:    volume,
+		ExtraData: extraData,
 	}
 }
 
 func (self *FullMarketOrder) ReduceVolume(base float64) (leftOverVolume float64) {
-	self.volume -= base
-	return self.volume
+	self.Volume -= base
+	return self.Volume
 }

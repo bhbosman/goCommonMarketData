@@ -5,8 +5,8 @@ import (
 	"github.com/bhbosman/gocommon/ChannelHandler"
 	"github.com/bhbosman/gocommon/GoFunctionCounter"
 	"github.com/bhbosman/gocommon/Services/IFxService"
-	"github.com/bhbosman/gocommon/Services/ISendMessage"
 	"github.com/bhbosman/gocommon/pubSub"
+	"github.com/bhbosman/gocommon/services/ISendMessage"
 	"github.com/cskr/pubsub"
 	"go.uber.org/zap"
 	"golang.org/x/net/context"
@@ -22,7 +22,7 @@ type service struct {
 	state             IFxService.State
 	pubSub            *pubsub.PubSub
 	goFunctionCounter GoFunctionCounter.IService
-	subscribeChannel  chan interface{}
+	subscribeChannel  *pubsub.ChannelSubscription
 }
 
 func (self *service) Send(message interface{}) error {
@@ -96,7 +96,8 @@ func (self *service) goStart(instanceData IInstrumentReferenceData) {
 		}
 	}(self.cmdChannel)
 
-	subscribeChannel := self.pubSub.Sub(self.ServiceName())
+	self.subscribeChannel = pubsub.NewChannelSubscription(32)
+	self.pubSub.AddSub(self.subscribeChannel, self.ServiceName())
 
 	channelHandlerCallback := ChannelHandler.CreateChannelHandlerCallback(
 		self.ctx,
@@ -122,7 +123,7 @@ func (self *service) goStart(instanceData IInstrumentReferenceData) {
 			// TODO: add handlers here
 		},
 		func() int {
-			return len(self.cmdChannel) + len(self.subscribeChannel)
+			return len(self.cmdChannel) + self.subscribeChannel.Count()
 		},
 		goCommsDefinitions.CreateTryNextFunc(self.cmdChannel),
 		//func(i interface{}) {
@@ -153,7 +154,7 @@ loop:
 			if err != nil || breakLoop {
 				break loop
 			}
-		case event, ok := <-subscribeChannel:
+		case event, ok := <-self.subscribeChannel.Data:
 			if !ok {
 				return
 			}

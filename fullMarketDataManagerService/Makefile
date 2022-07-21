@@ -1,2 +1,2 @@
 all:
-	mockgen -package fmdManagerService -generateWhat ddd -destination IFmdManagerInterfaceMethods.go . IFmdManager
+	mockgen -package fullMarketDataManagerService -generateWhat ddd -destination IFmdManagerInterfaceMethods.go . IFmdManager

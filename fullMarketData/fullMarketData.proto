@@ -21,6 +21,7 @@ message FullMarketData_AddOrder{
   string id = 3;
   double price = 4;
   double volume  = 5;
+  string extraData = 6;
 
 }
 message FullMarketData_AddOrderInstruction
@@ -48,19 +49,37 @@ message FullMarketData_RemoveInstrumentInstruction
   string instrument = 1;
 };
 
-message FullMarketData_InstrumentListSubscribe
+message FullMarketData_InstrumentList_Subscribe
 {
 };
 
-message FullMarketData_InstrumentListUnsubscribe
+message FullMarketData_InstrumentList_Unsubscribe
 {
 };
 
-message FullMarketData_InstrumentListRequest
+message FullMarketData_InstrumentList_Request
 {
 };
 
-message FullMarketData_InstrumentListResponse
+message FullMarketData_InstrumentList_Response
 {
   repeated string instruments = 1;
 };
+
+
+message FullMarketData_Instrument_Register
+{
+  string instrument = 1;
+};
+
+
+message FullMarketData_Instrument_Unregister
+{
+  string instrument = 1;
+};
+
+//message FullMarketData_Instrument_Response
+//{
+//  string instrument = 1;
+//};
+

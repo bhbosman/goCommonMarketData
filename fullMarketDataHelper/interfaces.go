@@ -6,4 +6,5 @@ type IFullMarketDataHelper interface {
 	AllInstrumentChannelName() string
 	FullMarketDataServiceInbound() string
 	FullMarketDataServicePublishInstrumentList() string
+	RegisteredSource(instrument string) string
 }

@@ -19,7 +19,7 @@ func (self *PricePoint) Delete(id string) {
 	index, _ := self.List.Find(
 		func(index int, value interface{}) bool {
 			if order, ok := value.(*FullMarketOrder); ok {
-				return order.id == id
+				return order.Id == id
 			}
 			return false
 		})
@@ -37,7 +37,7 @@ func (self *PricePoint) Find(id string) (bool, *FullMarketOrder) {
 	idx, value := self.List.Find(
 		func(index int, value interface{}) bool {
 			if order, ok := value.(*FullMarketOrder); ok {
-				return order.id == id
+				return order.Id == id
 			}
 			return false
 		})
@@ -56,7 +56,7 @@ func (self *PricePoint) GetVolume() (pricePointVolume float64) {
 	iterator := self.List.Iterator()
 	for iterator.Next() {
 		if order, ok := iterator.Value().(*FullMarketOrder); ok {
-			pricePointVolume += order.volume
+			pricePointVolume += order.Volume
 		}
 	}
 	return pricePointVolume

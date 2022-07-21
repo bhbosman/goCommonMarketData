@@ -133,8 +133,8 @@ func (self *slide) init() {
 	self.next = flex
 }
 
-func (self *slide) OnSetMarketDataListChange(list []string) {
-	self.app.QueueUpdate(
+func (self *slide) OnSetMarketDataListChange(list []string) bool {
+	return self.app.QueueUpdate(
 		func() {
 			if list != nil {
 				plateNil := self.marketDataListPlate == nil
@@ -164,8 +164,8 @@ func (self *slide) OnSetMarketDataListChange(list []string) {
 	)
 }
 
-func (self *slide) OnSetMarketDataInstanceChange(data *stream.PublishTop5) {
-	self.app.QueueUpdate(
+func (self *slide) OnSetMarketDataInstanceChange(data *stream.PublishTop5) bool {
+	return self.app.QueueUpdate(
 		func() {
 			row, _ := self.listTable.GetSelection()
 			if text, ok := self.marketDataListPlate.GetItem(row); ok {

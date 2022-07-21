@@ -4,12 +4,12 @@ import (
 	"github.com/bhbosman/goMessages/marketData/stream"
 	"github.com/bhbosman/gocommon/Services/IDataShutDown"
 	"github.com/bhbosman/gocommon/Services/IFxService"
-	"github.com/bhbosman/gocommon/Services/ISendMessage"
+	"github.com/bhbosman/gocommon/services/ISendMessage"
 )
 
 type IFullMarketDataView interface {
-	SetMarketDataListChange(change func(list []string))
-	SetMarketDataInstanceChange(change func(data *stream.PublishTop5))
+	SetMarketDataListChange(change func(list []string) bool)
+	SetMarketDataInstanceChange(change func(data *stream.PublishTop5) bool)
 	ISendMessage.ISendMessage
 	UnsubscribeFullMarketData(item string)
 	SubscribeFullMarketData(item string)
