@@ -2,6 +2,7 @@ package fullMarketDataHelper
 
 import (
 	"fmt"
+	"github.com/cskr/pubsub"
 )
 
 const FullMarketDataServiceInbound = "FullMarketDataService_Inbound"
@@ -9,6 +10,7 @@ const FullMarketDataServicePublishAll = "FM_ALL"
 const FullMarketDataServicePublishInstrumentList = "FMD_InstrumentList"
 
 type FullMarketDataHelper struct {
+	pubSub *pubsub.PubSub
 }
 
 func (self *FullMarketDataHelper) RegisteredSource(instrument string) string {
@@ -46,6 +48,9 @@ func (self *FullMarketDataHelper) instrumentChannelName(instrument string) strin
 	return fmt.Sprintf("FMD.INSTANCE.%v", instrument)
 }
 
-func NewFullMarketDataHelper() (IFullMarketDataHelper, error) {
-	return &FullMarketDataHelper{}, nil
+func NewFullMarketDataHelper(pubSub *pubsub.PubSub,
+) (IFullMarketDataHelper, error) {
+	return &FullMarketDataHelper{
+		pubSub: pubSub,
+	}, nil
 }
