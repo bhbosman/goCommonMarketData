@@ -18,10 +18,11 @@ enum OrderSide {
 
 message FullMarketData_AddOrder{
   OrderSide side = 2;
+
   string id = 3;
   double price = 4;
   double volume  = 5;
-  string extraData = 6;
+  bytes extraData = 6;
 
 }
 message FullMarketData_AddOrderInstruction

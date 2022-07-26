@@ -7,7 +7,7 @@ type FullMarketOrder struct {
 	Id        string
 	Price     float64
 	Volume    float64
-	ExtraData string
+	ExtraData []byte
 }
 
 func newFullMarketOrder(
@@ -15,7 +15,7 @@ func newFullMarketOrder(
 	id string,
 	price float64,
 	volume float64,
-	extraData string,
+	extraData []byte,
 ) *FullMarketOrder {
 	return &FullMarketOrder{
 		Side:      side,
