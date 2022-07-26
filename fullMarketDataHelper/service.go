@@ -2,6 +2,7 @@ package fullMarketDataHelper
 
 import (
 	"fmt"
+	"github.com/bhbosman/gocommon/messageRouter"
 )
 
 const FullMarketDataServiceInbound = "FullMarketDataService_Inbound"
@@ -9,6 +10,9 @@ const FullMarketDataServicePublishAll = "FM_ALL"
 const FullMarketDataServicePublishInstrumentList = "FMD_InstrumentList"
 
 type FullMarketDataHelper struct {
+}
+
+func (self *FullMarketDataHelper) RegisterConsumerMethods(router messageRouter.MessageRouter) {
 }
 
 func (self *FullMarketDataHelper) RegisteredSource(instrument string) string {
