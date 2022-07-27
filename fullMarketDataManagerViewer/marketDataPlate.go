@@ -10,12 +10,12 @@ import (
 type marketDataPlate struct {
 	data                 *stream.PublishTop5
 	emptyCell            *tview.TableCell
-	currentReferenceData *instrumentReference.ReferenceData
+	currentReferenceData instrumentReference.IReferenceData
 }
 
 func newMarketDataPlate(
 	data *stream.PublishTop5,
-	currentReferenceData *instrumentReference.ReferenceData,
+	currentReferenceData instrumentReference.IReferenceData,
 ) *marketDataPlate {
 	return &marketDataPlate{
 		data:                 data,
@@ -79,7 +79,7 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			index := row - 1
 			count := len(self.data.Bid)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Bid[index].Volume, 'f', self.currentReferenceData.VolumeDecimals, 32)
+				s := strconv.FormatFloat(self.data.Bid[index].Volume, 'f', self.currentReferenceData.VolumeDecimals(), 32)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).
@@ -90,7 +90,7 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			index := row - 1
 			count := len(self.data.Bid)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Bid[index].Price, 'f', self.currentReferenceData.PriceDecimals, 32)
+				s := strconv.FormatFloat(self.data.Bid[index].Price, 'f', self.currentReferenceData.PriceDecimals(), 32)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).
@@ -100,7 +100,7 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			index := row - 1
 			count := len(self.data.Ask)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Ask[index].Price, 'f', self.currentReferenceData.PriceDecimals, 32)
+				s := strconv.FormatFloat(self.data.Ask[index].Price, 'f', self.currentReferenceData.PriceDecimals(), 32)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).
@@ -111,7 +111,7 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			index := row - 1
 			count := len(self.data.Ask)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Ask[index].Volume, 'f', self.currentReferenceData.VolumeDecimals, 32)
+				s := strconv.FormatFloat(self.data.Ask[index].Volume, 'f', self.currentReferenceData.VolumeDecimals(), 32)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).

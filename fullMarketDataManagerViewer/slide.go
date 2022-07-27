@@ -17,7 +17,7 @@ type slide struct {
 	marketDataListPlate        *listPlate
 	marketDataPlate            *marketDataPlate
 	instrumentReferenceService instrumentReference.IInstrumentReferenceService
-	currentReferenceData       *instrumentReference.ReferenceData
+	currentReferenceData       instrumentReference.IReferenceData
 	selectedItem               string
 }
 

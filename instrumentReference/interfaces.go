@@ -6,24 +6,70 @@ import (
 	"github.com/bhbosman/gocommon/services/ISendMessage"
 )
 
-type ReferenceData struct {
-	Name           string
-	PriceDecimals  int
-	VolumeDecimals int
+type MarketDataFeedReference struct {
+	LunoFeeds   []*LunoReferenceData
+	KrakenFeeds []*KrakenReferenceData
 }
 
-func NewDefaultReferenceData() *ReferenceData {
-	return &ReferenceData{
-		Name:           "Default",
-		PriceDecimals:  6,
-		VolumeDecimals: 6,
+type IReferenceData interface {
+	PriceDecimals() int
+	VolumeDecimals() int
+}
+
+type ReferenceData struct {
+	priceDecimals  int
+	volumeDecimals int
+}
+
+func (self *ReferenceData) PriceDecimals() int {
+	return self.priceDecimals
+}
+
+func (self *ReferenceData) VolumeDecimals() int {
+	return self.volumeDecimals
+}
+
+type LunoReferenceData struct {
+	ReferenceData
+	SystemName       string
+	Provider         string
+	Name             string
+	MappedInstrument string
+}
+
+type KrakenFeed struct {
+	ReferenceData
+	SystemName       string
+	Pair             string
+	Type             string
+	MappedInstrument string
+}
+
+type KrakenReferenceData struct {
+	ConnectionName string
+	Provider       string
+	Feeds          []*KrakenFeed
+}
+
+func NewDefaultReferenceData() *LunoReferenceData {
+	return &LunoReferenceData{
+		ReferenceData: ReferenceData{
+			priceDecimals:  6,
+			volumeDecimals: 6,
+		},
+		SystemName:       "Default.Default",
+		Provider:         "Default",
+		Name:             "Default",
+		MappedInstrument: "",
 	}
 }
 
 type IInstrumentReference interface {
 	ISendMessage.ISendMessage
 	SomeMethod()
-	GetReferenceData(instrumentData string) (*ReferenceData, bool)
+	GetReferenceData(instrumentData string) (IReferenceData, bool)
+	GetLunoProviders() ([]LunoReferenceData, error)
+	GetKrakenProviders() ([]KrakenReferenceData, error)
 }
 
 type IInstrumentReferenceService interface {

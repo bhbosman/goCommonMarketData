@@ -25,6 +25,22 @@ type service struct {
 	subscribeChannel  *pubsub.ChannelSubscription
 }
 
+func (self *service) GetKrakenProviders() ([]KrakenReferenceData, error) {
+	forProvider, err := CallIInstrumentReferenceGetKrakenProviders(self.ctx, self.cmdChannel, true)
+	if err != nil {
+		return nil, err
+	}
+	return forProvider.Args0, forProvider.Args1
+}
+
+func (self *service) GetLunoProviders() ([]LunoReferenceData, error) {
+	forProvider, err := CallIInstrumentReferenceGetLunoProviders(self.ctx, self.cmdChannel, true)
+	if err != nil {
+		return nil, err
+	}
+	return forProvider.Args0, forProvider.Args1
+}
+
 func (self *service) Send(message interface{}) error {
 	send, err := CallIInstrumentReferenceSend(self.ctx, self.cmdChannel, false, message)
 	if err != nil {
@@ -33,7 +49,7 @@ func (self *service) Send(message interface{}) error {
 	return send.Args0
 }
 
-func (self *service) GetReferenceData(instrumentData string) (*ReferenceData, bool) {
+func (self *service) GetReferenceData(instrumentData string) (IReferenceData, bool) {
 	referenceData, err := CallIInstrumentReferenceGetReferenceData(self.ctx, self.cmdChannel, true, instrumentData)
 	if err != nil {
 		return nil, false
@@ -82,10 +98,7 @@ func (self *service) start(_ context.Context) error {
 		return err
 	}
 
-	for _, referenceData := range self.createInstrumentReference() {
-		self.Send(referenceData)
-	}
-
+	_ = self.Send(self.createInstrumentReference())
 	return nil
 }
 
@@ -174,38 +187,413 @@ func (self service) ServiceName() string {
 	return "InstrumentReference"
 }
 
-func (self *service) createInstrumentReference() []*ReferenceData {
-
-	return []*ReferenceData{
-		{
-			Name:           "XBTZAR",
-			PriceDecimals:  0,
-			VolumeDecimals: 6,
+func (self *service) createInstrumentReference() *MarketDataFeedReference {
+	return &MarketDataFeedReference{
+		KrakenFeeds: []*KrakenReferenceData{
+			{
+				ConnectionName: "Connection001",
+				Provider:       "Kraken",
+				Feeds: []*KrakenFeed{
+					{
+						//"Connection XBT/USD",
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.XBT/USD",
+						Pair:             "XBT/USD",
+						Type:             "book",
+						MappedInstrument: "XBT/USD",
+					},
+					//{
+					//	//"Connection XBT/EUR",
+					//	ReferenceData: ReferenceData{
+					//		priceDecimals:  6,
+					//		volumeDecimals: 6,
+					//	},
+					//	SystemName:       "Kraken.XBT/EUR",
+					//	Pair:             "XBT/EUR",
+					//	Type:             "Book",
+					//	MappedInstrument: "XBT/EUR",
+					//},
+					//{
+					//	//"Connection XBT/CAD",
+					//	ReferenceData: ReferenceData{
+					//		priceDecimals:  6,
+					//		volumeDecimals: 6,
+					//	},
+					//	SystemName:       "Kraken.XBT/CAD",
+					//	Pair:             "XBT/CAD",
+					//	Type:             "Book",
+					//	MappedInstrument: "XBT/CAD",
+					//},
+					//{
+					//	//"Connection EUR/USD",
+					//	ReferenceData: ReferenceData{
+					//		priceDecimals:  6,
+					//		volumeDecimals: 6,
+					//	},
+					//	SystemName:       "Kraken.EUR/USD",
+					//	Pair:             "EUR/USD",
+					//	Type:             "Book",
+					//	MappedInstrument: "EUR/USD",
+					//},
+					//{
+					//	//"Connection GBP/USD",
+					//	ReferenceData: ReferenceData{
+					//		priceDecimals:  6,
+					//		volumeDecimals: 6,
+					//	},
+					//	SystemName:       "Kraken.GBP/USD",
+					//	Pair:             "GBP/USD",
+					//	Type:             "Book",
+					//	MappedInstrument: "GBP/USD",
+					//},
+					//{
+					//	//"Connection USD/CAD",
+					//	ReferenceData: ReferenceData{
+					//		priceDecimals:  6,
+					//		volumeDecimals: 6,
+					//	},
+					//	SystemName:       "Kraken.USD/CAD",
+					//	Pair:             "USD/CAD",
+					//	Type:             "Book",
+					//	MappedInstrument: "USD/CAD",
+					//},
+				},
+			},
 		},
-		{
-			Name:           "ETHXBT",
-			PriceDecimals:  6,
-			VolumeDecimals: 6,
-		},
-		{
-			Name:           "XBTUGX",
-			PriceDecimals:  6,
-			VolumeDecimals: 6,
-		},
-		{
-			Name:           "XBTEUR",
-			PriceDecimals:  6,
-			VolumeDecimals: 6,
-		},
-		{
-			Name:           "XBTZMW",
-			PriceDecimals:  6,
-			VolumeDecimals: 6,
-		},
-		{
-			Name:           "BCHXBT",
-			PriceDecimals:  6,
-			VolumeDecimals: 6,
+		LunoFeeds: []*LunoReferenceData{
+			// 1.Luno: "BCHXBT"
+			{
+				SystemName:       "Luno.BCHXBT",
+				Provider:         "Luno",
+				Name:             "BCHXBT",
+				MappedInstrument: "BCH/XBT",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 2.Luno: "ETHAUD"
+			{
+				SystemName:       "Luno.ETHAUD",
+				Provider:         "Luno",
+				Name:             "ETHAUD",
+				MappedInstrument: "ETH/AUD",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 3.Luno: "ETHEUR"
+			{
+				SystemName:       "Luno.ETHEUR",
+				Provider:         "Luno",
+				Name:             "ETHEUR",
+				MappedInstrument: "ETH/EUR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 4.Luno: "ETHGBP"
+			{
+				SystemName:       "Luno.ETHGBP",
+				Provider:         "Luno",
+				Name:             "ETHGBP",
+				MappedInstrument: "ETH/GBP",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 5.Luno: "ETHIDR"
+			{
+				SystemName:       "Luno.ETHIDR",
+				Provider:         "Luno",
+				Name:             "ETHIDR",
+				MappedInstrument: "ETH/IDR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 6.Luno: "ETHMYR"
+			{
+				SystemName:       "Luno.ETHMYR",
+				Provider:         "Luno",
+				Name:             "ETHMYR",
+				MappedInstrument: "ETH/MYR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 7.Luno: "ETHNGN"
+			{
+				SystemName:       "Luno.ETHNGN",
+				Provider:         "Luno",
+				Name:             "ETHNGN",
+				MappedInstrument: "ETH/NGN",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 8.Luno: "ETHUSDC"
+			{
+				SystemName:       "Luno.ETHUSDC",
+				Provider:         "Luno",
+				Name:             "ETHUSDC",
+				MappedInstrument: "ETH/USDC",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 9.Luno: "ETHXBT"
+			{
+				SystemName:       "Luno.ETHXBT",
+				Provider:         "Luno",
+				Name:             "ETHXBT",
+				MappedInstrument: "ETH/XBT",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 10.Luno: "ETHZAR"
+			{
+				SystemName:       "Luno.ETHZAR",
+				Provider:         "Luno",
+				Name:             "ETHZAR",
+				MappedInstrument: "ETH/ZAR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 11.Luno: "LTCMYR"
+			{
+				SystemName:       "Luno.LTCMYR",
+				Provider:         "Luno",
+				Name:             "LTCMYR",
+				MappedInstrument: "LTC/MYR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 12.Luno: "LTCNGN"
+			{
+				SystemName:       "Luno.LTCNGN",
+				Provider:         "Luno",
+				Name:             "LTCNGN",
+				MappedInstrument: "LTC/NGN",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 13.Luno: "LTCXBT"
+			{
+				SystemName:       "Luno.LTCXBT",
+				Provider:         "Luno",
+				Name:             "LTCXBT",
+				MappedInstrument: "LTC/XBT",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 14.Luno: "LTCZAR"
+			{
+				SystemName:       "Luno.LTCZAR",
+				Provider:         "Luno",
+				Name:             "LTCZAR",
+				MappedInstrument: "LTC/ZAR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 15.Luno: "UNIMYR"
+			{
+				SystemName:       "Luno.UNIMYR",
+				Provider:         "Luno",
+				Name:             "UNIMYR",
+				MappedInstrument: "UNI/MYR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 16.Luno: "USDCNGN"
+			{
+				SystemName:       "Luno.USDCNGN",
+				Provider:         "Luno",
+				Name:             "USDCNGN",
+				MappedInstrument: "USDC/NGN",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 17.Luno: "USDCZAR"
+			{
+				SystemName:       "Luno.USDCZAR",
+				Provider:         "Luno",
+				Name:             "USDCZAR",
+				MappedInstrument: "USDC/ZAR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 18.Luno: "XBTAUD"
+			{
+				SystemName:       "Luno.XBTAUD",
+				Provider:         "Luno",
+				Name:             "XBTAUD",
+				MappedInstrument: "XBT/AUD",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 19.Luno: "XBTEUR"
+			{
+				SystemName:       "Luno.XBTEUR",
+				Provider:         "Luno",
+				Name:             "XBTEUR",
+				MappedInstrument: "XBT/EUR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 20.Luno: "XBTGBP"
+			{
+				SystemName:       "Luno.XBTGBP",
+				Provider:         "Luno",
+				Name:             "XBTGBP",
+				MappedInstrument: "XBT/GBP",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 21.Luno: "XBTIDR"
+			{
+				SystemName:       "Luno.XBTIDR",
+				Provider:         "Luno",
+				Name:             "XBTIDR",
+				MappedInstrument: "XBT/IDR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 22.Luno: "XBTMYR"
+			{
+				SystemName:       "Luno.XBTMYR",
+				Provider:         "Luno",
+				Name:             "XBTMYR",
+				MappedInstrument: "XBT/MYR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 23.Luno: "XBTNGN"
+			{
+				SystemName:       "Luno.XBTNGN",
+				Provider:         "Luno",
+				Name:             "XBTNGN",
+				MappedInstrument: "XBT/NGN",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 24.Luno: "XBTUGX"
+			{
+				SystemName:       "Luno.XBTUGX",
+				Provider:         "Luno",
+				Name:             "XBTUGX",
+				MappedInstrument: "XBT/UGX",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 25.Luno: "XBTZAR"
+			{
+				SystemName:       "Luno.XBTZAR",
+				Provider:         "Luno",
+				Name:             "XBTZAR",
+				MappedInstrument: "XBT/ZAR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 26.Luno: "XRPMYR"
+			{
+				SystemName:       "Luno.XRPMYR",
+				Provider:         "Luno",
+				Name:             "XRPMYR",
+				MappedInstrument: "XRP/MYR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 27.Luno: "XRPNGN"
+			{
+				SystemName:       "Luno.XRPNGN",
+				Provider:         "Luno",
+				Name:             "XRPNGN",
+				MappedInstrument: "XRP/NGN",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 28.Luno: "XRPZAR"
+			{
+				SystemName:       "Luno.XRPZAR",
+				Provider:         "Luno",
+				Name:             "XRPZAR",
+				MappedInstrument: "XRP/ZAR",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 29.Luno: "XRPXBT"
+			{
+				SystemName:       "Luno.XRPXBT",
+				Provider:         "Luno",
+				Name:             "XRPXBT",
+				MappedInstrument: "XRP/XBT",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
+			// 30.Luno: "XBTUSDC"
+			{
+				SystemName:       "Luno.XBTUSDC",
+				Provider:         "Luno",
+				Name:             "XBTUSDC",
+				MappedInstrument: "XBT/USDC",
+				ReferenceData: ReferenceData{
+					priceDecimals:  6,
+					volumeDecimals: 6,
+				},
+			},
 		},
 	}
 }
