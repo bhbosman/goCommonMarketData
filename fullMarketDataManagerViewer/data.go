@@ -11,11 +11,11 @@ import (
 type data struct {
 	FmdManagerService             fullMarketDataManagerService.IFmdManagerService
 	messageRouter                 *messageRouter.MessageRouter
-	onSetMarketDataListChange     func(list []string) bool
+	onSetMarketDataListChange     func(list []fullMarketDataManagerService.InstrumentStatus) bool
 	onSetMarketDataInstanceChange func(data *stream.PublishTop5) bool
 	activeItem                    string
 	activeData                    *stream.PublishTop5
-	instrumentList                []string
+	instrumentList                []fullMarketDataManagerService.InstrumentStatus
 	instrumentListChanged         bool
 }
 
@@ -36,7 +36,7 @@ func (self *data) Start(serviceName string) {
 	self.instrumentListChanged = true
 }
 
-func (self *data) SetMarketDataListChange(change func(list []string) bool) {
+func (self *data) SetMarketDataListChange(change func(list []fullMarketDataManagerService.InstrumentStatus) bool) {
 	self.onSetMarketDataListChange = change
 }
 
@@ -45,7 +45,13 @@ func (self *data) SetMarketDataInstanceChange(change func(data *stream.PublishTo
 }
 
 func (self *data) handleFullMarketDepthBookInstruments(message *stream2.FullMarketData_InstrumentList_Response) {
-	self.instrumentList = message.Instruments
+	self.instrumentList = make([]fullMarketDataManagerService.InstrumentStatus, len(message.Instruments), len(message.Instruments))
+	for i, instrument := range message.Instruments {
+		self.instrumentList[i] = fullMarketDataManagerService.InstrumentStatus{
+			Instrument: instrument.Instrument,
+			Status:     instrument.Status,
+		}
+	}
 	self.instrumentListChanged = true
 }
 
@@ -54,8 +60,8 @@ func (self *data) handlePublishInstanceDataFor(message *publishInstanceDataFor) 
 }
 
 func (self *data) Send(message interface{}) error {
-	_, err := self.messageRouter.Route(message)
-	return err
+	self.messageRouter.Route(message)
+	return nil
 }
 
 func (self *data) ShutDown() error {

@@ -1,12 +1,13 @@
 package fullMarketDataManagerViewer
 
 import (
+	"github.com/bhbosman/goCommonMarketData/fullMarketDataManagerService"
 	"github.com/rivo/tview"
 	"strconv"
 )
 
 type listPlate struct {
-	list      []string
+	list      []fullMarketDataManagerService.InstrumentStatus
 	emptyCell *tview.TableCell
 }
 
@@ -22,6 +23,8 @@ func (self *listPlate) GetCell(row, column int) *tview.TableCell {
 			return tview.NewTableCell("*").SetSelectable(false).SetAlign(tview.AlignRight)
 		case 1:
 			return tview.NewTableCell("Name").SetSelectable(false)
+		case 2:
+			return tview.NewTableCell("Status").SetSelectable(false)
 		}
 	default:
 		switch column {
@@ -31,7 +34,13 @@ func (self *listPlate) GetCell(row, column int) *tview.TableCell {
 			n := row - 1
 			c := len(self.list)
 			if c > n {
-				return tview.NewTableCell(self.list[row-1])
+				return tview.NewTableCell(self.list[row-1].Instrument)
+			}
+		case 2:
+			n := row - 1
+			c := len(self.list)
+			if c > n {
+				return tview.NewTableCell(self.list[row-1].Status)
 			}
 		}
 	}
@@ -44,7 +53,7 @@ func (self *listPlate) GetRowCount() int {
 }
 
 func (self *listPlate) GetColumnCount() int {
-	return 2
+	return 3
 }
 
 func (self *listPlate) SetCell(row, column int, cell *tview.TableCell) {
@@ -74,12 +83,12 @@ func (self *listPlate) GetItem(row int) (string, bool) {
 	index := row - 1
 	count := len(self.list)
 	if index >= 0 && count > index {
-		return self.list[index], true
+		return self.list[index].Instrument, true
 	}
 	return "", false
 }
 
-func newListPlate(list []string) *listPlate {
+func newListPlate(list []fullMarketDataManagerService.InstrumentStatus) *listPlate {
 	return &listPlate{
 		list:      list,
 		emptyCell: tview.NewTableCell("").SetSelectable(false),

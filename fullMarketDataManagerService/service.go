@@ -27,6 +27,13 @@ type service struct {
 	fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper
 }
 
+func (self *service) MultiSend(messages ...interface{}) {
+	_, err := CallIFmdManagerMultiSend(self.ctx, self.cmdChannel, false, messages...)
+	if err != nil {
+		return
+	}
+}
+
 func (self *service) SubscribeFullMarketData(item string) {
 	_, err := CallIFmdManagerSubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
 	if err != nil {
@@ -49,7 +56,7 @@ func (self *service) Send(message interface{}) error {
 	return send.Args0
 }
 
-func (self *service) GetInstrumentList() ([]string, error) {
+func (self *service) GetInstrumentList() ([]InstrumentStatus, error) {
 	list, err := CallIFmdManagerGetInstrumentList(self.ctx, self.cmdChannel, true)
 	if err != nil {
 		return nil, err
@@ -142,14 +149,6 @@ loop:
 			if err != nil || breakLoop {
 				break loop
 			}
-			//case event, ok := <-self.subscribeChannel.Data:
-			//	if !ok {
-			//		return
-			//	}
-			//	breakLoop, err := channelHandlerCallback(event)
-			//	if err != nil || breakLoop {
-			//		break loop
-			//	}
 		}
 	}
 	// flush

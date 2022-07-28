@@ -40,8 +40,8 @@ func (self *data) GetReferenceData(instrumentData string) (IReferenceData, bool)
 }
 
 func (self *data) Send(message interface{}) error {
-	_, err := self.MessageRouter.Route(message)
-	return err
+	self.MessageRouter.Route(message)
+	return nil
 }
 
 func (self *data) SomeMethod() {

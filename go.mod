@@ -3,7 +3,7 @@ module github.com/bhbosman/goCommonMarketData
 go 1.18
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20220721070505-30206872567f
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20220724214237-63eea03e3695
 	github.com/bhbosman/goMessages v0.0.0-20220719163819-d38fc7e6d38c
 	github.com/bhbosman/goUi v0.0.0-20220721070442-c6483ac2b608
 	github.com/bhbosman/gocommon v0.0.0-20220721070423-baf2cd622704

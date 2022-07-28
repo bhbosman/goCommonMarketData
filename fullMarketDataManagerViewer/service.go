@@ -25,7 +25,7 @@ type service struct {
 	pubSub                        *pubsub.PubSub
 	goFunctionCounter             GoFunctionCounter.IService
 	subscribeChannel              *pubsub.NextFuncSubscription
-	onSetMarketDataListChange     func(list []string) bool
+	onSetMarketDataListChange     func(list []fullMarketDataManagerService.InstrumentStatus) bool
 	onSetMarketDataInstanceChange func(data *stream.PublishTop5) bool
 	FmdManagerService             fullMarketDataManagerService.IFmdManagerService
 	FullMarketDataHelper          fullMarketDataHelper.IFullMarketDataHelper
@@ -66,7 +66,7 @@ func (self *service) Send(message interface{}) error {
 	return send.Args0
 }
 
-func (self *service) SetMarketDataListChange(change func(list []string) bool) {
+func (self *service) SetMarketDataListChange(change func(list []fullMarketDataManagerService.InstrumentStatus) bool) {
 	self.onSetMarketDataListChange = change
 }
 

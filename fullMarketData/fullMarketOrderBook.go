@@ -17,7 +17,21 @@ type FullMarketOrderBook struct {
 	}
 	OrderSide     [2]*avltree.Tree
 	messageRouter *messageRouter.MessageRouter
+	feedName      string
 	name          string
+	status        string
+}
+
+func (self *FullMarketOrderBook) Status() string {
+	return self.status
+}
+
+func (self *FullMarketOrderBook) SetStatus(status string) {
+	self.status = status
+}
+
+func (self *FullMarketOrderBook) FeedName() string {
+	return self.feedName
 }
 
 func (self *FullMarketOrderBook) InstrumentName() string {
@@ -109,6 +123,10 @@ func (self *FullMarketOrderBook) handleFullMarketDataReduceVolume(msg *stream.Fu
 	self.tradeUpdate(msg)
 }
 
+func (self *FullMarketOrderBook) handleFullMarketData_Instrument_InstrumentStatus(msg *stream.FullMarketData_Instrument_InstrumentStatus) {
+	self.status = msg.Status
+}
+
 func (self *FullMarketOrderBook) handleFullMarketDataRemoveInstrumentInstruction(order *stream.FullMarketData_RemoveInstrumentInstruction) {
 
 }
@@ -122,9 +140,10 @@ func (self *FullMarketOrderBook) Send(msg interface{}) error {
 	return nil
 }
 
-func NewFullMarketOrderBook(name string) IFullMarketOrderBook {
+func NewFullMarketOrderBook(feedName, name string) IFullMarketOrderBook {
 	result := &FullMarketOrderBook{
-		name: name,
+		name:     name,
+		feedName: feedName,
 		Orders: make(map[string]struct {
 			stream.OrderSide
 			*PricePoint
@@ -139,6 +158,7 @@ func NewFullMarketOrderBook(name string) IFullMarketOrderBook {
 	result.messageRouter.Add(result.handleFullMarketDataAddOrder)
 	result.messageRouter.Add(result.handleFullMarketDataReduceVolume)
 	result.messageRouter.Add(result.handleFullMarketDataDeleteOrder)
+	result.messageRouter.Add(result.handleFullMarketData_Instrument_InstrumentStatus)
 	result.messageRouter.Add(result.handleFullMarketDataRemoveInstrumentInstruction)
 	return result
 }

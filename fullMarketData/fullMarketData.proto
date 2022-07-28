@@ -6,7 +6,8 @@ option go_package = "/stream";
 
 message FullMarketData_Clear
 {
-  string instrument = 1;
+  string FeedName = 1;
+  string instrument = 2;
 };
 
 
@@ -27,27 +28,31 @@ message FullMarketData_AddOrder{
 }
 message FullMarketData_AddOrderInstruction
 {
-  string instrument = 1;
-  FullMarketData_AddOrder order=2;
+  string FeedName = 1;
+  string instrument = 2;
+  FullMarketData_AddOrder order=3;
 };
 
 
 message FullMarketData_ReduceVolumeInstruction
 {
-  string instrument = 1;
-  string id = 2;
-  double volume = 3;
+  string FeedName = 1;
+  string instrument = 2;
+  string id = 3;
+  double volume = 4;
 };
 
 message FullMarketData_DeleteOrderInstruction
 {
-  string instrument = 1;
-  string  id = 2;
+  string FeedName = 1;
+  string instrument = 2;
+  string  id = 3;
 };
 
 message FullMarketData_RemoveInstrumentInstruction
 {
-  string instrument = 1;
+  string FeedName = 1;
+  string instrument = 2;
 };
 
 message FullMarketData_InstrumentList_Subscribe
@@ -62,9 +67,15 @@ message FullMarketData_InstrumentList_Request
 {
 };
 
+message InstrumentStatus {
+  string instrument = 1;
+  string status = 2;
+}
+
 message FullMarketData_InstrumentList_Response
 {
-  repeated string instruments = 1;
+  string FeedName = 1;
+  repeated InstrumentStatus instruments = 2;
 };
 
 
@@ -79,8 +90,10 @@ message FullMarketData_Instrument_Unregister
   string instrument = 1;
 };
 
-//message FullMarketData_Instrument_Response
-//{
-//  string instrument = 1;
-//};
+
+message FullMarketData_Instrument_InstrumentStatus{
+  string FeedName = 1;
+  string instrument = 2;
+  string Status = 3;
+}
 

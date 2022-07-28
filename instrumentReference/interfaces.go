@@ -41,14 +41,15 @@ type KrakenFeed struct {
 	ReferenceData
 	SystemName       string
 	Pair             string
-	Type             string
 	MappedInstrument string
 }
 
 type KrakenReferenceData struct {
 	ConnectionName string
 	Provider       string
+	Type           string
 	Feeds          []*KrakenFeed
+	Depth          int
 }
 
 func NewDefaultReferenceData() *LunoReferenceData {

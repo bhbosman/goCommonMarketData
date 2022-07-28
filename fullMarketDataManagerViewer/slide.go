@@ -1,6 +1,7 @@
 package fullMarketDataManagerViewer
 
 import (
+	"github.com/bhbosman/goCommonMarketData/fullMarketDataManagerService"
 	"github.com/bhbosman/goCommonMarketData/instrumentReference"
 	"github.com/bhbosman/goMessages/marketData/stream"
 	"github.com/gdamore/tcell/v2"
@@ -124,7 +125,7 @@ func (self *slide) init() {
 		AddItem(
 			tview.NewFlex().
 				SetDirection(tview.FlexColumn).
-				AddItem(self.listTable, 20, 1, true).
+				AddItem(self.listTable, 30, 1, true).
 				AddItem(self.table, 0, 3, false),
 			0,
 			1,
@@ -133,7 +134,7 @@ func (self *slide) init() {
 	self.next = flex
 }
 
-func (self *slide) OnSetMarketDataListChange(list []string) bool {
+func (self *slide) OnSetMarketDataListChange(list []fullMarketDataManagerService.InstrumentStatus) bool {
 	return self.app.QueueUpdate(
 		func() {
 			if list != nil {

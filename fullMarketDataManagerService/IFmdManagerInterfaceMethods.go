@@ -19,7 +19,7 @@ type IFmdManagerGetInstrumentListIn struct {
 }
 
 type IFmdManagerGetInstrumentListOut struct {
-	Args0 []string
+	Args0 []InstrumentStatus
 	Args1 error
 }
 type IFmdManagerGetInstrumentListError struct {
@@ -99,6 +99,96 @@ func CallIFmdManagerGetInstrumentList(context context.Context, channel chan<- in
 	}
 	if err != nil {
 		return IFmdManagerGetInstrumentListOut{}, err
+	}
+	return v, nil
+}
+
+// Interface IFmdManager, Method: MultiSend
+type IFmdManagerMultiSendIn struct {
+	arg0 []interface{}
+}
+
+type IFmdManagerMultiSendOut struct {
+}
+type IFmdManagerMultiSendError struct {
+	InterfaceName string
+	MethodName    string
+	Reason        string
+}
+
+func (self *IFmdManagerMultiSendError) Error() string {
+	return fmt.Sprintf("error in data coming back from %v::%v. Reason: %v", self.InterfaceName, self.MethodName, self.Reason)
+}
+
+type IFmdManagerMultiSend struct {
+	inData         IFmdManagerMultiSendIn
+	outDataChannel chan IFmdManagerMultiSendOut
+}
+
+func NewIFmdManagerMultiSend(waitToComplete bool, arg0 ...interface{}) *IFmdManagerMultiSend {
+	var outDataChannel chan IFmdManagerMultiSendOut
+	if waitToComplete {
+		outDataChannel = make(chan IFmdManagerMultiSendOut)
+	} else {
+		outDataChannel = nil
+	}
+	return &IFmdManagerMultiSend{
+		inData: IFmdManagerMultiSendIn{
+			arg0: arg0,
+		},
+		outDataChannel: outDataChannel,
+	}
+}
+
+func (self *IFmdManagerMultiSend) Wait(onError func(interfaceName string, methodName string, err error) error) (IFmdManagerMultiSendOut, error) {
+	data, ok := <-self.outDataChannel
+	if !ok {
+		generatedError := &IFmdManagerMultiSendError{
+			InterfaceName: "IFmdManager",
+			MethodName:    "MultiSend",
+			Reason:        "Channel for IFmdManager::MultiSend returned false",
+		}
+		if onError != nil {
+			err := onError("IFmdManager", "MultiSend", generatedError)
+			return IFmdManagerMultiSendOut{}, err
+		} else {
+			return IFmdManagerMultiSendOut{}, generatedError
+		}
+	}
+	return data, nil
+}
+
+func (self *IFmdManagerMultiSend) Close() error {
+	close(self.outDataChannel)
+	return nil
+}
+func CallIFmdManagerMultiSend(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 ...interface{}) (IFmdManagerMultiSendOut, error) {
+	if context != nil && context.Err() != nil {
+		return IFmdManagerMultiSendOut{}, context.Err()
+	}
+	data := NewIFmdManagerMultiSend(waitToComplete, arg0...)
+	if waitToComplete {
+		defer func(data *IFmdManagerMultiSend) {
+			err := data.Close()
+			if err != nil {
+			}
+		}(data)
+	}
+	if context != nil && context.Err() != nil {
+		return IFmdManagerMultiSendOut{}, context.Err()
+	}
+	channel <- data
+	var err error
+	var v IFmdManagerMultiSendOut
+	if waitToComplete {
+		v, err = data.Wait(func(interfaceName string, methodName string, err error) error {
+			return err
+		})
+	} else {
+		err = errors.NoWaitOperationError
+	}
+	if err != nil {
+		return IFmdManagerMultiSendOut{}, err
 	}
 	return v, nil
 }
@@ -379,6 +469,13 @@ func ChannelEventsForIFmdManager(next IFmdManager, event interface{}) (bool, err
 	case *IFmdManagerGetInstrumentList:
 		data := IFmdManagerGetInstrumentListOut{}
 		data.Args0, data.Args1 = next.GetInstrumentList()
+		if v.outDataChannel != nil {
+			v.outDataChannel <- data
+		}
+		return true, nil
+	case *IFmdManagerMultiSend:
+		data := IFmdManagerMultiSendOut{}
+		next.MultiSend(v.inData.arg0...)
 		if v.outDataChannel != nil {
 			v.outDataChannel <- data
 		}

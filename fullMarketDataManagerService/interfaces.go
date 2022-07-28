@@ -6,9 +6,15 @@ import (
 	"github.com/bhbosman/gocommon/services/ISendMessage"
 )
 
+type InstrumentStatus struct {
+	Instrument string
+	Status     string
+}
+
 type IFmdManager interface {
 	ISendMessage.ISendMessage
-	GetInstrumentList() ([]string, error)
+	ISendMessage.IMultiSendMessage
+	GetInstrumentList() ([]InstrumentStatus, error)
 	SubscribeFullMarketData(item string)
 	UnsubscribeFullMarketData(item string)
 }

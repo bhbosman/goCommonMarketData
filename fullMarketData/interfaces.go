@@ -11,4 +11,7 @@ type IFullMarketOrderBook interface {
 	BidOrderSide() *avltree.Tree
 	AskOrderSide() *avltree.Tree
 	InstrumentName() string
+	FeedName() string
+	Status() string
+	SetStatus(status string)
 }

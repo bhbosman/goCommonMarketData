@@ -122,7 +122,6 @@ func (self *service) goStart(instanceData IInstrumentReferenceData) {
 						return ChannelEventsForIInstrumentReference(unk, message)
 					}
 					return false, nil
-
 				},
 			},
 			{
@@ -139,14 +138,6 @@ func (self *service) goStart(instanceData IInstrumentReferenceData) {
 			return len(self.cmdChannel) + self.subscribeChannel.Count()
 		},
 		goCommsDefinitions.CreateTryNextFunc(self.cmdChannel),
-		//func(i interface{}) {
-		//	select {
-		//	case self.cmdChannel <- i:
-		//		break
-		//	default:
-		//		break
-		//	}
-		//},
 	)
 loop:
 	for {
@@ -193,7 +184,18 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 			{
 				ConnectionName: "Connection001",
 				Provider:       "Kraken",
+				Type:           "book",
+				Depth:          100,
 				Feeds: []*KrakenFeed{
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.USD/ZAR",
+						Pair:             "USD/ZAR",
+						MappedInstrument: "USD/ZAR",
+					},
 					{
 						//"Connection XBT/USD",
 						ReferenceData: ReferenceData{
@@ -202,64 +204,58 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 						},
 						SystemName:       "Kraken.XBT/USD",
 						Pair:             "XBT/USD",
-						Type:             "book",
 						MappedInstrument: "XBT/USD",
 					},
-					//{
-					//	//"Connection XBT/EUR",
-					//	ReferenceData: ReferenceData{
-					//		priceDecimals:  6,
-					//		volumeDecimals: 6,
-					//	},
-					//	SystemName:       "Kraken.XBT/EUR",
-					//	Pair:             "XBT/EUR",
-					//	Type:             "Book",
-					//	MappedInstrument: "XBT/EUR",
-					//},
-					//{
-					//	//"Connection XBT/CAD",
-					//	ReferenceData: ReferenceData{
-					//		priceDecimals:  6,
-					//		volumeDecimals: 6,
-					//	},
-					//	SystemName:       "Kraken.XBT/CAD",
-					//	Pair:             "XBT/CAD",
-					//	Type:             "Book",
-					//	MappedInstrument: "XBT/CAD",
-					//},
-					//{
-					//	//"Connection EUR/USD",
-					//	ReferenceData: ReferenceData{
-					//		priceDecimals:  6,
-					//		volumeDecimals: 6,
-					//	},
-					//	SystemName:       "Kraken.EUR/USD",
-					//	Pair:             "EUR/USD",
-					//	Type:             "Book",
-					//	MappedInstrument: "EUR/USD",
-					//},
-					//{
-					//	//"Connection GBP/USD",
-					//	ReferenceData: ReferenceData{
-					//		priceDecimals:  6,
-					//		volumeDecimals: 6,
-					//	},
-					//	SystemName:       "Kraken.GBP/USD",
-					//	Pair:             "GBP/USD",
-					//	Type:             "Book",
-					//	MappedInstrument: "GBP/USD",
-					//},
-					//{
-					//	//"Connection USD/CAD",
-					//	ReferenceData: ReferenceData{
-					//		priceDecimals:  6,
-					//		volumeDecimals: 6,
-					//	},
-					//	SystemName:       "Kraken.USD/CAD",
-					//	Pair:             "USD/CAD",
-					//	Type:             "Book",
-					//	MappedInstrument: "USD/CAD",
-					//},
+					{
+						//"Connection XBT/EUR",
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.XBT/EUR",
+						Pair:             "XBT/EUR",
+						MappedInstrument: "XBT/EUR",
+					},
+					{
+						//"Connection XBT/CAD",
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.XBT/CAD",
+						Pair:             "XBT/CAD",
+						MappedInstrument: "XBT/CAD",
+					},
+					{
+						//"Connection EUR/USD",
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.EUR/USD",
+						Pair:             "EUR/USD",
+						MappedInstrument: "EUR/USD",
+					},
+					{
+						//"Connection GBP/USD",
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.GBP/USD",
+						Pair:             "GBP/USD",
+						MappedInstrument: "GBP/USD",
+					},
+					{
+						//"Connection USD/CAD",
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.USD/CAD",
+						Pair:             "USD/CAD",
+						MappedInstrument: "USD/CAD",
+					},
 				},
 			},
 		},

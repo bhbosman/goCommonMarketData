@@ -25,6 +25,10 @@ type data struct {
 	fullMarketDataHelper     fullMarketDataHelper.IFullMarketDataHelper
 }
 
+func (self *data) MultiSend(messages ...interface{}) {
+	self.MessageRouter.MultiRoute(messages...)
+}
+
 func (self *data) SubscribeFullMarketData(item string) {
 	if v, ok := self.fmdCount[item]; ok {
 		self.fmdCount[item] = v + 1
@@ -53,20 +57,20 @@ func (self *data) UnsubscribeFullMarketData(item string) {
 				},
 				key,
 			)
-			if self.proxy {
-				self.fmd[item] = fullMarketData.NewFullMarketOrderBook(item)
-			}
+			//if self.proxy {
+			//	self.fmd[item] = fullMarketData.NewFullMarketOrderBook(item)
+			//}
 		}
 	}
 }
 
-func (self *data) GetInstrumentList() ([]string, error) {
+func (self *data) GetInstrumentList() ([]InstrumentStatus, error) {
 	return self.buildInstrumentList()
 }
 
 func (self *data) Send(message interface{}) error {
-	_, err := self.MessageRouter.Route(message)
-	return err
+	self.MessageRouter.Route(message)
+	return nil
 }
 
 func (self *data) SomeMethod() {
@@ -76,11 +80,11 @@ func (self *data) ShutDown() error {
 	return nil
 }
 
-func (self *data) findFullMarketDataBook(name string) fullMarketData.IFullMarketOrderBook {
+func (self *data) findFullMarketDataBook(feedName, name string) fullMarketData.IFullMarketOrderBook {
 	if result, ok := self.fmd[name]; ok {
 		return result
 	}
-	result := fullMarketData.NewFullMarketOrderBook(name)
+	result := fullMarketData.NewFullMarketOrderBook(feedName, name)
 	self.fmd[name] = result
 	self.publishListOfInstruments = true
 	return result
@@ -99,9 +103,16 @@ func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
 	// Publish List
 	if self.publishListOfInstruments {
 		ss, _ := self.buildInstrumentList()
+		InstrumentStatusArray := make([]*stream2.InstrumentStatus, len(ss), len(ss))
+		for i, s := range ss {
+			InstrumentStatusArray[i] = &stream2.InstrumentStatus{
+				Instrument: s.Instrument,
+				Status:     s.Status,
+			}
+		}
 		if self.pubSub.PubWithContext(
 			&stream2.FullMarketData_InstrumentList_Response{
-				Instruments: ss,
+				Instruments: InstrumentStatusArray,
 			},
 			self.fullMarketDataHelper.InstrumentListChannelName(),
 		) {
@@ -165,13 +176,13 @@ func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_AddOrderInstructionWrapper(msg *stream2.FullMarketData_AddOrderInstructionWrapper) {
-	_, _ = self.MessageRouter.Route(msg.Data)
+	self.MessageRouter.Route(msg.Data)
 }
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_AddOrderInstruction(msg *stream2.FullMarketData_AddOrderInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		self.findFullMarketDataBook(msg.Instrument).Send(msg)
+		self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 		self.fmdDirty[msg.Instrument] = true
 	}
@@ -179,25 +190,25 @@ func (self *data) handleFullMarketData_AddOrderInstruction(msg *stream2.FullMark
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_ClearWrapper(msg *stream2.FullMarketData_ClearWrapper) {
-	_, _ = self.MessageRouter.Route(msg.Data)
+	self.MessageRouter.Route(msg.Data)
 }
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_Clear(msg *stream2.FullMarketData_Clear) {
-	self.findFullMarketDataBook(msg.Instrument).Send(msg)
+	self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
 	self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 	self.fmdDirty[msg.Instrument] = true
 }
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_ReduceVolumeInstructionWrapper(msg *stream2.FullMarketData_ReduceVolumeInstructionWrapper) {
-	_, _ = self.MessageRouter.Route(msg.Data)
+	self.MessageRouter.Route(msg.Data)
 }
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_ReduceVolumeInstruction(msg *stream2.FullMarketData_ReduceVolumeInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		self.findFullMarketDataBook(msg.Instrument).Send(msg)
+		self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 		self.fmdDirty[msg.Instrument] = true
 	}
@@ -205,13 +216,25 @@ func (self *data) handleFullMarketData_ReduceVolumeInstruction(msg *stream2.Full
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_DeleteOrderInstructionWrapper(msg *stream2.FullMarketData_DeleteOrderInstructionWrapper) {
-	_, _ = self.MessageRouter.Route(msg.Data)
+	self.MessageRouter.Route(msg.Data)
+}
+
+//goland:noinspection GoSnakeCaseUsage
+func (self *data) handleFullMarketData_Instrument_InstrumentStatusWrapper(msg *stream2.FullMarketData_Instrument_InstrumentStatusWrapper) {
+	self.MessageRouter.Route(msg.Data)
+}
+
+//goland:noinspection GoSnakeCaseUsage
+func (self *data) handleFullMarketData_Instrument_InstrumentStatus(msg *stream2.FullMarketData_Instrument_InstrumentStatus) {
+	self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
+	self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
+	self.publishListOfInstruments = true
 }
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_DeleteOrderInstruction(msg *stream2.FullMarketData_DeleteOrderInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		self.findFullMarketDataBook(msg.Instrument).Send(msg)
+		self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 		self.fmdDirty[msg.Instrument] = true
 	}
@@ -270,13 +293,28 @@ func (self *data) calculate(force bool, fullMarketOrderBook fullMarketData.IFull
 	return nil, false
 }
 
-func (self *data) buildInstrumentList() ([]string, error) {
+func (self *data) buildInstrumentList() ([]InstrumentStatus, error) {
 	var ss []string
 	for key := range self.fmd {
 		ss = append(ss, key)
 	}
 	sort.Strings(ss)
-	return ss, nil
+	result := make([]InstrumentStatus, len(ss), len(ss))
+	for i, s := range ss {
+		if status, ok := self.fmd[s]; ok {
+			result[i] = InstrumentStatus{
+				Instrument: s,
+				Status:     status.Status(),
+			}
+			continue
+		}
+		result[i] = InstrumentStatus{
+			Instrument: s,
+			Status:     "",
+		}
+	}
+
+	return result, nil
 }
 
 //goland:noinspection GoSnakeCaseUsage
@@ -359,29 +397,61 @@ func (self *data) handleFullMarketData_InstrumentList_RequestWrapper(request *st
 	if err != nil {
 		return
 	}
+	InstrumentStatusArray := make([]*stream2.InstrumentStatus, len(ss), len(ss))
+	for i, s := range ss {
+		InstrumentStatusArray[i] = &stream2.InstrumentStatus{
+			Instrument: s.Instrument,
+			Status:     s.Status,
+		}
+	}
+
 	request.ToNext(
 		&stream2.FullMarketData_InstrumentList_Response{
-			Instruments: ss,
+			Instruments: InstrumentStatusArray,
 		},
 	)
 }
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_InstrumentList_ResponseWrapper(incomingMessage *stream2.FullMarketData_InstrumentList_ResponseWrapper) {
-	fmd := make(map[string]fullMarketData.IFullMarketOrderBook)
+	m := make(map[string]string)
 	for _, instrument := range incomingMessage.Data.Instruments {
-		if value, ok := self.fmd[instrument]; ok {
-			fmd[instrument] = value
+		m[instrument.Instrument] = instrument.Status
+	}
+
+	feedFmdMap := make(map[string]fullMarketData.IFullMarketOrderBook)
+	otherFmdMap := make(map[string]fullMarketData.IFullMarketOrderBook)
+	for key, orderBook := range self.fmd {
+		if orderBook.FeedName() == incomingMessage.Data.FeedName {
+			if v, ok := m[key]; ok {
+				orderBook.SetStatus(v)
+				feedFmdMap[key] = orderBook
+				delete(m, key)
+			}
 		} else {
-			fmd[instrument] = fullMarketData.NewFullMarketOrderBook(instrument)
+			otherFmdMap[key] = orderBook
 		}
 	}
-	self.fmd = fmd
+	for k, v := range m {
+		newInstrument := fullMarketData.NewFullMarketOrderBook(incomingMessage.Data.FeedName, k)
+		newInstrument.SetStatus(v)
+		feedFmdMap[k] = newInstrument
+	}
+
+	self.fmd = make(map[string]fullMarketData.IFullMarketOrderBook)
+	for key, value := range otherFmdMap {
+		self.fmd[key] = value
+	}
+	for key, value := range feedFmdMap {
+		self.fmd[key] = value
+	}
+
 	self.publishListOfInstruments = true
 }
 
 func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper, proxy bool) (IFmdManagerData, error) {
 	result := &data{
+		proxy:                proxy,
 		outstandingRequests:  make(map[goCommsDefinitions.IAdder]interface{}),
 		queuedMessages:       make(map[string]*stream.PublishTop5),
 		MessageRouter:        messageRouter.NewMessageRouter(),
@@ -390,7 +460,6 @@ func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IF
 		fmdDirty:             make(map[string]bool),
 		fmdCount:             make(map[string]int),
 		fullMarketDataHelper: fullMarketDataHelper,
-		proxy:                proxy,
 	}
 	_ = result.MessageRouter.Add(result.handleEmptyQueue)
 	//
@@ -398,11 +467,13 @@ func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IF
 	_ = result.MessageRouter.Add(result.handleFullMarketData_ClearWrapper)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_ReduceVolumeInstructionWrapper)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_DeleteOrderInstructionWrapper)
+	_ = result.MessageRouter.Add(result.handleFullMarketData_Instrument_InstrumentStatusWrapper)
 	//
 	_ = result.MessageRouter.Add(result.handleFullMarketData_AddOrderInstruction)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_Clear)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_ReduceVolumeInstruction)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_DeleteOrderInstruction)
+	_ = result.MessageRouter.Add(result.handleFullMarketData_Instrument_InstrumentStatus)
 	//
 	_ = result.MessageRouter.Add(result.handlePublishFullMarketData)
 	_ = result.MessageRouter.Add(result.handleFullMarketDataRemoveInstrumentInstruction)
