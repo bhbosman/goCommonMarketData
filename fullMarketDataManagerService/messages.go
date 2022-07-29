@@ -3,6 +3,7 @@ package fullMarketDataManagerService
 import (
 	"github.com/bhbosman/goCommonMarketData/fullMarketData"
 	"github.com/bhbosman/goCommsDefinitions"
+	"github.com/reactivex/rxgo/v2"
 )
 
 type PublishFullMarketData struct {
@@ -10,7 +11,10 @@ type PublishFullMarketData struct {
 	PubSubBag         goCommsDefinitions.IPubSubBag
 }
 
-func NewPublishFullMarketData(publishInstrument string, PubSubBag goCommsDefinitions.IPubSubBag) *PublishFullMarketData {
+func NewPublishFullMarketData(
+	publishInstrument string,
+	PubSubBag goCommsDefinitions.IPubSubBag,
+) *PublishFullMarketData {
 	return &PublishFullMarketData{
 		PublishInstrument: publishInstrument,
 		PubSubBag:         PubSubBag,
@@ -32,5 +36,15 @@ func NewCallbackMessage(
 		Data:           data,
 		CallBack:       callBack,
 		InstrumentName: instrumentName,
+	}
+}
+
+type RequestAllInstruments struct {
+	Next rxgo.NextFunc
+}
+
+func NewRequestAllInstruments(next rxgo.NextFunc) *RequestAllInstruments {
+	return &RequestAllInstruments{
+		Next: next,
 	}
 }

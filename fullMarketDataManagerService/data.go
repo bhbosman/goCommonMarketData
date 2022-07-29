@@ -9,6 +9,7 @@ import (
 	"github.com/bhbosman/gocommon/messageRouter"
 	"github.com/bhbosman/gocommon/messages"
 	"github.com/cskr/pubsub"
+	"github.com/reactivex/rxgo/v2"
 	"sort"
 )
 
@@ -378,6 +379,10 @@ func (self *data) handleFullMarketData_Instrument_RegisterWrapper(request *strea
 	self.outstandingRequests[request.Adder()] = request
 }
 
+func (self *data) handleRequestAllInstruments(request *RequestAllInstruments) {
+	self.doInstrumentListRequest(request.Next)
+}
+
 func (self *data) handleCallbackMessage(request *CallbackMessage) {
 	if v, ok := self.fmd[request.InstrumentName]; ok {
 		if request.CallBack != nil {
@@ -390,9 +395,15 @@ func (self *data) handleCallbackMessage(request *CallbackMessage) {
 func (self *data) handleFullMarketData_Instrument_UnregisterWrapper(request *stream2.FullMarketData_Instrument_UnregisterWrapper) {
 	self.UnsubscribeFullMarketData(request.Data.Instrument)
 }
+func (self *data) handleFullMarketData_InstrumentList_RequestWrapper(request *stream2.FullMarketData_InstrumentList_RequestWrapper) {
+	self.doInstrumentListRequest(request.ToNext)
+}
 
 //goland:noinspection GoSnakeCaseUsage
-func (self *data) handleFullMarketData_InstrumentList_RequestWrapper(request *stream2.FullMarketData_InstrumentList_RequestWrapper) {
+func (self *data) doInstrumentListRequest(cb rxgo.NextFunc) {
+	if cb == nil {
+		return
+	}
 	ss, err := self.buildInstrumentList()
 	if err != nil {
 		return
@@ -404,8 +415,7 @@ func (self *data) handleFullMarketData_InstrumentList_RequestWrapper(request *st
 			Status:     s.Status,
 		}
 	}
-
-	request.ToNext(
+	cb(
 		&stream2.FullMarketData_InstrumentList_Response{
 			Instruments: InstrumentStatusArray,
 		},
@@ -485,6 +495,7 @@ func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IF
 	_ = result.MessageRouter.Add(result.handleFullMarketData_Instrument_UnregisterWrapper)
 	//
 	_ = result.MessageRouter.Add(result.handleCallbackMessage)
+	_ = result.MessageRouter.Add(result.handleRequestAllInstruments)
 
 	//
 	return result, nil
