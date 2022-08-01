@@ -262,8 +262,8 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 					//ADA/EUR
 					{
 						ReferenceData: ReferenceData{
-							priceDecimals:  6,
-							volumeDecimals: 6,
+							priceDecimals:  8,
+							volumeDecimals: 8,
 						},
 						SystemName:       "Kraken.ADA/EUR",
 						Pair:             "ADA/EUR",
@@ -272,8 +272,8 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 					//ADA/ETH
 					{
 						ReferenceData: ReferenceData{
-							priceDecimals:  6,
-							volumeDecimals: 6,
+							priceDecimals:  8,
+							volumeDecimals: 8,
 						},
 						SystemName:       "Kraken.ADA/ETH",
 						Pair:             "ADA/ETH",
@@ -282,8 +282,8 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 					//ADA/USD
 					{
 						ReferenceData: ReferenceData{
-							priceDecimals:  6,
-							volumeDecimals: 6,
+							priceDecimals:  8,
+							volumeDecimals: 8,
 						},
 						SystemName:       "Kraken.ADA/USD",
 						Pair:             "ADA/USD",
@@ -292,8 +292,8 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 					//ALGO/ETH
 					{
 						ReferenceData: ReferenceData{
-							priceDecimals:  6,
-							volumeDecimals: 6,
+							priceDecimals:  8,
+							volumeDecimals: 8,
 						},
 						SystemName:       "Kraken.ALGO/ETH",
 						Pair:             "ALGO/ETH",
@@ -302,8 +302,8 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 					//ADA/XBT
 					{
 						ReferenceData: ReferenceData{
-							priceDecimals:  6,
-							volumeDecimals: 6,
+							priceDecimals:  8,
+							volumeDecimals: 8,
 						},
 						SystemName:       "Kraken.ADA/XBT",
 						Pair:             "ADA/XBT",
@@ -312,8 +312,8 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 					//ALGO/EUR
 					{
 						ReferenceData: ReferenceData{
-							priceDecimals:  6,
-							volumeDecimals: 6,
+							priceDecimals:  8,
+							volumeDecimals: 8,
 						},
 						SystemName:       "Kraken.ALGO/EUR",
 						Pair:             "ALGO/EUR",
@@ -1021,36 +1021,315 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 						MappedInstrument: "KNC/USD",
 					},
 					//KNC/XBT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.KNC/XBT",
+						Pair:             "KNC/XBT",
+						MappedInstrument: "KNC/XBT",
+					},
 					//KSM/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.KSM/ETH",
+						Pair:             "KSM/ETH",
+						MappedInstrument: "KSM/ETH",
+					},
 					//KSM/EUR
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.KSM/EUR",
+						Pair:             "KSM/EUR",
+						MappedInstrument: "KSM/EUR",
+					},
 					//KSM/USD
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.KSM/USD",
+						Pair:             "KSM/USD",
+						MappedInstrument: "KSM/USD",
+					},
 					//KSM/XBT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.KSM/XBT",
+						Pair:             "KSM/XBT",
+						MappedInstrument: "KSM/XBT",
+					},
 					//LINK/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LINK/ETH",
+						Pair:             "LINK/ETH",
+						MappedInstrument: "LINK/ETH",
+					},
 					//LINK/EUR
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LINK/EUR",
+						Pair:             "LINK/EUR",
+						MappedInstrument: "LINK/EUR",
+					},
 					//LINK/USD
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LINK/USD",
+						Pair:             "LINK/USD",
+						MappedInstrument: "LINK/USD",
+					},
 					//LINK/XBT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LINK/XBT",
+						Pair:             "LINK/XBT",
+						MappedInstrument: "LINK/XBT",
+					},
 					//LSK/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LSK/ETH",
+						Pair:             "LSK/ETH",
+						MappedInstrument: "LSK/ETH",
+					},
 					//LSK/EUR
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LSK/EUR",
+						Pair:             "LSK/EUR",
+						MappedInstrument: "LSK/EUR",
+					},
 					//LSK/USD
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LSK/USD",
+						Pair:             "LSK/USD",
+						MappedInstrument: "LSK/USD",
+					},
 					//LSK/XBT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LSK/XBT",
+						Pair:             "LSK/XBT",
+						MappedInstrument: "LSK/XBT",
+					},
 					//LTC/AUD
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LTC/AUD",
+						Pair:             "LTC/AUD",
+						MappedInstrument: "LTC/AUD",
+					},
 					//LTC/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LTC/ETH",
+						Pair:             "LTC/ETH",
+						MappedInstrument: "LTC/ETH",
+					},
 					//LTC/GBP
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LTC/GBP",
+						Pair:             "LTC/GBP",
+						MappedInstrument: "LTC/GBP",
+					},
 					//LTC/USDT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.LTC/USDT",
+						Pair:             "LTC/USDT",
+						MappedInstrument: "LTC/USDT",
+					},
 					//NANO/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.NANO/ETH",
+						Pair:             "NANO/ETH",
+						MappedInstrument: "NANO/ETH",
+					},
 					//NANO/EUR
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.NANO/EUR",
+						Pair:             "NANO/EUR",
+						MappedInstrument: "NANO/EUR",
+					},
 					//NANO/USD
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.NANO/USD",
+						Pair:             "NANO/USD",
+						MappedInstrument: "NANO/USD",
+					},
 					//NANO/XBT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.NANO/XBT",
+						Pair:             "NANO/XBT",
+						MappedInstrument: "NANO/XBT",
+					},
 					//OMG/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OMG/ETH",
+						Pair:             "OMG/ETH",
+						MappedInstrument: "OMG/ETH",
+					},
 					//OMG/EUR
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OMG/EUR",
+						Pair:             "OMG/EUR",
+						MappedInstrument: "OMG/EUR",
+					},
 					//OMG/USD
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OMG/USD",
+						Pair:             "OMG/USD",
+						MappedInstrument: "OMG/USD",
+					},
 					//OMG/XBT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OMG/XBT",
+						Pair:             "OMG/XBT",
+						MappedInstrument: "OMG/XBT",
+					},
 					//OXT/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OXT/ETH",
+						Pair:             "OXT/ETH",
+						MappedInstrument: "OXT/ETH",
+					},
 					//OXT/EUR
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OXT/EUR",
+						Pair:             "OXT/EUR",
+						MappedInstrument: "OXT/EUR",
+					},
 					//OXT/USD
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OXT/USD",
+						Pair:             "OXT/USD",
+						MappedInstrument: "OXT/USD",
+					},
 					//OXT/XBT
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.OXT/XBT",
+						Pair:             "OXT/XBT",
+						MappedInstrument: "OXT/XBT",
+					},
 					//PAXG/ETH
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.PAXG/ETH",
+						Pair:             "PAXG/ETH",
+						MappedInstrument: "PAXG/ETH",
+					},
 					//PAXG/EUR
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 6,
+						},
+						SystemName:       "Kraken.PAXG/EUR",
+						Pair:             "PAXG/EUR",
+						MappedInstrument: "PAXG/EUR",
+					},
 					//PAXG/USD
 					//PAXG/XBT
 					//QTUM/ETH

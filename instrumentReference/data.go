@@ -33,7 +33,7 @@ func (self *data) GetLunoProviders() ([]LunoReferenceData, error) {
 }
 
 func (self *data) GetReferenceData(instrumentData string) (IReferenceData, bool) {
-	if v, ok := self.lunoProviders[instrumentData]; ok {
+	if v, ok := self.referenceData[instrumentData]; ok {
 		return v, true
 	}
 	return nil, false

@@ -24,12 +24,12 @@ func NewPublishFullMarketData(
 type CallbackMessage struct {
 	Data           interface{}
 	InstrumentName string
-	CallBack       func(data interface{}, fullMarketOrderBook fullMarketData.IFullMarketOrderBook)
+	CallBack       func(data interface{}, fullMarketOrderBook fullMarketData.IFullMarketOrderBook) []interface{}
 }
 
 func NewCallbackMessage(
 	instrumentName string,
-	callBack func(data interface{}, fullMarketOrderBook fullMarketData.IFullMarketOrderBook),
+	callBack func(data interface{}, fullMarketOrderBook fullMarketData.IFullMarketOrderBook) []interface{},
 	data interface{},
 ) *CallbackMessage {
 	return &CallbackMessage{

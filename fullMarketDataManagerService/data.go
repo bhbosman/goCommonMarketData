@@ -320,6 +320,15 @@ func (self *data) buildInstrumentList() ([]InstrumentStatus, error) {
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) doFullMarketData_Instrument_RegisterWrapper(request *stream2.FullMarketData_Instrument_RegisterWrapper) {
+	//
+	//ch := make(chan rxgo.Item)
+	//rxgo.FromChannel(ch,
+	//	rxgo.WithBufferedChannel(1024),
+	//	rxgo.WithBackPressureStrategy(rxgo.Block),
+	//).WindowWithCount(32).DoOnNext(func(i interface{}) {
+	//
+	//})
+
 	if fmdBook, ok := self.fmd[request.Data.Instrument]; ok {
 		if highBidNode := fmdBook.BidOrderSide().Right(); highBidNode != nil {
 			for node := highBidNode; node != nil; node = node.Prev() {
@@ -386,7 +395,10 @@ func (self *data) handleRequestAllInstruments(request *RequestAllInstruments) {
 func (self *data) handleCallbackMessage(request *CallbackMessage) {
 	if v, ok := self.fmd[request.InstrumentName]; ok {
 		if request.CallBack != nil {
-			request.CallBack(request.Data, v)
+			messages := request.CallBack(request.Data, v)
+			if messages != nil {
+				self.MessageRouter.MultiRoute(messages...)
+			}
 		}
 	}
 }
