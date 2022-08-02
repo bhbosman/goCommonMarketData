@@ -27,6 +27,20 @@ type service struct {
 	fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper
 }
 
+func (self *service) SubscribeFullMarketDataMulti(items ...string) {
+	_, err := CallIFmdManagerSubscribeFullMarketDataMulti(self.ctx, self.cmdChannel, false, items...)
+	if err != nil {
+		return
+	}
+}
+
+func (self *service) UnsubscribeFullMarketDataMulti(items ...string) {
+	_, err := CallIFmdManagerUnsubscribeFullMarketDataMulti(self.ctx, self.cmdChannel, false, items...)
+	if err != nil {
+		return
+	}
+}
+
 func (self *service) MultiSend(messages ...interface{}) {
 	_, err := CallIFmdManagerMultiSend(self.ctx, self.cmdChannel, false, messages...)
 	if err != nil {

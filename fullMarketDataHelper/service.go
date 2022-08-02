@@ -13,6 +13,14 @@ type FullMarketDataHelper struct {
 	pubSub *pubsub.PubSub
 }
 
+func (self *FullMarketDataHelper) InstrumentChannelNameMulti(instruments ...string) []string {
+	result := make([]string, len(instruments))
+	for i, s := range instruments {
+		result[i] = self.InstrumentChannelName(s)
+	}
+	return result
+}
+
 func (self *FullMarketDataHelper) RegisteredSource(instrument string) string {
 	return fmt.Sprintf("FMD.RegisteredSource.INSTANCE.%v", instrument)
 }

@@ -148,14 +148,6 @@ func (self *service) goStart(instanceData IFullMarketDataViewData) {
 			return len(self.cmdChannel) + self.subscribeChannel.Count()
 		},
 		goCommsDefinitions.CreateTryNextFunc(self.cmdChannel),
-		//func(i interface{}) {
-		//	select {
-		//	case self.cmdChannel <- i:
-		//		break
-		//	default:
-		//		break
-		//	}
-		//},
 	)
 loop:
 	for {

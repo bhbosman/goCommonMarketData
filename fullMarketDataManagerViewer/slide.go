@@ -36,10 +36,6 @@ func (self *slide) Toggle(b bool) {
 	}
 	if b {
 		self.app.ForceDraw()
-
-		go func() {
-			//self.SetConnectionListChange(self.names)
-		}()
 	}
 }
 
@@ -88,7 +84,7 @@ func (self *slide) init() {
 	self.table.SetSelectable(true, false)
 	self.table.SetBorder(true)
 	self.table.SetFixed(1, 1)
-	self.table.SetTitle("Registered go Functions")
+	self.table.SetTitle("Full Market Data Viewer")
 	self.table.SetContent(&emptyCell{})
 
 	self.listTable = tview.NewTable()

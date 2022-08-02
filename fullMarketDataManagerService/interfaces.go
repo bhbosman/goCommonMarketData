@@ -32,6 +32,8 @@ type IFmdManager interface {
 	GetInstrumentList() ([]InstrumentStatus, error)
 	SubscribeFullMarketData(item string)
 	UnsubscribeFullMarketData(item string)
+	SubscribeFullMarketDataMulti(items ...string)
+	UnsubscribeFullMarketDataMulti(items ...string)
 }
 
 type IFmdManagerService interface {

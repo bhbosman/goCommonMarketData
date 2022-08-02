@@ -12,18 +12,6 @@ type factory struct {
 	instrumentReferenceService instrumentReference.IInstrumentReferenceService
 }
 
-func NewCoverSlideFactory(
-	Service IFullMarketDataViewService,
-	app *tview.Application,
-	instrumentReferenceService instrumentReference.IInstrumentReferenceService,
-) *factory {
-	return &factory{
-		Service:                    Service,
-		app:                        app,
-		instrumentReferenceService: instrumentReferenceService,
-	}
-}
-
 func (self *factory) OrderNumber() int {
 	return 2
 }
@@ -42,4 +30,16 @@ func (self *factory) Content(nextSlide func()) (string, ui2.IPrimitiveCloser, er
 
 func (self *factory) Title() string {
 	return "MarketData"
+}
+
+func NewCoverSlideFactory(
+	Service IFullMarketDataViewService,
+	app *tview.Application,
+	instrumentReferenceService instrumentReference.IInstrumentReferenceService,
+) *factory {
+	return &factory{
+		Service:                    Service,
+		app:                        app,
+		instrumentReferenceService: instrumentReferenceService,
+	}
 }

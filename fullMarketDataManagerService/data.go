@@ -28,6 +28,18 @@ type data struct {
 	fullMarketDataHelper     fullMarketDataHelper.IFullMarketDataHelper
 }
 
+func (self *data) SubscribeFullMarketDataMulti(item ...string) {
+	for _, s := range item {
+		self.SubscribeFullMarketData(s)
+	}
+}
+
+func (self *data) UnsubscribeFullMarketDataMulti(item ...string) {
+	for _, s := range item {
+		self.UnsubscribeFullMarketData(s)
+	}
+}
+
 func (self *data) MultiSend(messages ...interface{}) {
 	self.MessageRouter.MultiRoute(messages...)
 }

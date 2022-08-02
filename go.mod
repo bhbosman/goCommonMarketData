@@ -3,7 +3,7 @@ module github.com/bhbosman/goCommonMarketData
 go 1.18
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20220724214237-63eea03e3695
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20220801175552-c5aa68065af3
 	github.com/bhbosman/goMessages v0.0.0-20220719163819-d38fc7e6d38c
 	github.com/bhbosman/goUi v0.0.0-20220721070442-c6483ac2b608
 	github.com/bhbosman/gocommon v0.0.0-20220721070423-baf2cd622704
@@ -12,6 +12,7 @@ require (
 	github.com/cskr/pubsub v1.0.2
 	github.com/emirpasic/gods v1.18.1
 	github.com/gdamore/tcell/v2 v2.5.1
+	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/rivo/tview v0.0.0-20220709181631-73bf2902b59a
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
@@ -28,7 +29,6 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/reactivex/rxgo/v2 v2.5.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/stretchr/objx v0.1.0 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect

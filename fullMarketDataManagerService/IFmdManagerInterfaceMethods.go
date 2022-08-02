@@ -374,6 +374,96 @@ func CallIFmdManagerSubscribeFullMarketData(context context.Context, channel cha
 	return v, nil
 }
 
+// Interface IFmdManager, Method: SubscribeFullMarketDataMulti
+type IFmdManagerSubscribeFullMarketDataMultiIn struct {
+	arg0 []string
+}
+
+type IFmdManagerSubscribeFullMarketDataMultiOut struct {
+}
+type IFmdManagerSubscribeFullMarketDataMultiError struct {
+	InterfaceName string
+	MethodName    string
+	Reason        string
+}
+
+func (self *IFmdManagerSubscribeFullMarketDataMultiError) Error() string {
+	return fmt.Sprintf("error in data coming back from %v::%v. Reason: %v", self.InterfaceName, self.MethodName, self.Reason)
+}
+
+type IFmdManagerSubscribeFullMarketDataMulti struct {
+	inData         IFmdManagerSubscribeFullMarketDataMultiIn
+	outDataChannel chan IFmdManagerSubscribeFullMarketDataMultiOut
+}
+
+func NewIFmdManagerSubscribeFullMarketDataMulti(waitToComplete bool, arg0 ...string) *IFmdManagerSubscribeFullMarketDataMulti {
+	var outDataChannel chan IFmdManagerSubscribeFullMarketDataMultiOut
+	if waitToComplete {
+		outDataChannel = make(chan IFmdManagerSubscribeFullMarketDataMultiOut)
+	} else {
+		outDataChannel = nil
+	}
+	return &IFmdManagerSubscribeFullMarketDataMulti{
+		inData: IFmdManagerSubscribeFullMarketDataMultiIn{
+			arg0: arg0,
+		},
+		outDataChannel: outDataChannel,
+	}
+}
+
+func (self *IFmdManagerSubscribeFullMarketDataMulti) Wait(onError func(interfaceName string, methodName string, err error) error) (IFmdManagerSubscribeFullMarketDataMultiOut, error) {
+	data, ok := <-self.outDataChannel
+	if !ok {
+		generatedError := &IFmdManagerSubscribeFullMarketDataMultiError{
+			InterfaceName: "IFmdManager",
+			MethodName:    "SubscribeFullMarketDataMulti",
+			Reason:        "Channel for IFmdManager::SubscribeFullMarketDataMulti returned false",
+		}
+		if onError != nil {
+			err := onError("IFmdManager", "SubscribeFullMarketDataMulti", generatedError)
+			return IFmdManagerSubscribeFullMarketDataMultiOut{}, err
+		} else {
+			return IFmdManagerSubscribeFullMarketDataMultiOut{}, generatedError
+		}
+	}
+	return data, nil
+}
+
+func (self *IFmdManagerSubscribeFullMarketDataMulti) Close() error {
+	close(self.outDataChannel)
+	return nil
+}
+func CallIFmdManagerSubscribeFullMarketDataMulti(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 ...string) (IFmdManagerSubscribeFullMarketDataMultiOut, error) {
+	if context != nil && context.Err() != nil {
+		return IFmdManagerSubscribeFullMarketDataMultiOut{}, context.Err()
+	}
+	data := NewIFmdManagerSubscribeFullMarketDataMulti(waitToComplete, arg0...)
+	if waitToComplete {
+		defer func(data *IFmdManagerSubscribeFullMarketDataMulti) {
+			err := data.Close()
+			if err != nil {
+			}
+		}(data)
+	}
+	if context != nil && context.Err() != nil {
+		return IFmdManagerSubscribeFullMarketDataMultiOut{}, context.Err()
+	}
+	channel <- data
+	var err error
+	var v IFmdManagerSubscribeFullMarketDataMultiOut
+	if waitToComplete {
+		v, err = data.Wait(func(interfaceName string, methodName string, err error) error {
+			return err
+		})
+	} else {
+		err = errors.NoWaitOperationError
+	}
+	if err != nil {
+		return IFmdManagerSubscribeFullMarketDataMultiOut{}, err
+	}
+	return v, nil
+}
+
 // Interface IFmdManager, Method: UnsubscribeFullMarketData
 type IFmdManagerUnsubscribeFullMarketDataIn struct {
 	arg0 string
@@ -464,6 +554,96 @@ func CallIFmdManagerUnsubscribeFullMarketData(context context.Context, channel c
 	return v, nil
 }
 
+// Interface IFmdManager, Method: UnsubscribeFullMarketDataMulti
+type IFmdManagerUnsubscribeFullMarketDataMultiIn struct {
+	arg0 []string
+}
+
+type IFmdManagerUnsubscribeFullMarketDataMultiOut struct {
+}
+type IFmdManagerUnsubscribeFullMarketDataMultiError struct {
+	InterfaceName string
+	MethodName    string
+	Reason        string
+}
+
+func (self *IFmdManagerUnsubscribeFullMarketDataMultiError) Error() string {
+	return fmt.Sprintf("error in data coming back from %v::%v. Reason: %v", self.InterfaceName, self.MethodName, self.Reason)
+}
+
+type IFmdManagerUnsubscribeFullMarketDataMulti struct {
+	inData         IFmdManagerUnsubscribeFullMarketDataMultiIn
+	outDataChannel chan IFmdManagerUnsubscribeFullMarketDataMultiOut
+}
+
+func NewIFmdManagerUnsubscribeFullMarketDataMulti(waitToComplete bool, arg0 ...string) *IFmdManagerUnsubscribeFullMarketDataMulti {
+	var outDataChannel chan IFmdManagerUnsubscribeFullMarketDataMultiOut
+	if waitToComplete {
+		outDataChannel = make(chan IFmdManagerUnsubscribeFullMarketDataMultiOut)
+	} else {
+		outDataChannel = nil
+	}
+	return &IFmdManagerUnsubscribeFullMarketDataMulti{
+		inData: IFmdManagerUnsubscribeFullMarketDataMultiIn{
+			arg0: arg0,
+		},
+		outDataChannel: outDataChannel,
+	}
+}
+
+func (self *IFmdManagerUnsubscribeFullMarketDataMulti) Wait(onError func(interfaceName string, methodName string, err error) error) (IFmdManagerUnsubscribeFullMarketDataMultiOut, error) {
+	data, ok := <-self.outDataChannel
+	if !ok {
+		generatedError := &IFmdManagerUnsubscribeFullMarketDataMultiError{
+			InterfaceName: "IFmdManager",
+			MethodName:    "UnsubscribeFullMarketDataMulti",
+			Reason:        "Channel for IFmdManager::UnsubscribeFullMarketDataMulti returned false",
+		}
+		if onError != nil {
+			err := onError("IFmdManager", "UnsubscribeFullMarketDataMulti", generatedError)
+			return IFmdManagerUnsubscribeFullMarketDataMultiOut{}, err
+		} else {
+			return IFmdManagerUnsubscribeFullMarketDataMultiOut{}, generatedError
+		}
+	}
+	return data, nil
+}
+
+func (self *IFmdManagerUnsubscribeFullMarketDataMulti) Close() error {
+	close(self.outDataChannel)
+	return nil
+}
+func CallIFmdManagerUnsubscribeFullMarketDataMulti(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 ...string) (IFmdManagerUnsubscribeFullMarketDataMultiOut, error) {
+	if context != nil && context.Err() != nil {
+		return IFmdManagerUnsubscribeFullMarketDataMultiOut{}, context.Err()
+	}
+	data := NewIFmdManagerUnsubscribeFullMarketDataMulti(waitToComplete, arg0...)
+	if waitToComplete {
+		defer func(data *IFmdManagerUnsubscribeFullMarketDataMulti) {
+			err := data.Close()
+			if err != nil {
+			}
+		}(data)
+	}
+	if context != nil && context.Err() != nil {
+		return IFmdManagerUnsubscribeFullMarketDataMultiOut{}, context.Err()
+	}
+	channel <- data
+	var err error
+	var v IFmdManagerUnsubscribeFullMarketDataMultiOut
+	if waitToComplete {
+		v, err = data.Wait(func(interfaceName string, methodName string, err error) error {
+			return err
+		})
+	} else {
+		err = errors.NoWaitOperationError
+	}
+	if err != nil {
+		return IFmdManagerUnsubscribeFullMarketDataMultiOut{}, err
+	}
+	return v, nil
+}
+
 func ChannelEventsForIFmdManager(next IFmdManager, event interface{}) (bool, error) {
 	switch v := event.(type) {
 	case *IFmdManagerGetInstrumentList:
@@ -494,9 +674,23 @@ func ChannelEventsForIFmdManager(next IFmdManager, event interface{}) (bool, err
 			v.outDataChannel <- data
 		}
 		return true, nil
+	case *IFmdManagerSubscribeFullMarketDataMulti:
+		data := IFmdManagerSubscribeFullMarketDataMultiOut{}
+		next.SubscribeFullMarketDataMulti(v.inData.arg0...)
+		if v.outDataChannel != nil {
+			v.outDataChannel <- data
+		}
+		return true, nil
 	case *IFmdManagerUnsubscribeFullMarketData:
 		data := IFmdManagerUnsubscribeFullMarketDataOut{}
 		next.UnsubscribeFullMarketData(v.inData.arg0)
+		if v.outDataChannel != nil {
+			v.outDataChannel <- data
+		}
+		return true, nil
+	case *IFmdManagerUnsubscribeFullMarketDataMulti:
+		data := IFmdManagerUnsubscribeFullMarketDataMultiOut{}
+		next.UnsubscribeFullMarketDataMulti(v.inData.arg0...)
 		if v.outDataChannel != nil {
 			v.outDataChannel <- data
 		}
