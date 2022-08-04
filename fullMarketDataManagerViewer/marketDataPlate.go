@@ -73,31 +73,44 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 	default:
 		switch column {
 		case 0:
-			return tview.NewTableCell(strconv.Itoa(row)).SetSelectable(false).SetAlign(tview.AlignRight)
+			return tview.NewTableCell(
+				strconv.Itoa(row),
+			).SetSelectable(false).SetAlign(tview.AlignRight)
 		case 1:
 			index := row - 1
 			count := len(self.data.Bid)
 			if index >= 0 && index < count {
-				return tview.NewTableCell(strconv.Itoa(int(self.data.Bid[index].OpenOrderCount))).SetSelectable(false).SetAlign(tview.AlignRight)
+				return tview.NewTableCell(
+					strconv.Itoa(int(self.data.Bid[index].OpenOrderCount)),
+				).SetSelectable(false).SetAlign(tview.AlignRight)
 			}
 			break
 		case 2:
 			index := row - 1
 			count := len(self.data.Bid)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Bid[index].Volume, 'f', self.currentReferenceData.VolumeDecimals(), 32)
+				s := strconv.FormatFloat(
+					self.data.Bid[index].Volume,
+					'f',
+					self.currentReferenceData.VolumeDecimals(),
+					64,
+				)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).
 					SetAlign(tview.AlignRight)
-
 			}
 			break
 		case 3:
 			index := row - 1
 			count := len(self.data.Bid)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Bid[index].Price, 'f', self.currentReferenceData.PriceDecimals(), 32)
+				s := strconv.FormatFloat(
+					self.data.Bid[index].Price,
+					'f',
+					self.currentReferenceData.PriceDecimals(),
+					64,
+				)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).
@@ -108,7 +121,11 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			index := row - 1
 			count := len(self.data.Ask)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Ask[index].Price, 'f', self.currentReferenceData.PriceDecimals(), 32)
+				s := strconv.FormatFloat(
+					self.data.Ask[index].Price,
+					'f',
+					self.currentReferenceData.PriceDecimals(),
+					64)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).
@@ -119,7 +136,12 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			index := row - 1
 			count := len(self.data.Ask)
 			if index >= 0 && index < count {
-				s := strconv.FormatFloat(self.data.Ask[index].Volume, 'f', self.currentReferenceData.VolumeDecimals(), 32)
+				s := strconv.FormatFloat(
+					self.data.Ask[index].Volume,
+					'f',
+					self.currentReferenceData.VolumeDecimals(),
+					32,
+				)
 				return tview.NewTableCell(s).
 					SetSelectable(true).
 					SetMaxWidth(20).
@@ -130,7 +152,9 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			index := row - 1
 			count := len(self.data.Ask)
 			if index >= 0 && index < count {
-				return tview.NewTableCell(strconv.Itoa(int(self.data.Ask[index].OpenOrderCount))).
+				return tview.NewTableCell(
+					strconv.Itoa(int(self.data.Ask[index].OpenOrderCount)),
+				).
 					SetSelectable(false).
 					SetAlign(tview.AlignRight)
 			}
@@ -139,7 +163,12 @@ func (self *marketDataPlate) GetCell(row, column int) *tview.TableCell {
 			if row == 1 {
 				if len(self.data.Bid) > 0 && len(self.data.Ask) > 0 {
 					v := self.data.Ask[0].Price - self.data.Bid[0].Price
-					s := strconv.FormatFloat(v, 'f', self.currentReferenceData.PriceDecimals(), 32)
+					s := strconv.FormatFloat(
+						v,
+						'f',
+						self.currentReferenceData.PriceDecimals(),
+						64,
+					)
 					return tview.NewTableCell(s).
 						SetSelectable(true).
 						SetMaxWidth(20).

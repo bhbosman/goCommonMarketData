@@ -14,6 +14,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.5.1
 	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/rivo/tview v0.0.0-20220709181631-73bf2902b59a
+	github.com/shopspring/decimal v1.3.1
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f

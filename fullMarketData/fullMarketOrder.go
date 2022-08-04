@@ -1,6 +1,8 @@
 package fullMarketData
 
-import "github.com/bhbosman/goCommonMarketData/fullMarketData/stream"
+import (
+	"github.com/bhbosman/goCommonMarketData/fullMarketData/stream"
+)
 
 type FullMarketOrder struct {
 	Side      stream.OrderSide

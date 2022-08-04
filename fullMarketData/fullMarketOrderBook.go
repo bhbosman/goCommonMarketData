@@ -86,13 +86,14 @@ func (self *FullMarketOrderBook) addOrder(order *FullMarketOrder) {
 	}
 }
 
-var epsilon = 1e-8
+var epsilon = 1e-9
 
 func (self *FullMarketOrderBook) tradeUpdate(tradeUpdate *stream.FullMarketData_ReduceVolumeInstruction) {
 	if makerOrder, ok := self.Orders[tradeUpdate.Id]; ok {
 		if find, order := makerOrder.PricePoint.Find(tradeUpdate.Id); find {
-			newVolume := order.ReduceVolume(tradeUpdate.Volume)
-			if newVolume <= epsilon {
+			d := tradeUpdate.Volume
+			newVolume := order.ReduceVolume(d)
+			if newVolume < epsilon {
 				self.deleteOrder(tradeUpdate.Id)
 			}
 		}

@@ -183,8 +183,7 @@ func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
 	for key, value := range self.queuedMessages {
 
 		ss := []string{
-			self.fullMarketDataHelper.AllInstrumentChannelName(),
-			self.fullMarketDataHelper.InstrumentChannelName(key),
+			self.fullMarketDataHelper.InstrumentChannelNameForTop5(key),
 		}
 		if self.pubSub.PubWithContext(value, ss...) {
 			published = append(published, key)
@@ -280,6 +279,7 @@ func (self *data) calculate(force bool, fullMarketOrderBook fullMarketData.IFull
 				thereWasAChange = thereWasAChange || pp.Touched
 				pp.ClearTouched()
 				volume := pp.GetVolume()
+
 				bids = append(bids, &stream.Point{
 					Price:          bidPrice,
 					Volume:         volume,
@@ -298,6 +298,7 @@ func (self *data) calculate(force bool, fullMarketOrderBook fullMarketData.IFull
 				thereWasAChange = thereWasAChange || pp.Touched
 				pp.ClearTouched()
 				volume := pp.GetVolume()
+
 				asks = append(asks, &stream.Point{
 					Price:          askPrice,
 					Volume:         volume,
@@ -362,6 +363,7 @@ func (self *data) doFullMarketData_Instrument_RegisterWrapper(request *stream2.F
 						iterator := pp.List.Iterator()
 						for iterator.Next() {
 							if order, ok := iterator.Value().(*fullMarketData.FullMarketOrder); ok {
+
 								messagesToNext = append(
 									messagesToNext,
 									&stream2.FullMarketData_AddOrderInstruction{

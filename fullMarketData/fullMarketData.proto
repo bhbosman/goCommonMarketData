@@ -4,6 +4,9 @@ package golang.example.policy;
 option go_package = "/stream";
 
 
+
+
+
 message FullMarketData_Clear
 {
   string FeedName = 1;

@@ -178,7 +178,7 @@ func (self *service) State() IFxService.State {
 	return self.state
 }
 
-func (self service) ServiceName() string {
+func (self *service) ServiceName() string {
 	return "InstrumentReference"
 }
 
@@ -186,21 +186,72 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 	return &MarketDataFeedReference{
 		KrakenFeeds: []*KrakenReferenceData{
 			{
-				ConnectionName: "Connection001",
+				ConnectionName: "Connection XBT/USD",
 				Provider:       "Kraken",
 				Type:           "book",
-				Depth:          100,
+				Depth:          10,
 				Feeds: []*KrakenFeed{
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 12,
+						},
+						SystemName:       "Kraken.DASH/USD",
+						Pair:             "DASH/USD",
+						MappedInstrument: "DASH/USD",
+					},
 					{
 						//"Connection XBT/USD",
 						ReferenceData: ReferenceData{
 							priceDecimals:  6,
-							volumeDecimals: 6,
+							volumeDecimals: 8,
 						},
 						SystemName:       "Kraken.XBT/USD",
 						Pair:             "XBT/USD",
 						MappedInstrument: "XBT/USD",
 					},
+					{
+						ReferenceData: ReferenceData{
+							priceDecimals:  6,
+							volumeDecimals: 8,
+						},
+						SystemName:       "Kraken.ADA/USD",
+						Pair:             "ADA/USD",
+						MappedInstrument: "ADA/USD",
+					},
+				},
+			},
+			{
+				ConnectionName: "Connection ADA/USD",
+				Provider:       "Kraken",
+				Type:           "book",
+				Depth:          10,
+				Feeds:          []*KrakenFeed{},
+			},
+			{
+				ConnectionName: "Connection DASH/USD",
+				Provider:       "Kraken",
+				Type:           "book",
+				Depth:          10,
+				Feeds:          []*KrakenFeed{},
+			},
+
+			{
+				ConnectionName: "Connection001",
+				Provider:       "Kraken",
+				Type:           "book",
+				Depth:          10,
+				Feeds: []*KrakenFeed{
+					//{
+					//	//"Connection XBT/USD",
+					//	ReferenceData: ReferenceData{
+					//		priceDecimals:  6,
+					//		volumeDecimals: 6,
+					//	},
+					//	SystemName:       "Kraken.XBT/USD",
+					//	Pair:             "XBT/USD",
+					//	MappedInstrument: "XBT/USD",
+					//},
 					{
 						//"Connection XBT/EUR",
 						ReferenceData: ReferenceData{
@@ -270,16 +321,6 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 						SystemName:       "Kraken.ADA/ETH",
 						Pair:             "ADA/ETH",
 						MappedInstrument: "ADA/ETH",
-					},
-					//ADA/USD
-					{
-						ReferenceData: ReferenceData{
-							priceDecimals:  8,
-							volumeDecimals: 8,
-						},
-						SystemName:       "Kraken.ADA/USD",
-						Pair:             "ADA/USD",
-						MappedInstrument: "ADA/USD",
 					},
 					//ALGO/ETH
 					{
@@ -661,16 +702,6 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 						SystemName:       "Kraken.DASH/EUR",
 						Pair:             "DASH/EUR",
 						MappedInstrument: "DASH/EUR",
-					},
-					//DASH/USD
-					{
-						ReferenceData: ReferenceData{
-							priceDecimals:  6,
-							volumeDecimals: 6,
-						},
-						SystemName:       "Kraken.DASH/USD",
-						Pair:             "DASH/USD",
-						MappedInstrument: "DASH/USD",
 					},
 					//DASH/XBT
 					{

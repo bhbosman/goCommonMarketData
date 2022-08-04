@@ -32,7 +32,7 @@ type service struct {
 }
 
 func (self *service) UnsubscribeFullMarketData(item string) {
-	name := self.FullMarketDataHelper.InstrumentChannelName(item)
+	name := self.FullMarketDataHelper.InstrumentChannelNameForTop5(item)
 	self.pubSub.Unsub(self.subscribeChannel, name)
 	//
 	self.FmdManagerService.UnsubscribeFullMarketData(item)
@@ -46,11 +46,11 @@ func (self *service) UnsubscribeFullMarketData(item string) {
 func (self *service) SubscribeFullMarketData(item string) {
 	self.FmdManagerService.SubscribeFullMarketData(item)
 	//
-	name := self.FullMarketDataHelper.InstrumentChannelName(item)
+	name := self.FullMarketDataHelper.InstrumentChannelNameForTop5(item)
 	self.pubSub.AddSub(self.subscribeChannel, name)
 
 	publishFullMarketData := fullMarketDataManagerService.NewPublishFullMarketData(item, self.subscribeChannel)
-	self.pubSub.Pub(publishFullMarketData, self.FullMarketDataHelper.FullMarketDataServiceInbound())
+	_ = self.FmdManagerService.Send(publishFullMarketData)
 
 	_, err := CallIFullMarketDataViewSubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
 	if err != nil {
