@@ -65,6 +65,14 @@ func (self *data) UnsubscribeFullMarketData(item string) {
 		self.fmdCount[item] = v
 		if v == 0 {
 			delete(self.fmdCount, item)
+			if self.proxy {
+				if book, ok := self.findFullMarketDataBook("", item); ok {
+					clearMessage := &stream2.FullMarketData_Clear{
+						Instrument: item,
+					}
+					_ = book.Send(clearMessage)
+				}
+			}
 			key := self.fullMarketDataHelper.RegisteredSource(item)
 			self.pubSub.Pub(
 				&stream2.FullMarketData_Instrument_Unregister{
@@ -72,9 +80,6 @@ func (self *data) UnsubscribeFullMarketData(item string) {
 				},
 				key,
 			)
-			//if self.proxy {
-			//	self.fmd[item] = fullMarketData.NewFullMarketOrderBook(item)
-			//}
 		}
 	}
 }
@@ -95,14 +100,14 @@ func (self *data) ShutDown() error {
 	return nil
 }
 
-func (self *data) findFullMarketDataBook(feedName, name string) fullMarketData.IFullMarketOrderBook {
+func (self *data) findFullMarketDataBook(feedName, name string) (fullMarketData.IFullMarketOrderBook, bool) {
 	if result, ok := self.fmd[name]; ok {
-		return result
+		return result, true
 	}
 	result := fullMarketData.NewFullMarketOrderBook(feedName, name)
 	self.fmd[name] = result
 	self.publishListOfInstruments = true
-	return result
+	return result, true
 }
 
 func (self *data) handleFullMarketDataRemoveInstrumentInstruction(msg *stream2.FullMarketData_RemoveInstrumentInstruction) {
@@ -210,7 +215,9 @@ func (self *data) handleFullMarketData_AddOrderInstructionWrapper(msg *stream2.F
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_AddOrderInstruction(msg *stream2.FullMarketData_AddOrderInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		_ = self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
+		if orderBook, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+			_ = orderBook.Send(msg)
+		}
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 		self.fmdDirty[msg.Instrument] = true
 	}
@@ -223,7 +230,9 @@ func (self *data) handleFullMarketData_ClearWrapper(msg *stream2.FullMarketData_
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_Clear(msg *stream2.FullMarketData_Clear) {
-	_ = self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
+	if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+		_ = book.Send(msg)
+	}
 	self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 	self.fmdDirty[msg.Instrument] = true
 }
@@ -236,7 +245,9 @@ func (self *data) handleFullMarketData_ReduceVolumeInstructionWrapper(msg *strea
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_ReduceVolumeInstruction(msg *stream2.FullMarketData_ReduceVolumeInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		_ = self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
+		if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+			_ = book.Send(msg)
+		}
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 		self.fmdDirty[msg.Instrument] = true
 	}
@@ -254,7 +265,9 @@ func (self *data) handleFullMarketData_Instrument_InstrumentStatusWrapper(msg *s
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_Instrument_InstrumentStatus(msg *stream2.FullMarketData_Instrument_InstrumentStatus) {
-	_ = self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
+	if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+		_ = book.Send(msg)
+	}
 	self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 	self.publishListOfInstruments = true
 }
@@ -262,7 +275,9 @@ func (self *data) handleFullMarketData_Instrument_InstrumentStatus(msg *stream2.
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_DeleteOrderInstruction(msg *stream2.FullMarketData_DeleteOrderInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		_ = self.findFullMarketDataBook(msg.FeedName, msg.Instrument).Send(msg)
+		if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+			_ = book.Send(msg)
+		}
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
 		self.fmdDirty[msg.Instrument] = true
 	}
@@ -431,9 +446,9 @@ func (self *data) handleRequestAllInstruments(request *RequestAllInstruments) {
 func (self *data) handleCallbackMessage(request *CallbackMessage) {
 	if v, ok := self.fmd[request.InstrumentName]; ok {
 		if request.CallBack != nil {
-			messages := request.CallBack(request.Data, v)
-			if messages != nil {
-				self.MessageRouter.MultiRoute(messages...)
+			msg := request.CallBack(request.Data, v)
+			if msg != nil {
+				self.MessageRouter.MultiRoute(msg...)
 			}
 		}
 	}

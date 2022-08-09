@@ -11,6 +11,14 @@ type FullMarketDataHelper struct {
 	pubSub *pubsub.PubSub
 }
 
+func (self *FullMarketDataHelper) InstrumentChannelNameForTop5Multi(instruments ...string) []string {
+	result := make([]string, len(instruments))
+	for i, s := range instruments {
+		result[i] = self.InstrumentChannelNameForTop5(s)
+	}
+	return result
+}
+
 func (self *FullMarketDataHelper) InstrumentChannelNameMulti(instruments ...string) []string {
 	result := make([]string, len(instruments))
 	for i, s := range instruments {

@@ -102,6 +102,7 @@ func (self *service) State() IFxService.State {
 func (self *service) ServiceName() string {
 	return "MarketDataViewService"
 }
+
 func (self *service) start(_ context.Context) error {
 	instanceData, err := self.onData()
 	instanceData.SetMarketDataListChange(self.onSetMarketDataListChange)

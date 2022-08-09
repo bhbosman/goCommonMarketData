@@ -9,9 +9,9 @@ import (
 )
 
 type IFullMarketDataView interface {
+	ISendMessage.ISendMessage
 	SetMarketDataListChange(change func(list []fullMarketDataManagerService.InstrumentStatus) bool)
 	SetMarketDataInstanceChange(change func(data *stream.PublishTop5) bool)
-	ISendMessage.ISendMessage
 	UnsubscribeFullMarketData(item string)
 	SubscribeFullMarketData(item string)
 }

@@ -186,10 +186,10 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 	return &MarketDataFeedReference{
 		KrakenFeeds: []*KrakenReferenceData{
 			{
-				ConnectionName: "Connection XBT/USD",
+				ConnectionName: "Kraken WebSocket",
 				Provider:       "Kraken",
 				Type:           "book",
-				Depth:          10,
+				Depth:          100,
 				Feeds: []*KrakenFeed{
 					{
 						ReferenceData: ReferenceData{
@@ -219,39 +219,6 @@ func (self *service) createInstrumentReference() *MarketDataFeedReference {
 						Pair:             "ADA/USD",
 						MappedInstrument: "ADA/USD",
 					},
-				},
-			},
-			{
-				ConnectionName: "Connection ADA/USD",
-				Provider:       "Kraken",
-				Type:           "book",
-				Depth:          10,
-				Feeds:          []*KrakenFeed{},
-			},
-			{
-				ConnectionName: "Connection DASH/USD",
-				Provider:       "Kraken",
-				Type:           "book",
-				Depth:          10,
-				Feeds:          []*KrakenFeed{},
-			},
-
-			{
-				ConnectionName: "Connection001",
-				Provider:       "Kraken",
-				Type:           "book",
-				Depth:          10,
-				Feeds: []*KrakenFeed{
-					//{
-					//	//"Connection XBT/USD",
-					//	ReferenceData: ReferenceData{
-					//		priceDecimals:  6,
-					//		volumeDecimals: 6,
-					//	},
-					//	SystemName:       "Kraken.XBT/USD",
-					//	Pair:             "XBT/USD",
-					//	MappedInstrument: "XBT/USD",
-					//},
 					{
 						//"Connection XBT/EUR",
 						ReferenceData: ReferenceData{
