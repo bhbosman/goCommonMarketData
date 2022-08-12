@@ -143,7 +143,6 @@ func (self *slide) OnSetMarketDataListChange(list []fullMarketDataManagerService
 					row, column := self.listTable.GetSelection()
 					self.listTable.Select(row, column)
 				}
-
 			} else {
 				if self.selectedItem != "" {
 					self.service.UnsubscribeFullMarketData(self.selectedItem)
