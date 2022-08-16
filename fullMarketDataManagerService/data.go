@@ -15,9 +15,14 @@ import (
 	"sort"
 )
 
+type outstandingRequests struct {
+	adder goCommsDefinitions.IAdder
+	s     string
+}
+
 type data struct {
 	proxy                    bool
-	outstandingRequests      map[goCommsDefinitions.IAdder]map[string]interface{}
+	outstandingRequestsMap   map[outstandingRequests]interface{}
 	queuedMessages           map[string]*stream.PublishTop5
 	MessageRouter            *messageRouter.MessageRouter
 	pubSub                   *pubsub.PubSub
@@ -49,6 +54,7 @@ func (self *data) SubscribeFullMarketData(item string) {
 		self.fmdCount[item] = v + 1
 	} else {
 		self.fmdCount[item] = 1
+
 		key := self.fullMarketDataHelper.RegisteredSource(item)
 		self.pubSub.Pub(
 			&stream2.FullMarketData_Instrument_Register{
@@ -123,12 +129,11 @@ func (self *data) handleFullMarketDataRemoveInstrumentInstruction(msg *stream2.F
 }
 
 func (self *data) handlePublishFullMarketData(msg *PublishFullMarketData) {
-	outstandingRequest, ok := self.outstandingRequests[msg.PubSubBag]
-	if !ok {
-		outstandingRequest = make(map[string]interface{})
-		self.outstandingRequests[msg.PubSubBag] = outstandingRequest
+	key := outstandingRequests{
+		adder: msg.PubSubBag,
+		s:     msg.PublishInstrument,
 	}
-	outstandingRequest[msg.PublishInstrument] = msg
+	self.outstandingRequestsMap[key] = msg
 }
 
 func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
@@ -155,22 +160,21 @@ func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
 		}
 	}
 
-	for bag, request := range self.outstandingRequests {
-		for _, v := range request {
-			switch req := v.(type) {
-			case *PublishFullMarketData:
-				if v, ok := self.fmd[req.PublishInstrument]; ok {
-					top5, b := self.calculate(true, v)
-					if b {
-						bag.Add(top5)
-					}
+	for bag, request := range self.outstandingRequestsMap {
+		switch req := request.(type) {
+		case *PublishFullMarketData:
+			if v, ok := self.fmd[req.PublishInstrument]; ok {
+				top5, b := self.calculate(true, v)
+				if b {
+					bag.adder.Add(top5)
 				}
-			case *stream2.FullMarketData_Instrument_RegisterWrapper:
-				self.doFullMarketData_Instrument_RegisterWrapper(req)
 			}
+		case *stream2.FullMarketData_Instrument_RegisterWrapper:
+			self.doFullMarketData_Instrument_RegisterWrapper(req)
 		}
+
 	}
-	self.outstandingRequests = make(map[goCommsDefinitions.IAdder]map[string]interface{})
+	self.outstandingRequestsMap = make(map[outstandingRequests]interface{})
 
 	for key := range self.fmdDirty {
 		if v, ok := self.fmd[key]; ok {
@@ -431,12 +435,11 @@ func (self *data) handleFullMarketData_Instrument_RegisterWrapper(msg *stream2.F
 			Instrument: msg.Data.Instrument,
 		},
 	)
-	outstandingRequest, ok := self.outstandingRequests[msg.Adder()]
-	if !ok {
-		outstandingRequest = make(map[string]interface{})
-		self.outstandingRequests[msg.Adder()] = outstandingRequest
+	key := outstandingRequests{
+		adder: msg.Adder(),
+		s:     msg.Data.Instrument,
 	}
-	outstandingRequest[msg.Data.Instrument] = msg
+	self.outstandingRequestsMap[key] = msg
 }
 
 func (self *data) handleRequestAllInstruments(request *RequestAllInstruments) {
@@ -526,15 +529,15 @@ func (self *data) handleFullMarketData_InstrumentList_ResponseWrapper(incomingMe
 
 func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper, proxy bool) (IFmdManagerData, error) {
 	result := &data{
-		proxy:                proxy,
-		outstandingRequests:  make(map[goCommsDefinitions.IAdder]map[string]interface{}),
-		queuedMessages:       make(map[string]*stream.PublishTop5),
-		MessageRouter:        messageRouter.NewMessageRouter(),
-		pubSub:               pubSub,
-		fmd:                  make(map[string]fullMarketData.IFullMarketOrderBook),
-		fmdDirty:             make(map[string]bool),
-		fmdCount:             make(map[string]int),
-		fullMarketDataHelper: fullMarketDataHelper,
+		proxy:                  proxy,
+		outstandingRequestsMap: make(map[outstandingRequests]interface{}),
+		queuedMessages:         make(map[string]*stream.PublishTop5),
+		MessageRouter:          messageRouter.NewMessageRouter(),
+		pubSub:                 pubSub,
+		fmd:                    make(map[string]fullMarketData.IFullMarketOrderBook),
+		fmdDirty:               make(map[string]bool),
+		fmdCount:               make(map[string]int),
+		fullMarketDataHelper:   fullMarketDataHelper,
 	}
 	_ = result.MessageRouter.Add(result.handleEmptyQueue)
 	//

@@ -75,7 +75,6 @@ func (self *listPlate) Clear() {
 }
 
 func (self *listPlate) GetItem(row int) (string, bool) {
-
 	if row == -1 {
 		return "", false
 	}
