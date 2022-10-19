@@ -115,7 +115,6 @@ func (self *service) start(_ context.Context) error {
 
 func (self *service) goStart(instanceData IFmdManagerData) {
 	self.subscribeChannel = pubsub.NewNextFuncSubscription(goCommsDefinitions.CreateNextFunc(self.cmdChannel))
-	//self.pubSub.AddSub(self.subscribeChannel, self.fullMarketDataHelper.FullMarketDataServiceInbound())
 
 	channelHandlerCallback := ChannelHandler.CreateChannelHandlerCallback(
 		self.ctx,
@@ -174,7 +173,7 @@ func (self *service) State() IFxService.State {
 	return self.state
 }
 
-func (self service) ServiceName() string {
+func (self *service) ServiceName() string {
 	return "FmdManager"
 }
 
