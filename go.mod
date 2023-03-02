@@ -3,12 +3,12 @@ module github.com/bhbosman/goCommonMarketData
 go 1.18
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20220801175552-c5aa68065af3
-	github.com/bhbosman/goMessages v0.0.0-20220719163819-d38fc7e6d38c
-	github.com/bhbosman/goUi v0.0.0-20220721070442-c6483ac2b608
-	github.com/bhbosman/gocommon v0.0.0-20220721070423-baf2cd622704
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20230302063431-887458f90947
+	github.com/bhbosman/goMessages v0.0.0-20230302063433-258339efe599
+	github.com/bhbosman/goUi v0.0.0-20230302065227-24c3cb06165e
+	github.com/bhbosman/gocommon v0.0.0-20230302065226-cf91cedfab33
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
-	github.com/bhbosman/goprotoextra v0.0.2-0.20210817141206-117becbef7c7
+	github.com/bhbosman/goprotoextra v0.0.1
 	github.com/cskr/pubsub v1.0.2
 	github.com/emirpasic/gods v1.18.1
 	github.com/gdamore/tcell/v2 v2.5.1
