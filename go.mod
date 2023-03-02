@@ -14,9 +14,8 @@ require (
 	github.com/gdamore/tcell/v2 v2.5.1
 	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/rivo/tview v0.0.0-20220709181631-73bf2902b59a
-	github.com/shopspring/decimal v1.3.1
-	go.uber.org/fx v1.17.1
-	go.uber.org/zap v1.21.0
+	go.uber.org/fx v1.19.2
+	go.uber.org/zap v1.23.0
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
 	google.golang.org/protobuf v1.28.0
 )
@@ -31,16 +30,16 @@ require (
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/stretchr/objx v0.1.0 // indirect
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/stretchr/objx v0.4.0 // indirect
+	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/teivah/onecontext v0.0.0-20200513185103-40f981bfd775 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
-	go.uber.org/dig v1.14.0 // indirect
+	go.uber.org/dig v1.16.1 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/sys v0.0.0-20220318055525-2edf467146b5 // indirect
 	golang.org/x/term v0.0.0-20210220032956-6a3ed077a48d // indirect
 	golang.org/x/text v0.3.7 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 replace github.com/gdamore/tcell/v2 => github.com/bhbosman/tcell/v2 v2.5.2-0.20220624055704-f9a9454fab5b
