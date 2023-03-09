@@ -20,6 +20,16 @@ type outstandingRequests struct {
 	s     string
 }
 
+type RegisteredForInstrument struct {
+	names map[string]bool
+}
+
+func NewRegisteredForInstrument() *RegisteredForInstrument {
+	return &RegisteredForInstrument{
+		names: make(map[string]bool),
+	}
+}
+
 type data struct {
 	proxy                    bool
 	outstandingRequestsMap   map[outstandingRequests]interface{}
@@ -29,6 +39,7 @@ type data struct {
 	fmd                      map[string]fullMarketData.IFullMarketOrderBook
 	fmdDirty                 map[string]bool
 	fmdCount                 map[string]int
+	fmdActiveRegistrations   map[string]*RegisteredForInstrument
 	publishListOfInstruments bool
 	fullMarketDataHelper     fullMarketDataHelper.IFullMarketDataHelper
 }
@@ -278,6 +289,7 @@ func (self *data) handleFullMarketData_Instrument_InstrumentStatus(msg *stream2.
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_DeleteOrderInstruction(msg *stream2.FullMarketData_DeleteOrderInstruction) {
+
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
 		if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
 			_ = book.Send(msg)
@@ -439,7 +451,9 @@ func (self *data) handleFullMarketData_Instrument_RegisterWrapper(msg *stream2.F
 		adder: msg.Adder(),
 		s:     msg.Data.Instrument,
 	}
-	self.outstandingRequestsMap[key] = msg
+	if _, ok := self.outstandingRequestsMap[key]; !ok {
+		self.outstandingRequestsMap[key] = msg
+	}
 }
 
 func (self *data) handleRequestAllInstruments(request *RequestAllInstruments) {
@@ -529,15 +543,17 @@ func (self *data) handleFullMarketData_InstrumentList_ResponseWrapper(incomingMe
 
 func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper, proxy bool) (IFmdManagerData, error) {
 	result := &data{
-		proxy:                  proxy,
-		outstandingRequestsMap: make(map[outstandingRequests]interface{}),
-		queuedMessages:         make(map[string]*stream.PublishTop5),
-		MessageRouter:          messageRouter.NewMessageRouter(),
-		pubSub:                 pubSub,
-		fmd:                    make(map[string]fullMarketData.IFullMarketOrderBook),
-		fmdDirty:               make(map[string]bool),
-		fmdCount:               make(map[string]int),
-		fullMarketDataHelper:   fullMarketDataHelper,
+		proxy:                    proxy,
+		outstandingRequestsMap:   make(map[outstandingRequests]interface{}),
+		queuedMessages:           make(map[string]*stream.PublishTop5),
+		MessageRouter:            messageRouter.NewMessageRouter(),
+		pubSub:                   pubSub,
+		fmd:                      make(map[string]fullMarketData.IFullMarketOrderBook),
+		fmdDirty:                 make(map[string]bool),
+		fmdCount:                 make(map[string]int),
+		fmdActiveRegistrations:   make(map[string]*RegisteredForInstrument),
+		publishListOfInstruments: false,
+		fullMarketDataHelper:     fullMarketDataHelper,
 	}
 	_ = result.MessageRouter.Add(result.handleEmptyQueue)
 	//
