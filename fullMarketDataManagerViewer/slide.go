@@ -84,7 +84,7 @@ func (self *slide) init() {
 	self.table.SetSelectable(true, false)
 	self.table.SetBorder(true)
 	self.table.SetFixed(1, 1)
-	self.table.SetTitle("Full Market Data Viewer")
+	self.table.SetTitle("Full Market data Viewer")
 	self.table.SetContent(&emptyCell{})
 
 	self.listTable = tview.NewTable()

@@ -8,7 +8,7 @@ import (
 	"github.com/bhbosman/goMessages/marketData/stream"
 	"github.com/bhbosman/gocommon/messageRouter"
 	"github.com/bhbosman/gocommon/messages"
-	"github.com/cskr/pubsub"
+	"github.com/bhbosman/gocommon/pubSub"
 	"github.com/emirpasic/gods/trees/avltree"
 	"github.com/reactivex/rxgo/v2"
 	"google.golang.org/protobuf/proto"
@@ -24,6 +24,20 @@ type RegisteredForInstrument struct {
 	names map[string]bool
 }
 
+func (self *RegisteredForInstrument) Add(registerName string) int {
+	self.names[registerName] = true
+	return len(self.names)
+}
+
+func (self *RegisteredForInstrument) Remove(name string) int {
+	delete(self.names, name)
+	return len(self.names)
+}
+
+func (self *RegisteredForInstrument) Count() int {
+	return len(self.names)
+}
+
 func NewRegisteredForInstrument() *RegisteredForInstrument {
 	return &RegisteredForInstrument{
 		names: make(map[string]bool),
@@ -35,24 +49,23 @@ type data struct {
 	outstandingRequestsMap   map[outstandingRequests]interface{}
 	queuedMessages           map[string]*stream.PublishTop5
 	MessageRouter            *messageRouter.MessageRouter
-	pubSub                   *pubsub.PubSub
+	pubSub                   pubSub.IPubSub
 	fmd                      map[string]fullMarketData.IFullMarketOrderBook
 	fmdDirty                 map[string]bool
-	fmdCount                 map[string]int
-	fmdActiveRegistrations   map[string]*RegisteredForInstrument
+	fmdCount                 map[string]*RegisteredForInstrument
 	publishListOfInstruments bool
 	fullMarketDataHelper     fullMarketDataHelper.IFullMarketDataHelper
 }
 
-func (self *data) SubscribeFullMarketDataMulti(item ...string) {
+func (self *data) SubscribeFullMarketDataMulti(registerName string, item ...string) {
 	for _, s := range item {
-		self.SubscribeFullMarketData(s)
+		self.SubscribeFullMarketData(registerName, s)
 	}
 }
 
-func (self *data) UnsubscribeFullMarketDataMulti(item ...string) {
+func (self *data) UnsubscribeFullMarketDataMulti(registerName string, item ...string) {
 	for _, s := range item {
-		self.UnsubscribeFullMarketData(s)
+		self.UnsubscribeFullMarketData(registerName, s)
 	}
 }
 
@@ -60,11 +73,13 @@ func (self *data) MultiSend(messages ...interface{}) {
 	self.MessageRouter.MultiRoute(messages...)
 }
 
-func (self *data) SubscribeFullMarketData(item string) {
+func (self *data) SubscribeFullMarketData(registerName string, item string) {
 	if v, ok := self.fmdCount[item]; ok {
-		self.fmdCount[item] = v + 1
+		v.Add(registerName)
 	} else {
-		self.fmdCount[item] = 1
+		newRegistration := NewRegisteredForInstrument()
+		self.fmdCount[item] = newRegistration
+		newRegistration.Add(registerName)
 
 		key := self.fullMarketDataHelper.RegisteredSource(item)
 		self.pubSub.Pub(
@@ -76,11 +91,10 @@ func (self *data) SubscribeFullMarketData(item string) {
 	}
 }
 
-func (self *data) UnsubscribeFullMarketData(item string) {
-	if v, ok := self.fmdCount[item]; ok {
-		v--
-		self.fmdCount[item] = v
-		if v == 0 {
+func (self *data) UnsubscribeFullMarketData(registerName string, item string) {
+	if registrationList, ok := self.fmdCount[item]; ok {
+		n := registrationList.Remove(registerName)
+		if n == 0 {
 			delete(self.fmdCount, item)
 			if self.proxy {
 				if book, ok := self.findFullMarketDataBook("", item); ok {
@@ -181,7 +195,7 @@ func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
 				}
 			}
 		case *stream2.FullMarketData_Instrument_RegisterWrapper:
-			self.doFullMarketData_Instrument_RegisterWrapper(req)
+			self.sendFullOrderBook(req)
 		}
 
 	}
@@ -379,7 +393,7 @@ func (self *data) buildInstrumentList() ([]InstrumentStatus, error) {
 }
 
 //goland:noinspection GoSnakeCaseUsage
-func (self *data) doFullMarketData_Instrument_RegisterWrapper(request *stream2.FullMarketData_Instrument_RegisterWrapper) {
+func (self *data) sendFullOrderBook(request *stream2.FullMarketData_Instrument_RegisterWrapper) {
 	if fmdBook, ok := self.fmd[request.Data.Instrument]; ok {
 		localSideEncode := func(
 			orderSide *avltree.Tree,
@@ -441,7 +455,7 @@ func (self *data) doFullMarketData_Instrument_RegisterWrapper(request *stream2.F
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_Instrument_RegisterWrapper(msg *stream2.FullMarketData_Instrument_RegisterWrapper) {
-	self.SubscribeFullMarketData(msg.Data.Instrument)
+	self.SubscribeFullMarketData(msg.Data.RegisterName, msg.Data.Instrument)
 	msg.ToNext(
 		&stream2.FullMarketData_Clear{
 			Instrument: msg.Data.Instrument,
@@ -473,7 +487,7 @@ func (self *data) handleCallbackMessage(request *CallbackMessage) {
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_Instrument_UnregisterWrapper(request *stream2.FullMarketData_Instrument_UnregisterWrapper) {
-	self.UnsubscribeFullMarketData(request.Data.Instrument)
+	self.UnsubscribeFullMarketData(request.Data.RegisterName, request.Data.Instrument)
 }
 
 //goland:noinspection GoSnakeCaseUsage
@@ -541,7 +555,11 @@ func (self *data) handleFullMarketData_InstrumentList_ResponseWrapper(incomingMe
 	self.publishListOfInstruments = true
 }
 
-func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper, proxy bool) (IFmdManagerData, error) {
+func newData(
+	pubSub pubSub.IPubSub,
+	fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper,
+	proxy bool,
+) (IFmdManagerData, error) {
 	result := &data{
 		proxy:                    proxy,
 		outstandingRequestsMap:   make(map[outstandingRequests]interface{}),
@@ -550,8 +568,7 @@ func newData(pubSub *pubsub.PubSub, fullMarketDataHelper fullMarketDataHelper.IF
 		pubSub:                   pubSub,
 		fmd:                      make(map[string]fullMarketData.IFullMarketOrderBook),
 		fmdDirty:                 make(map[string]bool),
-		fmdCount:                 make(map[string]int),
-		fmdActiveRegistrations:   make(map[string]*RegisteredForInstrument),
+		fmdCount:                 make(map[string]*RegisteredForInstrument),
 		publishListOfInstruments: false,
 		fullMarketDataHelper:     fullMarketDataHelper,
 	}

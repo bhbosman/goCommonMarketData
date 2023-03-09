@@ -27,15 +27,15 @@ type service struct {
 	fullMarketDataHelper fullMarketDataHelper.IFullMarketDataHelper
 }
 
-func (self *service) SubscribeFullMarketDataMulti(items ...string) {
-	_, err := CallIFmdManagerSubscribeFullMarketDataMulti(self.ctx, self.cmdChannel, false, items...)
+func (self *service) SubscribeFullMarketDataMulti(registerName string, items ...string) {
+	_, err := CallIFmdManagerSubscribeFullMarketDataMulti(self.ctx, self.cmdChannel, false, registerName, items...)
 	if err != nil {
 		return
 	}
 }
 
-func (self *service) UnsubscribeFullMarketDataMulti(items ...string) {
-	_, err := CallIFmdManagerUnsubscribeFullMarketDataMulti(self.ctx, self.cmdChannel, false, items...)
+func (self *service) UnsubscribeFullMarketDataMulti(registerName string, items ...string) {
+	_, err := CallIFmdManagerUnsubscribeFullMarketDataMulti(self.ctx, self.cmdChannel, false, registerName, items...)
 	if err != nil {
 		return
 	}
@@ -48,15 +48,15 @@ func (self *service) MultiSend(messages ...interface{}) {
 	}
 }
 
-func (self *service) SubscribeFullMarketData(item string) {
-	_, err := CallIFmdManagerSubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
+func (self *service) SubscribeFullMarketData(registerName string, item string) {
+	_, err := CallIFmdManagerSubscribeFullMarketData(self.ctx, self.cmdChannel, false, registerName, item)
 	if err != nil {
 		return
 	}
 }
 
-func (self *service) UnsubscribeFullMarketData(item string) {
-	_, err := CallIFmdManagerUnsubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
+func (self *service) UnsubscribeFullMarketData(registerName string, item string) {
+	_, err := CallIFmdManagerUnsubscribeFullMarketData(self.ctx, self.cmdChannel, false, registerName, item)
 	if err != nil {
 		return
 	}
