@@ -4,7 +4,7 @@ import (
 	"github.com/bhbosman/goCommonMarketData/fullMarketDataHelper"
 	"github.com/bhbosman/goCommonMarketData/fullMarketDataManagerService"
 	"github.com/bhbosman/goCommonMarketData/instrumentReference"
-	ui2 "github.com/bhbosman/goUi/ui"
+	"github.com/bhbosman/goUi/ui"
 	"github.com/bhbosman/gocommon/GoFunctionCounter"
 	"github.com/bhbosman/gocommon/Services/interfaces"
 	"github.com/cskr/pubsub"
@@ -78,7 +78,7 @@ func Provide() fx.Option {
 						App                        *tview.Application
 						InstrumentReferenceService instrumentReference.IInstrumentReferenceService
 					},
-				) (ui2.ISlideFactory, error) {
+				) (ui.ISlideFactory, error) {
 					return NewCoverSlideFactory(
 						params.Service,
 						params.App,
