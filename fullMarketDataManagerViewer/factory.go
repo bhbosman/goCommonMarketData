@@ -16,7 +16,7 @@ func (self *factory) OrderNumber() int {
 	return 2
 }
 
-func (self *factory) Content(nextSlide func()) (string, ui2.IPrimitiveCloser, error) {
+func (self *factory) Content() (string, ui2.IPrimitiveCloser, error) {
 	slide, err := newSlide(
 		self.app,
 		self.instrumentReferenceService,
