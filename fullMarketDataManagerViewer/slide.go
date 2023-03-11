@@ -4,11 +4,13 @@ import (
 	"github.com/bhbosman/goCommonMarketData/fullMarketDataManagerService"
 	"github.com/bhbosman/goCommonMarketData/instrumentReference"
 	"github.com/bhbosman/goMessages/marketData/stream"
+	"github.com/bhbosman/goUi/ui"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
 type slide struct {
+	slideOrderNumber           int
 	service                    IFullMarketDataViewService
 	next                       tview.Primitive
 	canDraw                    bool
@@ -20,6 +22,15 @@ type slide struct {
 	instrumentReferenceService instrumentReference.IInstrumentReferenceService
 	currentReferenceData       instrumentReference.IReferenceData
 	selectedItem               string
+	slideName                  string
+}
+
+func (self *slide) OrderNumber() int {
+	return self.slideOrderNumber
+}
+
+func (self *slide) Name() string {
+	return self.slideName
 }
 
 func (self *slide) Toggle(b bool) {
@@ -182,11 +193,15 @@ func (self *slide) OnSetMarketDataInstanceChange(data *stream.PublishTop5) bool 
 }
 
 func newSlide(
+	slideOrderNumber int,
+	slideName string,
 	app *tview.Application,
 	instrumentReferenceService instrumentReference.IInstrumentReferenceService,
 	service IFullMarketDataViewService,
-) (*slide, error) {
+) (ui.IPrimitiveCloser, error) {
 	result := &slide{
+		slideOrderNumber:           slideOrderNumber,
+		slideName:                  slideName,
 		app:                        app,
 		service:                    service,
 		instrumentReferenceService: instrumentReferenceService,

@@ -78,12 +78,18 @@ func Provide() fx.Option {
 						App                        *tview.Application
 						InstrumentReferenceService instrumentReference.IInstrumentReferenceService
 					},
-				) (ui.ISlideFactory, error) {
-					return NewCoverSlideFactory(
-						params.Service,
+				) (ui.IPrimitiveCloser, error) {
+					slide2, err := newSlide(
+						2,
+						"MarketData",
 						params.App,
 						params.InstrumentReferenceService,
-					), nil
+						params.Service,
+					)
+					if err != nil {
+						return nil, err
+					}
+					return slide2, nil
 				},
 			},
 		),
