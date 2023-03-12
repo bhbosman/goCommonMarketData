@@ -85,12 +85,14 @@ message FullMarketData_InstrumentList_Response
 message FullMarketData_Instrument_Register
 {
   string instrument = 1;
+  string registerName = 2;
 };
 
 
 message FullMarketData_Instrument_Unregister
 {
   string instrument = 1;
+  string registerName = 2;
 };
 
 

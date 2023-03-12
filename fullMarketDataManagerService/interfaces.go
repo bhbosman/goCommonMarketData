@@ -30,10 +30,10 @@ type IFmdManager interface {
 	ISendMessage.ISendMessage
 	ISendMessage.IMultiSendMessage
 	GetInstrumentList() ([]InstrumentStatus, error)
-	SubscribeFullMarketData(item string)
-	UnsubscribeFullMarketData(item string)
-	SubscribeFullMarketDataMulti(items ...string)
-	UnsubscribeFullMarketDataMulti(items ...string)
+	SubscribeFullMarketData(registerName string, item string)
+	UnsubscribeFullMarketData(registerName string, item string)
+	SubscribeFullMarketDataMulti(registerName string, items ...string)
+	UnsubscribeFullMarketDataMulti(registerName string, items ...string)
 }
 
 type IFmdManagerService interface {
