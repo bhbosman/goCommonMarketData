@@ -26,14 +26,19 @@ func (self InstrumentStatusArray) Swap(i, j int) {
 	self[i], self[j] = self[j], self[i]
 }
 
+type FmdBookKey struct {
+	FeedName   string `protobuf:"bytes,1,opt,name=FeedName,proto3" json:"FeedName,omitempty"`
+	Instrument string `protobuf:"bytes,2,opt,name=instrument,proto3" json:"instrument,omitempty"`
+}
+
 type IFmdManager interface {
 	ISendMessage.ISendMessage
 	ISendMessage.IMultiSendMessage
 	GetInstrumentList() ([]InstrumentStatus, error)
-	SubscribeFullMarketData(registerName string, item string)
-	UnsubscribeFullMarketData(registerName string, item string)
-	SubscribeFullMarketDataMulti(registerName string, items ...string)
-	UnsubscribeFullMarketDataMulti(registerName string, items ...string)
+	SubscribeFullMarketData(registerName string, item FmdBookKey)
+	UnsubscribeFullMarketData(registerName string, item FmdBookKey)
+	SubscribeFullMarketDataMulti(registerName string, items ...FmdBookKey)
+	UnsubscribeFullMarketDataMulti(registerName string, items ...FmdBookKey)
 }
 
 type IFmdManagerService interface {

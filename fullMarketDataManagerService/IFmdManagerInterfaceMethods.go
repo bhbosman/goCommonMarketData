@@ -287,7 +287,7 @@ func CallIFmdManagerSend(context context.Context, channel chan<- interface{}, wa
 // Interface IFmdManager, Method: SubscribeFullMarketData
 type IFmdManagerSubscribeFullMarketDataIn struct {
 	arg0 string
-	arg1 string
+	arg1 FmdBookKey
 }
 
 type IFmdManagerSubscribeFullMarketDataOut struct {
@@ -307,7 +307,7 @@ type IFmdManagerSubscribeFullMarketData struct {
 	outDataChannel chan IFmdManagerSubscribeFullMarketDataOut
 }
 
-func NewIFmdManagerSubscribeFullMarketData(waitToComplete bool, arg0, arg1 string) *IFmdManagerSubscribeFullMarketData {
+func NewIFmdManagerSubscribeFullMarketData(waitToComplete bool, arg0 string, arg1 FmdBookKey) *IFmdManagerSubscribeFullMarketData {
 	var outDataChannel chan IFmdManagerSubscribeFullMarketDataOut
 	if waitToComplete {
 		outDataChannel = make(chan IFmdManagerSubscribeFullMarketDataOut)
@@ -345,7 +345,7 @@ func (self *IFmdManagerSubscribeFullMarketData) Close() error {
 	close(self.outDataChannel)
 	return nil
 }
-func CallIFmdManagerSubscribeFullMarketData(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0, arg1 string) (IFmdManagerSubscribeFullMarketDataOut, error) {
+func CallIFmdManagerSubscribeFullMarketData(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 string, arg1 FmdBookKey) (IFmdManagerSubscribeFullMarketDataOut, error) {
 	if context != nil && context.Err() != nil {
 		return IFmdManagerSubscribeFullMarketDataOut{}, context.Err()
 	}
@@ -379,7 +379,7 @@ func CallIFmdManagerSubscribeFullMarketData(context context.Context, channel cha
 // Interface IFmdManager, Method: SubscribeFullMarketDataMulti
 type IFmdManagerSubscribeFullMarketDataMultiIn struct {
 	arg0 string
-	arg1 []string
+	arg1 []FmdBookKey
 }
 
 type IFmdManagerSubscribeFullMarketDataMultiOut struct {
@@ -399,7 +399,7 @@ type IFmdManagerSubscribeFullMarketDataMulti struct {
 	outDataChannel chan IFmdManagerSubscribeFullMarketDataMultiOut
 }
 
-func NewIFmdManagerSubscribeFullMarketDataMulti(waitToComplete bool, arg0 string, arg1 ...string) *IFmdManagerSubscribeFullMarketDataMulti {
+func NewIFmdManagerSubscribeFullMarketDataMulti(waitToComplete bool, arg0 string, arg1 ...FmdBookKey) *IFmdManagerSubscribeFullMarketDataMulti {
 	var outDataChannel chan IFmdManagerSubscribeFullMarketDataMultiOut
 	if waitToComplete {
 		outDataChannel = make(chan IFmdManagerSubscribeFullMarketDataMultiOut)
@@ -437,7 +437,7 @@ func (self *IFmdManagerSubscribeFullMarketDataMulti) Close() error {
 	close(self.outDataChannel)
 	return nil
 }
-func CallIFmdManagerSubscribeFullMarketDataMulti(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 string, arg1 ...string) (IFmdManagerSubscribeFullMarketDataMultiOut, error) {
+func CallIFmdManagerSubscribeFullMarketDataMulti(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 string, arg1 ...FmdBookKey) (IFmdManagerSubscribeFullMarketDataMultiOut, error) {
 	if context != nil && context.Err() != nil {
 		return IFmdManagerSubscribeFullMarketDataMultiOut{}, context.Err()
 	}
@@ -471,7 +471,7 @@ func CallIFmdManagerSubscribeFullMarketDataMulti(context context.Context, channe
 // Interface IFmdManager, Method: UnsubscribeFullMarketData
 type IFmdManagerUnsubscribeFullMarketDataIn struct {
 	arg0 string
-	arg1 string
+	arg1 FmdBookKey
 }
 
 type IFmdManagerUnsubscribeFullMarketDataOut struct {
@@ -491,7 +491,7 @@ type IFmdManagerUnsubscribeFullMarketData struct {
 	outDataChannel chan IFmdManagerUnsubscribeFullMarketDataOut
 }
 
-func NewIFmdManagerUnsubscribeFullMarketData(waitToComplete bool, arg0, arg1 string) *IFmdManagerUnsubscribeFullMarketData {
+func NewIFmdManagerUnsubscribeFullMarketData(waitToComplete bool, arg0 string, arg1 FmdBookKey) *IFmdManagerUnsubscribeFullMarketData {
 	var outDataChannel chan IFmdManagerUnsubscribeFullMarketDataOut
 	if waitToComplete {
 		outDataChannel = make(chan IFmdManagerUnsubscribeFullMarketDataOut)
@@ -529,7 +529,7 @@ func (self *IFmdManagerUnsubscribeFullMarketData) Close() error {
 	close(self.outDataChannel)
 	return nil
 }
-func CallIFmdManagerUnsubscribeFullMarketData(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0, arg1 string) (IFmdManagerUnsubscribeFullMarketDataOut, error) {
+func CallIFmdManagerUnsubscribeFullMarketData(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 string, arg1 FmdBookKey) (IFmdManagerUnsubscribeFullMarketDataOut, error) {
 	if context != nil && context.Err() != nil {
 		return IFmdManagerUnsubscribeFullMarketDataOut{}, context.Err()
 	}
@@ -563,7 +563,7 @@ func CallIFmdManagerUnsubscribeFullMarketData(context context.Context, channel c
 // Interface IFmdManager, Method: UnsubscribeFullMarketDataMulti
 type IFmdManagerUnsubscribeFullMarketDataMultiIn struct {
 	arg0 string
-	arg1 []string
+	arg1 []FmdBookKey
 }
 
 type IFmdManagerUnsubscribeFullMarketDataMultiOut struct {
@@ -583,7 +583,7 @@ type IFmdManagerUnsubscribeFullMarketDataMulti struct {
 	outDataChannel chan IFmdManagerUnsubscribeFullMarketDataMultiOut
 }
 
-func NewIFmdManagerUnsubscribeFullMarketDataMulti(waitToComplete bool, arg0 string, arg1 ...string) *IFmdManagerUnsubscribeFullMarketDataMulti {
+func NewIFmdManagerUnsubscribeFullMarketDataMulti(waitToComplete bool, arg0 string, arg1 ...FmdBookKey) *IFmdManagerUnsubscribeFullMarketDataMulti {
 	var outDataChannel chan IFmdManagerUnsubscribeFullMarketDataMultiOut
 	if waitToComplete {
 		outDataChannel = make(chan IFmdManagerUnsubscribeFullMarketDataMultiOut)
@@ -621,7 +621,7 @@ func (self *IFmdManagerUnsubscribeFullMarketDataMulti) Close() error {
 	close(self.outDataChannel)
 	return nil
 }
-func CallIFmdManagerUnsubscribeFullMarketDataMulti(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 string, arg1 ...string) (IFmdManagerUnsubscribeFullMarketDataMultiOut, error) {
+func CallIFmdManagerUnsubscribeFullMarketDataMulti(context context.Context, channel chan<- interface{}, waitToComplete bool, arg0 string, arg1 ...FmdBookKey) (IFmdManagerUnsubscribeFullMarketDataMultiOut, error) {
 	if context != nil && context.Err() != nil {
 		return IFmdManagerUnsubscribeFullMarketDataMultiOut{}, context.Err()
 	}

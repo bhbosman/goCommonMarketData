@@ -35,7 +35,13 @@ func (self *service) UnsubscribeFullMarketData(item string) {
 	name := self.FullMarketDataHelper.InstrumentChannelNameForTop5(item)
 	self.pubSub.Unsub(self.subscribeChannel, name)
 	//
-	self.FmdManagerService.UnsubscribeFullMarketData("View", item)
+	self.FmdManagerService.UnsubscribeFullMarketData(
+		"View",
+		fullMarketDataManagerService.FmdBookKey{
+			FeedName:   "",
+			Instrument: item,
+		},
+	)
 
 	_, err := CallIFullMarketDataViewUnsubscribeFullMarketData(self.ctx, self.cmdChannel, false, item)
 	if err != nil {
@@ -44,7 +50,13 @@ func (self *service) UnsubscribeFullMarketData(item string) {
 }
 
 func (self *service) SubscribeFullMarketData(item string) {
-	self.FmdManagerService.SubscribeFullMarketData("View", item)
+	self.FmdManagerService.SubscribeFullMarketData(
+		"View",
+		fullMarketDataManagerService.FmdBookKey{
+			FeedName:   "",
+			Instrument: item,
+		},
+	)
 	//
 	name := self.FullMarketDataHelper.InstrumentChannelNameForTop5(item)
 	self.pubSub.AddSub(self.subscribeChannel, name)

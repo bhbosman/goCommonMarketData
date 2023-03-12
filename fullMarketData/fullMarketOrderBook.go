@@ -16,7 +16,7 @@ type FullMarketOrderBook struct {
 		*PricePoint
 	}
 	OrderSide     [2]*avltree.Tree
-	messageRouter *messageRouter.MessageRouter
+	messageRouter messageRouter.IMessageRouter
 	feedName      string
 	name          string
 	status        string
@@ -128,7 +128,7 @@ func (self *FullMarketOrderBook) handleFullMarketData_Instrument_InstrumentStatu
 	self.status = msg.Status
 }
 
-func (self *FullMarketOrderBook) handleFullMarketDataRemoveInstrumentInstruction(order *stream.FullMarketData_RemoveInstrumentInstruction) {
+func (self *FullMarketOrderBook) handleFullMarketDataRemoveInstrumentInstruction(_ *stream.FullMarketData_RemoveInstrumentInstruction) {
 
 }
 
@@ -155,11 +155,12 @@ func NewFullMarketOrderBook(feedName, name string) IFullMarketOrderBook {
 		},
 		messageRouter: messageRouter.NewMessageRouter(),
 	}
-	result.messageRouter.Add(result.handleFullMarketDataClear)
-	result.messageRouter.Add(result.handleFullMarketDataAddOrder)
-	result.messageRouter.Add(result.handleFullMarketDataReduceVolume)
-	result.messageRouter.Add(result.handleFullMarketDataDeleteOrder)
-	result.messageRouter.Add(result.handleFullMarketData_Instrument_InstrumentStatus)
-	result.messageRouter.Add(result.handleFullMarketDataRemoveInstrumentInstruction)
+	_ = result.messageRouter.Add(result.handleFullMarketDataClear)
+	_ = result.messageRouter.Add(result.handleFullMarketDataAddOrder)
+	_ = result.messageRouter.Add(result.handleFullMarketDataReduceVolume)
+	_ = result.messageRouter.Add(result.handleFullMarketDataDeleteOrder)
+	_ = result.messageRouter.Add(result.handleFullMarketData_Instrument_InstrumentStatus)
+	_ = result.messageRouter.Add(result.handleFullMarketDataRemoveInstrumentInstruction)
+
 	return result
 }

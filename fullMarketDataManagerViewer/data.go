@@ -10,7 +10,7 @@ import (
 
 type data struct {
 	FmdManagerService             fullMarketDataManagerService.IFmdManagerService
-	messageRouter                 *messageRouter.MessageRouter
+	messageRouter                 messageRouter.IMessageRouter
 	onSetMarketDataListChange     func(list []fullMarketDataManagerService.InstrumentStatus) bool
 	onSetMarketDataInstanceChange func(data *stream.PublishTop5) bool
 	activeItem                    string
@@ -19,7 +19,7 @@ type data struct {
 	instrumentListChanged         bool
 }
 
-func (self *data) UnsubscribeFullMarketData(item string) {
+func (self *data) UnsubscribeFullMarketData(_ string) {
 	self.activeItem = ""
 }
 
@@ -27,7 +27,7 @@ func (self *data) SubscribeFullMarketData(item string) {
 	self.activeItem = item
 }
 
-func (self *data) Start(serviceName string) {
+func (self *data) Start(_ string) {
 	list, err := self.FmdManagerService.GetInstrumentList()
 	if err != nil {
 		return
@@ -55,7 +55,7 @@ func (self *data) handleFullMarketDepthBookInstruments(message *stream2.FullMark
 	self.instrumentListChanged = true
 }
 
-func (self *data) handlePublishInstanceDataFor(message *publishInstanceDataFor) error {
+func (self *data) handlePublishInstanceDataFor(_ *publishInstanceDataFor) error {
 	return nil
 }
 
@@ -104,9 +104,9 @@ func newData(FmdManagerService fullMarketDataManagerService.IFmdManagerService) 
 		messageRouter:     messageRouter.NewMessageRouter(),
 	}
 
-	result.messageRouter.Add(result.handlePublishTop5)
-	result.messageRouter.Add(result.handleEmptyQueue)
-	result.messageRouter.Add(result.handlePublishInstanceDataFor)
-	result.messageRouter.Add(result.handleFullMarketDepthBookInstruments)
+	_ = result.messageRouter.Add(result.handlePublishTop5)
+	_ = result.messageRouter.Add(result.handleEmptyQueue)
+	_ = result.messageRouter.Add(result.handlePublishInstanceDataFor)
+	_ = result.messageRouter.Add(result.handleFullMarketDepthBookInstruments)
 	return result, nil
 }
