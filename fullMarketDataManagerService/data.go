@@ -48,7 +48,7 @@ type data struct {
 	proxy                    bool
 	outstandingRequestsMap   map[outstandingRequests]interface{}
 	queuedMessages           map[string]*stream.PublishTop5
-	MessageRouter            *messageRouter.MessageRouter
+	MessageRouter            messageRouter.IMessageRouter
 	pubSub                   pubSub.IPubSub
 	fmd                      map[string]fullMarketData.IFullMarketOrderBook
 	fmdDirty                 map[string]bool

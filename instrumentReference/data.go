@@ -6,7 +6,7 @@ import (
 )
 
 type data struct {
-	MessageRouter   *messageRouter.MessageRouter
+	MessageRouter   messageRouter.IMessageRouter
 	lunoProviders   map[string]*LunoReferenceData
 	referenceData   map[string]IReferenceData
 	krakenProviders map[string]*KrakenReferenceData
@@ -51,7 +51,7 @@ func (self *data) ShutDown() error {
 	return nil
 }
 
-func (self *data) handleEmptyQueue(msg *messages.EmptyQueue) {
+func (self *data) handleEmptyQueue(*messages.EmptyQueue) {
 }
 
 func (self *data) handleMarketDataFeedReference(msg *MarketDataFeedReference) {
@@ -74,8 +74,8 @@ func newData() (IInstrumentReferenceData, error) {
 		referenceData:   make(map[string]IReferenceData),
 		krakenProviders: make(map[string]*KrakenReferenceData),
 	}
-	result.MessageRouter.Add(result.handleEmptyQueue)
-	result.MessageRouter.Add(result.handleMarketDataFeedReference)
+	_ = result.MessageRouter.Add(result.handleEmptyQueue)
+	_ = result.MessageRouter.Add(result.handleMarketDataFeedReference)
 
 	return result, nil
 }
