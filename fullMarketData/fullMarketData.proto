@@ -3,7 +3,10 @@ import "google/protobuf/descriptor.proto";
 package golang.example.policy;
 option go_package = "/stream";
 
-
+message FullMarketDataBookKey{
+  string FeedName = 1;
+  string instrument = 2;
+};
 
 
 
