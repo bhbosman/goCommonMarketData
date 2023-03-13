@@ -122,6 +122,15 @@ func (self *service) goStart(instanceData IFmdManagerData) {
 		[]ChannelHandler.ChannelHandler{
 			{
 				Cb: func(next interface{}, message interface{}) (bool, error) {
+					if unk, ok := next.(ISendMessage.IMultiSendMessage); ok {
+						return ISendMessage.ChannelEventsForIMultiSendMessage(unk, message)
+					}
+					return false, nil
+				},
+			},
+
+			{
+				Cb: func(next interface{}, message interface{}) (bool, error) {
 					if unk, ok := next.(IFmdManager); ok {
 						return ChannelEventsForIFmdManager(unk, message)
 					}
