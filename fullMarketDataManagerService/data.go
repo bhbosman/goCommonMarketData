@@ -15,35 +15,6 @@ import (
 	"sort"
 )
 
-type outstandingRequests struct {
-	adder goCommsDefinitions.IAdder
-	s     string
-}
-
-type RegisteredForInstrument struct {
-	names map[string]bool
-}
-
-func (self *RegisteredForInstrument) Add(registerName string) int {
-	self.names[registerName] = true
-	return len(self.names)
-}
-
-func (self *RegisteredForInstrument) Remove(name string) int {
-	delete(self.names, name)
-	return len(self.names)
-}
-
-func (self *RegisteredForInstrument) Count() int {
-	return len(self.names)
-}
-
-func NewRegisteredForInstrument() *RegisteredForInstrument {
-	return &RegisteredForInstrument{
-		names: make(map[string]bool),
-	}
-}
-
 type data struct {
 	proxy                    bool
 	outstandingRequestsMap   map[outstandingRequests]interface{}
@@ -97,7 +68,7 @@ func (self *data) UnsubscribeFullMarketData(registerName string, item string) {
 		if n == 0 {
 			delete(self.fmdCount, item)
 			if self.proxy {
-				if book, ok := self.findFullMarketDataBook("", item); ok {
+				if book, ok := self.findFullMarketDataBook("", item, false); ok {
 					clearMessage := &stream2.FullMarketData_Clear{
 						Instrument: item,
 					}
@@ -131,14 +102,17 @@ func (self *data) ShutDown() error {
 	return nil
 }
 
-func (self *data) findFullMarketDataBook(feedName, name string) (fullMarketData.IFullMarketOrderBook, bool) {
+func (self *data) findFullMarketDataBook(feedName, name string, create bool) (fullMarketData.IFullMarketOrderBook, bool) {
 	if result, ok := self.fmd[name]; ok {
 		return result, true
 	}
-	result := fullMarketData.NewFullMarketOrderBook(feedName, name)
-	self.fmd[name] = result
-	self.publishListOfInstruments = true
-	return result, true
+	if create {
+		result := fullMarketData.NewFullMarketOrderBook(feedName, name)
+		self.fmd[name] = result
+		self.publishListOfInstruments = true
+		return result, true
+	}
+	return nil, false
 }
 
 func (self *data) handleFullMarketDataRemoveInstrumentInstruction(msg *stream2.FullMarketData_RemoveInstrumentInstruction) {
@@ -244,7 +218,7 @@ func (self *data) handleFullMarketData_AddOrderInstructionWrapper(msg *stream2.F
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_AddOrderInstruction(msg *stream2.FullMarketData_AddOrderInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		if orderBook, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+		if orderBook, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument, true); ok {
 			_ = orderBook.Send(msg)
 		}
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
@@ -259,7 +233,7 @@ func (self *data) handleFullMarketData_ClearWrapper(msg *stream2.FullMarketData_
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_Clear(msg *stream2.FullMarketData_Clear) {
-	if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+	if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument, false); ok {
 		_ = book.Send(msg)
 	}
 	self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
@@ -274,7 +248,7 @@ func (self *data) handleFullMarketData_ReduceVolumeInstructionWrapper(msg *strea
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_ReduceVolumeInstruction(msg *stream2.FullMarketData_ReduceVolumeInstruction) {
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+		if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument, true); ok {
 			_ = book.Send(msg)
 		}
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
@@ -294,7 +268,7 @@ func (self *data) handleFullMarketData_Instrument_InstrumentStatusWrapper(msg *s
 
 //goland:noinspection GoSnakeCaseUsage
 func (self *data) handleFullMarketData_Instrument_InstrumentStatus(msg *stream2.FullMarketData_Instrument_InstrumentStatus) {
-	if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+	if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument, true); ok {
 		_ = book.Send(msg)
 	}
 	self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
@@ -305,7 +279,7 @@ func (self *data) handleFullMarketData_Instrument_InstrumentStatus(msg *stream2.
 func (self *data) handleFullMarketData_DeleteOrderInstruction(msg *stream2.FullMarketData_DeleteOrderInstruction) {
 
 	if _, ok := self.fmdCount[msg.Instrument]; ok || !self.proxy {
-		if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument); ok {
+		if book, ok := self.findFullMarketDataBook(msg.FeedName, msg.Instrument, true); ok {
 			_ = book.Send(msg)
 		}
 		self.pubSub.Pub(msg, self.fullMarketDataHelper.InstrumentChannelName(msg.Instrument))
@@ -579,9 +553,9 @@ func newData(
 	_ = result.MessageRouter.Add(result.handleFullMarketData_ReduceVolumeInstructionWrapper)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_DeleteOrderInstructionWrapper)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_Instrument_InstrumentStatusWrapper)
+	_ = result.MessageRouter.Add(result.handleFullMarketData_Clear)
 	//
 	_ = result.MessageRouter.Add(result.handleFullMarketData_AddOrderInstruction)
-	_ = result.MessageRouter.Add(result.handleFullMarketData_Clear)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_ReduceVolumeInstruction)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_DeleteOrderInstruction)
 	_ = result.MessageRouter.Add(result.handleFullMarketData_Instrument_InstrumentStatus)
@@ -600,4 +574,33 @@ func newData(
 
 	//
 	return result, nil
+}
+
+type outstandingRequests struct {
+	adder goCommsDefinitions.IAdder
+	s     string
+}
+
+type RegisteredForInstrument struct {
+	names map[string]bool
+}
+
+func (self *RegisteredForInstrument) Add(registerName string) int {
+	self.names[registerName] = true
+	return len(self.names)
+}
+
+func (self *RegisteredForInstrument) Remove(name string) int {
+	delete(self.names, name)
+	return len(self.names)
+}
+
+func (self *RegisteredForInstrument) Count() int {
+	return len(self.names)
+}
+
+func NewRegisteredForInstrument() *RegisteredForInstrument {
+	return &RegisteredForInstrument{
+		names: make(map[string]bool),
+	}
 }

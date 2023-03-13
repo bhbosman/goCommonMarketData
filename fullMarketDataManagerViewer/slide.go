@@ -144,6 +144,7 @@ func (self *slide) init() {
 func (self *slide) OnSetMarketDataListChange(list []fullMarketDataManagerService.InstrumentStatus) bool {
 	return self.app.QueueUpdate(
 		func() {
+
 			if list != nil && len(list) > 0 {
 				plateNil := self.marketDataListPlate == nil
 				self.marketDataListPlate = newListPlate(list)
