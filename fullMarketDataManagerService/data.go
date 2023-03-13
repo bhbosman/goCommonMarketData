@@ -150,7 +150,7 @@ func (self *data) handleFullMarketDataRemoveInstrumentInstruction(msg *stream2.F
 			},
 		)
 	}
-	delete(self.fmd, msg.Instrument)
+	self.deleteInstrument(msg.Instrument)
 	self.publishListOfInstruments = true
 }
 
@@ -566,6 +566,10 @@ func (self *data) handleFullMarketData_InstrumentList_ResponseWrapper(incomingMe
 	}
 
 	self.publishListOfInstruments = true
+}
+
+func (self *data) deleteInstrument(instrument string) {
+	delete(self.fmd, instrument)
 }
 
 func newData(
