@@ -6,7 +6,7 @@ import (
 	"github.com/bhbosman/goCommonMarketData/instrumentReference"
 	"github.com/bhbosman/goUi/ui"
 	"github.com/bhbosman/gocommon/GoFunctionCounter"
-	"github.com/bhbosman/gocommon/Services/interfaces"
+	"github.com/bhbosman/gocommon/services/interfaces"
 	"github.com/cskr/pubsub"
 	"github.com/rivo/tview"
 	"go.uber.org/fx"
