@@ -8,7 +8,7 @@ require (
 	github.com/bhbosman/goUi v0.0.0-20230302065227-24c3cb06165e
 	github.com/bhbosman/gocommon v0.0.0-20230320083256-4088c43f62a7
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
-	github.com/bhbosman/goprotoextra v0.0.1
+	github.com/bhbosman/goprotoextra v0.0.2
 	github.com/cskr/pubsub v1.0.2
 	github.com/emirpasic/gods v1.18.1
 	github.com/gdamore/tcell/v2 v2.5.1
