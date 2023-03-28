@@ -12,8 +12,10 @@ require (
 	github.com/cskr/pubsub v1.0.2
 	github.com/emirpasic/gods v1.18.1
 	github.com/gdamore/tcell/v2 v2.5.1
+	github.com/golang/mock v1.6.0
 	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/rivo/tview v0.0.0-20220709181631-73bf2902b59a
+	github.com/stretchr/testify v1.8.0
 	go.uber.org/fx v1.19.2
 	go.uber.org/zap v1.24.0
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
@@ -22,11 +24,6 @@ require (
 
 require (
 	github.com/bhbosman/goConn v0.0.0-20230320102125-d7416dd8d6dc // indirect
-	github.com/golang/mock v1.6.0
-	github.com/stretchr/testify v1.8.0
-)
-
-require (
 	github.com/bhbosman/gomessageblock v0.0.0-20220617132215-32f430d7de62 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
