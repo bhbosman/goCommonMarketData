@@ -53,7 +53,7 @@ replace github.com/rivo/tview => ../tview
 
 //replace github.com/bhbosman/gocommon => ../gocommon
 
-replace github.com/bhbosman/goUi => ../goUi
+//replace github.com/bhbosman/goUi => ../goUi
 
 replace github.com/bhbosman/goerrors => ../goerrors
 
