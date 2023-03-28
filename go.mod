@@ -51,7 +51,7 @@ replace github.com/cskr/pubsub => github.com/bhbosman/pubsub v1.0.3-0.2022080220
 
 replace github.com/rivo/tview => ../tview
 
-replace github.com/bhbosman/gocommon => ../gocommon
+//replace github.com/bhbosman/gocommon => ../gocommon
 
 replace github.com/bhbosman/goUi => ../goUi
 
