@@ -3,7 +3,7 @@ module github.com/bhbosman/goCommonMarketData
 go 1.18
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20230308211643-24fe88b2378e
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20230320101758-971a50fdbf8c
 	github.com/bhbosman/goMessages v0.0.0-20230302063433-258339efe599
 	github.com/bhbosman/goUi v0.0.0-20230302065227-24c3cb06165e
 	github.com/bhbosman/gocommon v0.0.0-20230320083256-4088c43f62a7
@@ -21,7 +21,7 @@ require (
 )
 
 require (
-	github.com/bhbosman/goConn v0.0.0-20230320102125-d7416dd8d6dc // indirect
+	github.com/bhbosman/goConn v0.0.0-20230327111455-7a39299fb0aa // indirect
 	github.com/golang/mock v1.6.0
 	github.com/stretchr/testify v1.8.0
 )
@@ -64,6 +64,6 @@ replace github.com/bhbosman/goerrors => ../goerrors
 
 replace github.com/bhbosman/goMessages => ../goMessages
 
-replace github.com/bhbosman/goCommsDefinitions => ../goCommsDefinitions
+//replace github.com/bhbosman/goCommsDefinitions => ../goCommsDefinitions
 
 replace github.com/bhbosman/goConn => ../goConn
