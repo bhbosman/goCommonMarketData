@@ -6,7 +6,7 @@ require (
 	github.com/bhbosman/goCommsDefinitions v0.0.0-20230320101758-971a50fdbf8c
 	github.com/bhbosman/goMessages v0.0.0-20230328145403-abd9357e258c
 	github.com/bhbosman/goUi v0.0.0-20230328153139-005ecdbe07d0
-	github.com/bhbosman/gocommon v0.0.0-20230328150634-566a0f916878
+	github.com/bhbosman/gocommon v0.0.0-20230328190055-dffeb142435d
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
 	github.com/bhbosman/goprotoextra v0.0.2
 	github.com/cskr/pubsub v1.0.2
@@ -51,7 +51,7 @@ replace github.com/cskr/pubsub => github.com/bhbosman/pubsub v1.0.3-0.2022080220
 
 replace github.com/rivo/tview => github.com/bhbosman/tview v0.0.0-20230310100135-f8b257a85d36
 
-replace github.com/bhbosman/gocommon => ../gocommon
+//replace github.com/bhbosman/gocommon => ../gocommon
 
 //replace github.com/bhbosman/goUi => ../goUi
 
