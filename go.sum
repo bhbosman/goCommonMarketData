@@ -1,10 +1,10 @@
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
 github.com/benbjohnson/clock v1.3.0 h1:ip6w0uFQkncKQ979AypyG0ER7mqUSBdKLOgAle/AT8A=
 github.com/benbjohnson/clock v1.3.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
-github.com/bhbosman/goUi v0.0.0-20230302065227-24c3cb06165e h1:Infq/6i/K//kY7Dm27Lb89cANWRYPz6rKNsbfqkGy3g=
-github.com/bhbosman/goUi v0.0.0-20230302065227-24c3cb06165e/go.mod h1:zzuJ6sLPF9T+B55tc7tH03QSpKAtvSyEfGSc+gX96Mc=
-github.com/bhbosman/gocommon v0.0.0-20230328150634-566a0f916878 h1:giTFJcUbn4abWJdRALlUKBBSlixJ7ELinOCLRUaP934=
-github.com/bhbosman/gocommon v0.0.0-20230328150634-566a0f916878/go.mod h1:oLW76CQyFhccvFZww5sISfcs8NvK6FJgsT4XwgoIuLo=
+github.com/bhbosman/goConn v0.0.0-20230327111455-7a39299fb0aa h1:7lakH1tzJ/EocZSdCWYF5LIH+ySs6egdupZLHTqjrD4=
+github.com/bhbosman/goConn v0.0.0-20230327111455-7a39299fb0aa/go.mod h1:ls316tsU4UUuVGmhpn30sbd702HbPHYTn0ATQavKGEk=
+github.com/bhbosman/goUi v0.0.0-20230328153139-005ecdbe07d0 h1:dVgNhrqAbHacSbM4wX+425bkJYjayYmCfSt+XfAet1Y=
+github.com/bhbosman/goUi v0.0.0-20230328153139-005ecdbe07d0/go.mod h1:UK7yF9BeICGeQwvnCng8A02A6PE0Qpvza4x7g2XAAmY=
 github.com/bhbosman/gomessageblock v0.0.0-20220617132215-32f430d7de62 h1:m6HdigUwcde4zWU38ARP3I2Fa2NpxKiHQZmzySIx5Z4=
 github.com/bhbosman/gomessageblock v0.0.0-20220617132215-32f430d7de62/go.mod h1:TZ2IkIqXD6cRPBNJYUlLC4V11cwB6KoO984OAcL9blI=
 github.com/bhbosman/gomock v1.6.1-0.20230302060806-d02c40b7514e h1:9ZZLTcBpRq0gCtFml4/M9EQ3E5sQoHIBRk0yLpuVFVQ=
