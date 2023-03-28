@@ -4,16 +4,18 @@ go 1.18
 
 require (
 	github.com/bhbosman/goCommsDefinitions v0.0.0-20230320101758-971a50fdbf8c
-	github.com/bhbosman/goMessages v0.0.0-20230302063433-258339efe599
-	github.com/bhbosman/goUi v0.0.0-20230302065227-24c3cb06165e
-	github.com/bhbosman/gocommon v0.0.0-20230320083256-4088c43f62a7
+	github.com/bhbosman/goMessages v0.0.0-20230328145403-abd9357e258c
+	github.com/bhbosman/goUi v0.0.0-20230328153139-005ecdbe07d0
+	github.com/bhbosman/gocommon v0.0.0-20230328150634-566a0f916878
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
-	github.com/bhbosman/goprotoextra v0.0.0-20230309055846-4d9940f8b875
+	github.com/bhbosman/goprotoextra v0.0.2
 	github.com/cskr/pubsub v1.0.2
 	github.com/emirpasic/gods v1.18.1
 	github.com/gdamore/tcell/v2 v2.5.1
+	github.com/golang/mock v1.6.0
 	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/rivo/tview v0.0.0-20220709181631-73bf2902b59a
+	github.com/stretchr/testify v1.8.0
 	go.uber.org/fx v1.19.2
 	go.uber.org/zap v1.24.0
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
@@ -22,11 +24,6 @@ require (
 
 require (
 	github.com/bhbosman/goConn v0.0.0-20230327111455-7a39299fb0aa // indirect
-	github.com/golang/mock v1.6.0
-	github.com/stretchr/testify v1.8.0
-)
-
-require (
 	github.com/bhbosman/gomessageblock v0.0.0-20220617132215-32f430d7de62 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -52,11 +49,11 @@ replace github.com/golang/mock => github.com/bhbosman/gomock v1.6.1-0.2023030206
 
 replace github.com/cskr/pubsub => github.com/bhbosman/pubsub v1.0.3-0.20220802200819-029949e8a8af
 
-replace github.com/rivo/tview => ../tview
+replace github.com/rivo/tview => github.com/bhbosman/tview v0.0.0-20230310100135-f8b257a85d36
 
 replace github.com/bhbosman/gocommon => ../gocommon
 
-replace github.com/bhbosman/goUi => ../goUi
+//replace github.com/bhbosman/goUi => ../goUi
 
 replace github.com/bhbosman/goerrors => ../goerrors
 
@@ -64,6 +61,6 @@ replace github.com/bhbosman/goerrors => ../goerrors
 
 replace github.com/bhbosman/goMessages => ../goMessages
 
-//replace github.com/bhbosman/goCommsDefinitions => ../goCommsDefinitions
+replace github.com/bhbosman/goCommsDefinitions => ../goCommsDefinitions
 
-replace github.com/bhbosman/goConn => ../goConn
+//replace github.com/bhbosman/goConn => ../goConn
