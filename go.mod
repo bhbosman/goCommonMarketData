@@ -23,7 +23,7 @@ require (
 )
 
 require (
-
+	github.com/bhbosman/goConn v0.0.0-20230327111455-7a39299fb0aa // indirect
 	github.com/bhbosman/gomessageblock v0.0.0-20220617132215-32f430d7de62 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
