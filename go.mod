@@ -3,9 +3,9 @@ module github.com/bhbosman/goCommonMarketData
 go 1.18
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20230320101758-971a50fdbf8c
-	github.com/bhbosman/goMessages v0.0.0-20230328145403-abd9357e258c
-	github.com/bhbosman/goUi v0.0.0-20230328153139-005ecdbe07d0
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20230329100608-a6a24c060ad8
+	github.com/bhbosman/goMessages v0.0.0-20230329104216-4906969c1e61
+	github.com/bhbosman/goUi v0.0.0-20230329104221-220650220e7d
 	github.com/bhbosman/gocommon v0.0.0-20230329101749-40db0f52d859
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
 	github.com/bhbosman/goprotoextra v0.0.2
@@ -23,7 +23,6 @@ require (
 )
 
 require (
-	github.com/bhbosman/goConn v0.0.0-20230327111455-7a39299fb0aa // indirect
 	github.com/bhbosman/gomessageblock v0.0.0-20220617132215-32f430d7de62 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
