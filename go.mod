@@ -4,9 +4,9 @@ go 1.24.0
 
 require (
 	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308000247-4306925b3dfd
-	github.com/bhbosman/goMessages v0.0.0-20250307224348-83ddb4c19467
-	github.com/bhbosman/goUi v0.0.0-20250308052840-a0e5fd7e5f88
-	github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac
+	github.com/bhbosman/goMessages v0.0.0-20250308052839-b11fc966f96a
+	github.com/bhbosman/goUi v0.0.0-20250308064519-26f29e163722
+	github.com/bhbosman/gocommon v0.0.0-20250308052839-0ebeb121f996
 	github.com/bhbosman/goerrors v0.0.0-20250307194237-312d070c8e38
 	github.com/bhbosman/goprotoextra v0.0.2
 	github.com/cskr/pubsub v1.0.2
@@ -19,7 +19,7 @@ require (
 	go.uber.org/fx v1.23.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/net v0.37.0
-	google.golang.org/protobuf v1.28.0
+	google.golang.org/protobuf v1.36.5
 )
 
 require (
