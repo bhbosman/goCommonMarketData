@@ -9,10 +9,14 @@ github.com/bhbosman/goMessages v0.0.0-20250308073939-6ddcbe007f00 h1:atF5Fi1k1DL
 github.com/bhbosman/goMessages v0.0.0-20250308073939-6ddcbe007f00/go.mod h1:nnA/nGfLfAgOa2dg59slhWLFJhDBJMBl5/UzxT7agk8=
 github.com/bhbosman/goMessages v0.0.0-20250308122654-32a88d6d1169 h1:sL7gvyo2egE1FI+8WRCh5g4Wo6pmsooHBTg7Uq/btkg=
 github.com/bhbosman/goMessages v0.0.0-20250308122654-32a88d6d1169/go.mod h1:PhVe9v+WIuyuyxE9HIfMRA3LkrJtrrETnlLToz1VGWI=
+github.com/bhbosman/goMessages v0.0.0-20250308134004-88a683243000 h1:u6Z9R5Yx1KMsoiyknh2srDfIJu2r1V5VlhILgfoFuvM=
+github.com/bhbosman/goMessages v0.0.0-20250308134004-88a683243000/go.mod h1:iiKYP6sCWaGji62TJ6mZzXzXO+WPq3Yym3OR+PSxIL4=
 github.com/bhbosman/goUi v0.0.0-20250308073057-c42a9b24bf52 h1:HNmzV57nbrgzDMPEyuQSryIac3j+vzq4i8tJyUQUWQY=
 github.com/bhbosman/goUi v0.0.0-20250308073057-c42a9b24bf52/go.mod h1:l8l8U6QbtjsZzp8q5/o/WLDcYcdvZDUW5T/tX2lhNvk=
 github.com/bhbosman/goUi v0.0.0-20250308124821-836921ea8a1e h1:QVfBl4jjU1X/DtmHNETtXQZOfFlnVBc4RFdWLE4X2QI=
 github.com/bhbosman/goUi v0.0.0-20250308124821-836921ea8a1e/go.mod h1:l6UDCyN+is/QLuGMx3hjrQhOFXyH4q30vhPXWFRDX2A=
+github.com/bhbosman/goUi v0.0.0-20250308132651-2a5e82ef72b0 h1:3ordy/bAGZcIlTsoYX91wdC9ToTKIyC+Bexyn7l1/Co=
+github.com/bhbosman/goUi v0.0.0-20250308132651-2a5e82ef72b0/go.mod h1:7oMy2ehnSEUqADTLjWJa+q1Coolp3MEL3yquKabG1Qg=
 github.com/bhbosman/gocommon v0.0.0-20250308071735-43b385b00819 h1:B+7lAu+nnm9PI6M2ltgAD10Ay1H6StjvFEIVmmgZx4U=
 github.com/bhbosman/gocommon v0.0.0-20250308071735-43b385b00819/go.mod h1:6PneFIBNKkWgXncFgaqsSIeKFl1So5J5/QM2S2xule8=
 github.com/bhbosman/gocommon v0.0.0-20250308131803-28622f55deb1 h1:H6xBDuvTUHP3HWOcY6VdO4GBW5bqk0jM1dn8f2SYwD0=
