@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308144130-64993b60920c
 	github.com/bhbosman/goMessages v0.0.0-20250308162234-471970cb97be
-	github.com/bhbosman/goUi v0.0.0-20250308192106-f0dba2b1ada7
+	github.com/bhbosman/goUi v0.0.0-20250308194827-3465482d7c6b
 	github.com/bhbosman/gocommon v0.0.0-20250308155359-4baa9bec452e
 	github.com/bhbosman/goerrors v0.0.0-20250307194237-312d070c8e38
 	github.com/bhbosman/goprotoextra v0.0.2
