@@ -44,7 +44,6 @@ require (
 	github.com/rivo/tview v0.0.0-20241227133733-17b7edb88c57
 )
 
-
 replace (
 	github.com/cskr/pubsub => github.com/bhbosman/pubsub v1.0.3-0.20250308124829-e5731aa33222
 	github.com/gdamore/tcell/v2 => github.com/bhbosman/tcell/v2 v2.5.2-0.20250308093601-f0942a296aa0
@@ -52,10 +51,3 @@ replace (
 	github.com/rivo/tview => github.com/bhbosman/tview v0.0.0-20250308051327-a656c1bc9cfa
 )
 
-//replace github.com/bhbosman/goerrors => ../goerrors
-
-//
-
-//replace github.com/bhbosman/goMessages => ../goMessages
-
-//replace github.com/bhbosman/goCommsDefinitions => ../goCommsDefinitions
