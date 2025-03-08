@@ -3,7 +3,7 @@ module github.com/bhbosman/goCommonMarketData
 go 1.24.0
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308074916-3e7c0d32b971
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308144130-64993b60920c
 	github.com/bhbosman/goMessages v0.0.0-20250308134004-88a683243000
 	github.com/bhbosman/goUi v0.0.0-20250308132651-2a5e82ef72b0
 	github.com/bhbosman/gocommon v0.0.0-20250308131803-28622f55deb1
@@ -50,4 +50,3 @@ replace (
 	github.com/golang/mock => github.com/bhbosman/gomock v1.6.1-0.20250308071159-4cf72f668c72
 	github.com/rivo/tview => github.com/bhbosman/tview v0.0.0-20250308051327-a656c1bc9cfa
 )
-
