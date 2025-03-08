@@ -15,6 +15,8 @@ github.com/bhbosman/goUi v0.0.0-20230329104221-220650220e7d h1:YObP0Ju6rUyJVwVqA
 github.com/bhbosman/goUi v0.0.0-20230329104221-220650220e7d/go.mod h1:1Pbr3ZE78jSgc51wlPqXXh4l09QYk9rRMLg6Sw5llgQ=
 github.com/bhbosman/goUi v0.0.0-20250307122012-7a2ee5ed9d8b h1:zl5uh4xeIFjYoRZ18iSFfa0NMqu2uGHDx5RDTsTfI/Q=
 github.com/bhbosman/goUi v0.0.0-20250307122012-7a2ee5ed9d8b/go.mod h1:vwFHeGJZHbhSSm61dJWDs3rgRYzbWX5jbe/QCaunu5U=
+github.com/bhbosman/goUi v0.0.0-20250308052840-a0e5fd7e5f88 h1:Dyqc31wVVUcDJd0LMXj7l4sNt98wCPmrV7n3rWuYOJc=
+github.com/bhbosman/goUi v0.0.0-20250308052840-a0e5fd7e5f88/go.mod h1:3FskHyMUG9BmfVvg+rAOKsJbjVrJqrlBnC3Cr6uER3E=
 github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac h1:YSi40G49TVma+rDrJFudBQO5wE43T/ErFX6zMKgB3mY=
 github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac/go.mod h1:EPYuWdqTCX8B9u0Q7w4u4FOalx2wbXm+KFQQbS1VHOo=
 github.com/bhbosman/goerrors v0.0.0-20250307194237-312d070c8e38 h1:3jX77BrDYvQ4xiAQkat+N47OZoKECB9t27fQQfpqGRk=
